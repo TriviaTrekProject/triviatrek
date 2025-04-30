@@ -6,7 +6,7 @@ export function createStompClient(onMessage: (msg: any) => void): Client {
     const client = new Client({
         webSocketFactory: () => socket,
         onConnect: () => {
-            client.subscribe('/topic/quiz', msg => onMessage(JSON.parse(msg.body)));
+            client.subscribe('/chat/', msg => onMessage(JSON.parse(msg.body)));
         },
     });
     client.activate();

@@ -4,7 +4,7 @@ export default function Login() {
     const navigate = useNavigate();
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <div className="flex flex-col items-center justify-center h-screen">
             <h2 className="text-2xl mb-6">Quiz Multijoueur</h2>
             <button
                 onClick={() => navigate('/guest')}
