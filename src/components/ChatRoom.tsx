@@ -1,6 +1,7 @@
 import {User} from "../model/User.ts";
 import {useEffect, useState} from "react";
 import {StompSubscription} from "@stomp/stompjs";
+import {useParams} from "react-router-dom";
 
 interface ChatRoomProps {
     user: User
@@ -15,13 +16,14 @@ interface Message {
     senderName: string;
     message: string;
     status: string;
-    receiverName?: string;
+    roomId: string;
 }
 
 const ChatRoom = ({user}:ChatRoomProps) => {
     const [chat, setChat] = useState<ChatLine[]>([]);
     const [message, setMessage] = useState('');
     const [users, setUsers] = useState<string[]>([]);
+    const {id} = useParams();
 
     const onSend = (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,6 +31,7 @@ const ChatRoom = ({user}:ChatRoomProps) => {
             senderName: user.username,
             message: message,
             status: "MESSAGE",
+            roomId: id ?? ""
         }
         user.client.publish({
             destination: `/app/message`,
@@ -49,7 +52,7 @@ const ChatRoom = ({user}:ChatRoomProps) => {
     }
     let subscribe:StompSubscription | undefined;
     user.client.configure({onConnect: () => {
-            subscribe = user.client.subscribe('/chatroom/public', onMessageReceived);
+            subscribe = user.client.subscribe('/chatroom/'+id+'/public', onMessageReceived);
         }});
     useEffect(() => {
 
