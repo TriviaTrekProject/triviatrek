@@ -116,7 +116,6 @@ const ChatRoom = ({user}:ChatRoomProps) => {
                 subscribe.unsubscribe();
                 window.removeEventListener('beforeunload', handleUnload);
                 user.client.deactivate();
-                // subscribe.unsubscribe()
             }
         }
     }, [handleUnload, sendLeaveMessage, subscribe, user.client]);
@@ -128,7 +127,7 @@ const ChatRoom = ({user}:ChatRoomProps) => {
                 <div className="flex flex-row gap-1 gap-y-1 p-2 py-4 justify-center" >
                     <div className="p-2">Utilisateurs : <div className="flex flex-col gap-1">{users.map((user,index) => (<div key={index}>{user}</div>))}</div></div>
                     <div className="border-r-1 border-gray-500"></div>
-                    <div className="p-2">{chat.map(
+                    <div className="p-2 text-left">{chat.map(
                         (line, index) => <div key={index}><span className="text-green-800">{line.senderName}</span>: {line.message}</div>
                     )}</div>
 
