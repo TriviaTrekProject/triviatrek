@@ -50,13 +50,13 @@ const ChatRoom = ({user}:ChatRoomProps) => {
     }, [user.client]);
 
     return (
-        <div>
-            <div>{user.username}</div>
+        <div className="bg-white p-4 rounded shadow mb-4 flex flex-col gap-2">
+            <div className="text-green-800">{user.username}</div>
             <div>Chat :</div>
             <div>{chat.map(
                 line => <div><li className="text-green-800">{line.senderName}</li>: {line.message}</div>
             )}</div>
-            <input type="text" value={message} onChange={e => setMessage(e.target.value)}></input>
+            <input className="border-2 border-solid border-cyan-900 rounded-sm text-black p-2 focus:none" type="text" value={message} onChange={e => setMessage(e.target.value)}></input>
             <button onClick={onSend}>Envoyer</button>
         </div>
     )
