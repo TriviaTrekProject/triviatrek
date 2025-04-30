@@ -6,8 +6,12 @@ export function createStompClient(onMessage: (msg: any) => void): Client {
     const client = new Client({
         webSocketFactory: () => socket,
         onConnect: () => {
-            client.subscribe('/chat/', msg => onMessage(JSON.parse(msg.body)));
+            client.subscribe('/user/', msg => onMessage(JSON.parse(msg.body)));
         },
+        onStompError:  (frame) => {
+            console.log('Broker reported error: ' + frame.headers['message']);
+            console.log('Additional details: ' + frame.body)
+        }
     });
     client.activate();
     return client;

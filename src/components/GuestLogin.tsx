@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import {User} from "../model/User.ts";
+import {createStompClient} from "../ws/socket.ts";
 
 interface GuestLoginProps {
-    setUsername: (username: string) => void;
+    setUser: (user: User) => void;
 }
-export default function GuestLogin({setUsername}: GuestLoginProps) {
+export default function GuestLogin({setUser}: GuestLoginProps) {
     const [name, setName] = useState('');
     const navigate = useNavigate();
     const { id } = useParams();
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!name.trim()) return;
-        setUsername(name.trim());
+
+        setUser({username: name, client: createStompClient(msg => console.log(msg))});
         const roomId = id ?? Math.random().toString(36).substring(2, 8);
         navigate(`/game/${roomId}`);
     };

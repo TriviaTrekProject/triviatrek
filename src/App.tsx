@@ -3,17 +3,19 @@ import GuestLogin from "./components/GuestLogin.tsx";
 import Login from "./components/Login.tsx";
 import ChatRoom from "./components/ChatRoom.tsx";
 import {useState} from "react";
+import {User} from "./model/User.ts";
 
 function App() {
 
-    const [username, setUsername] = useState<string | null>(null);
+    const [user, setUser] = useState<User | null>(null);
+
   return (
       <BrowserRouter>
           <Routes>
               <Route path="/" element={<Navigate to="/login" replace />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/guest" element={<GuestLogin setUsername={setUsername} />} />
-              <Route path="/game/:id" element={username ? <ChatRoom username={username}/> : <GuestLogin setUsername={setUsername} />} />
+              <Route path="/guest" element={<GuestLogin setUser={setUser} />} />
+              <Route path="/game/:id" element={user ? <ChatRoom user={user}/> : <GuestLogin setUser={setUser} />} />
           </Routes>
       </BrowserRouter>
   )
