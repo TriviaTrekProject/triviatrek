@@ -11,6 +11,7 @@ export function createStompClient(onMessage: (msg: any) => void): Client {
         onStompError:  (frame) => {
             console.log('Broker reported error: ' + frame.headers['message']);
             console.log('Additional details: ' + frame.body)
+
         }
     });
     client.activate();

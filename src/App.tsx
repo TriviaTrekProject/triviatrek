@@ -1,9 +1,8 @@
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
-import GuestLogin from "./components/GuestLogin.tsx";
-import Login from "./components/Login.tsx";
-import ChatRoom from "./components/ChatRoom.tsx";
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {useState} from "react";
 import {User} from "./model/User.ts";
+import GuestRoom from "./components/GuestRoom.tsx";
+import Chat from "./components/Chat.tsx";
 
 function App() {
 
@@ -12,10 +11,11 @@ function App() {
   return (
       <BrowserRouter>
           <Routes>
-              <Route path="/" element={<Navigate to="/login" replace />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/guest" element={<GuestLogin setUser={setUser} />} />
-              <Route path="/game/:id" element={user ? <ChatRoom user={user}/> : <GuestLogin setUser={setUser} />} />
+              {/*<Route path="/" element={<Navigate to="/login" replace />} />*/}
+              <Route path="/" element={user ? <Chat user={user} /> : <GuestRoom setUser={setUser} />} />
+              <Route path="/guest" element={<GuestRoom setUser={setUser} />} />
+              <Route path="/game/:id" element={user ? <Chat user={user} /> : <GuestRoom setUser={setUser} />} />
+
           </Routes>
       </BrowserRouter>
   )

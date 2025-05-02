@@ -4,7 +4,6 @@ import { fetchQuestions, TriviaQuestion } from '../api/triviaApi';
 import { createStompClient } from '../ws/socket';
 import {Client} from "@stomp/stompjs"
 import "tailwindcss";
-import ChatRoom from "./ChatRoom.tsx";
 
 interface GameMessage {
     questionId: string;
@@ -29,6 +28,7 @@ export default function QuizRoom() {
 
 
     useEffect(() => {
+
         // load questions
         fetchQuestions().then(setQuestions);
         // websocket setup
@@ -104,7 +104,6 @@ export default function QuizRoom() {
                     </div>
                 ))}
             </div>
-            <ChatRoom/>
         </div>
     );
 }
