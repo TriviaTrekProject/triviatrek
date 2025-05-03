@@ -1,0 +1,43 @@
+import {useNavigate, useParams} from "react-router-dom";
+import {User} from "../model/User.ts";
+import {createStompClient} from "../ws/socket.ts";
+import {FormEvent} from "react";
+
+interface GuestRoomProps {
+    setUser: (user: User) => void;
+}
+
+const GuestRoom = ({setUser}:GuestRoomProps) => {
+    const navigate = useNavigate();
+    const { id } = useParams();
+
+    const onSubmit = (e:FormEvent<HTMLFormElement>
+    ) => {
+        e.preventDefault();
+        const roomId = id ?? Math.random().toString(36).substring(2, 8);
+        setUser({username: e.currentTarget.username.value, client: createStompClient(msg => console.log(msg))});
+        navigate(`/game/${roomId}`);
+
+    }
+    return (
+
+        <div className="flex items-center justify-center h-screen bg-gray-100">
+        <form onSubmit={onSubmit} className="bg-white p-6 rounded shadow-md w-80">
+            <h2 className="text-xl mb-4">Jouer en invité</h2>
+            <input
+                type="text"
+                placeholder="Entrez votre nom"
+                name="username"
+                className="border p-2 w-full mb-4 rounded"
+            />
+            <button
+                type="submit"
+                className="bg-blue-500 text-white py-2 px-4 rounded w-full hover:bg-blue-600"
+            >
+                Commencer
+            </button>
+        </form>
+    </div>)
+}
+
+export default GuestRoom;
