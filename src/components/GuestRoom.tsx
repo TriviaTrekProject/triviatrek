@@ -1,13 +1,10 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {User} from "../model/User.ts";
-import {createStompClient} from "../ws/socket.ts";
 import {FormEvent} from "react";
 
 interface GuestRoomProps {
-    setUser: (user: User) => void;
+    setUsername: (username: string) => void,
 }
-
-const GuestRoom = ({setUser}:GuestRoomProps) => {
+const GuestRoom = ({setUsername}: GuestRoomProps) => {
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -15,8 +12,8 @@ const GuestRoom = ({setUser}:GuestRoomProps) => {
     ) => {
         e.preventDefault();
         const roomId = id ?? Math.random().toString(36).substring(2, 8);
-        setUser({username: e.currentTarget.username.value, client: createStompClient(msg => console.log(msg))});
-        navigate(`/game/${roomId}`);
+        setUsername(e.currentTarget.username.value);
+        navigate(`/game/${roomId}`, { state: { username: e.currentTarget.username.value } });
 
     }
     return (
