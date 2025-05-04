@@ -7,20 +7,10 @@ export const roomApi = {
      * Rejoindre une room de chat
      */
     async join(roomId: string, user: string): Promise<void> {
-        try {
-            console.log("join début");
             if (!socketService.isConnected) {
-                console.log("socketService is not connected");
                 await socketService.connect();
-                console.log("socketService is connected");
-
             }
-            console.log("join fin");
             socketService.send(`/app/join/${roomId}`, user);
-        } catch (e) {
-            console.error("join() a échoué →", e);
-            throw e;    // rejette la Promise au lieu de la laisser pendante
-        }
     },
 
 

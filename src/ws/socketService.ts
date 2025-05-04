@@ -56,7 +56,7 @@ class SocketService {
         if (!this.client.connected) return;
         this.client.publish({
             destination,
-            body: JSON.stringify(payload),
+            body: typeof payload !== "string" ? JSON.stringify(payload) : payload,
         });
     }
     get isConnected(): boolean {

@@ -22,12 +22,12 @@ const Chat = ({username}:ChatProps) => {
 
     const handleUnload = useCallback(() => {
         if(!id) return;
-        // roomApi.leave(id, username);
+        roomApi.leave(id, username);
     },[id, username]);
 
     window.addEventListener('beforeunload', handleUnload);
 
-    useSocket('/chatroom/'+id, (room:Room) => {
+    useSocket('/chatroom/'+id, (room: Room) => {
         setRoom(room);
         setUsers(room.participants);
 
@@ -59,7 +59,7 @@ const Chat = ({username}:ChatProps) => {
 
         // Au démontage du composant, quitter la room et fermer la connexion
         return () => {
-            // roomApi.leave(id, username);
+            roomApi.leave(id, username);
             window.removeEventListener('beforeunload', handleUnload);
 
         };
