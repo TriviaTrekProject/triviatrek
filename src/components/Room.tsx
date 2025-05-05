@@ -1,11 +1,10 @@
-import {FormEvent, useCallback, useEffect, useRef, useState} from "react";
+import {FormEvent, useCallback, useEffect, useState} from "react";
 import {Navigate, useParams} from "react-router-dom";
 import {ChatRoom} from "../model/ChatRoom.ts";
 import {Message} from "../model/Message.ts";
 import Spinner from "./spinner/spinner.tsx";
 import {useSocket} from "../hook/useSocket.ts";
 import {roomApi} from "../api/roomApi.ts";
-import {v4 as uuidv4} from 'uuid';
 import {gameApi} from "../api/gameApi.ts";
 import {QuizGame} from "../model/QuizGame.ts";
 import {socketService} from "../ws/socketService.ts";
@@ -25,12 +24,11 @@ const Room = ({username}:ChatProps) => {
     const [gameUsers, setGameUsers] = useState<string[]>([]);
 
     const [isLoading, setLoading] = useState(true);
-    const [gameId, setGameId] = useState<string | null>(uuidv4());
     // Fermeture du browser
 
 
     const getOnClick = (roomId : string | undefined) => {
-        if(!room) return;
+        if(!room || !roomId) return;
         return () => gameApi.startGame(room?.gameId ?? "", roomId, username);
 
     }
@@ -157,14 +155,14 @@ const Room = ({username}:ChatProps) => {
                 </div>
 
 )}
-            {id && gameId && quizGame && (
+            {id && quizGame && (
                 <div>
 
                     <div className="mb-1">Question : {quizGame?.currentQuestion?.question}</div>
                     <div className={ "flex flex-row flex-wrap justify-center"}>
                         {
                             quizGame?.currentQuestion?.options.map((opt, index) => (
-                                <div key={index} className="flex p-2 flex-1/2 h-20 items-center justify-center"><div className="bg-blue-100 rounded-2xl flex-auto h-full text-center flex justify-center items-center"><span className="text-white">{opt}</span></div></div>
+                                <div key={index} className="flex p-2 flex-1/2 h-20 items-center justify-center"><div className="bg-secondary rounded-2xl flex-auto h-full text-center flex justify-center items-center"><span className="text-white">{opt}</span></div></div>
                             ))
                         }
                     </div>

@@ -1,4 +1,10 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #D87A23;
+  --color-secondary: #1E6ABB;
+}
+
 #root {
   margin: 0 auto;
   padding: 2rem;
