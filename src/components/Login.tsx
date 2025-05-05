@@ -18,8 +18,8 @@ const Login = ({setUsername}: GuestRoomProps) => {
     }
     return (
 
-        <div className="flex items-center justify-center h-1/3 rounded-2xl bg-gray-100">
-        <form onSubmit={onSubmit} className="bg-white p-6 rounded shadow-md w-80">
+        <div className="flex items-center justify-center h-full flex-1/2 self-center w-full">
+        <form onSubmit={onSubmit} className="bg-white p-6 rounded w-80">
             <h2 className="text-xl mb-4">Jouer en invité</h2>
             <input
                 type="text"
@@ -29,7 +29,7 @@ const Login = ({setUsername}: GuestRoomProps) => {
             />
             <button
                 type="submit"
-                className="bg-blue-500 text-white py-2 px-4 rounded w-full hover:bg-blue-600"
+                className="bg-secondary text-white py-2 px-4 rounded w-full hover:bg-tertiary"
             >
                 Commencer
             </button>

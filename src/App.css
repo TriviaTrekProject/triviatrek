@@ -1,16 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #D87A23;
-  --color-secondary: #1E6ABB;
+  --color-primary: #C2531B;
+  --color-secondary: #ec904b;
+  --color-tertiary: #DB4123;
 }
 
 #root {
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
   width: 100%;
   display: flex;
   justify-content: center;
+  font-family: "Roboto Thin", sans-serif;
 
 }
