@@ -1,39 +1,43 @@
+import {socketService} from "../ws/socketService.ts";
+import {PlayerAnswer} from "../model/PlayerAnswer.ts";
+import {QuizGame} from "../model/QuizGame.ts";
 
+export type GameCallback = (game: QuizGame) => void
 
 export const gameApi = {
-    // /**
-    //  * Rejoindre une partie de quiz
-    //  */
-    // joinGame(gameId: string, player: PlayerDTO) {
-    //     socketService.send(`/app/game/join/${gameId}`, player);
-    // },
-    //
-    // /**
-    //  * Quitter une partie de quiz
-    //  */
-    // leaveGame(gameId: string, player: PlayerDTO) {
-    //     socketService.send(`/app/game/leave/${gameId}`, player);
-    // },
-    //
-    // /**
-    //  * Soumettre une réponse à la question en cours
-    //  */
-    // submitAnswer(gameId: string, answer: AnswerDTO) {
-    //     socketService.send(`/app/game/answer/${gameId}`, answer);
-    // },
-    //
-    // /**
-    //  * S’abonner aux mises à jour de l’état de la partie (scores, question…)
-    //  */
-    // onGameUpdate(gameId: string, handler: (state: GameStateDTO) => void) {
-    //     socketService.subscribe(`/game/${gameId}`, handler);
-    // },
-    //
-    // /**
-    //  * Se désabonner des mises à jour de la partie
-    //  */
-    // offGameUpdate(gameId: string) {
-    //     socketService.unsubscribe(`/game/${gameId}`);
-    // },
+
+        async startGame(gameId: string, roomId: string, user: string): Promise<void> {
+            if (!socketService.isConnected) {
+                await socketService.connect();
+            }
+            console.log("Lancement de la game " + gameId + " dans la room " + roomId);
+        socketService.send(`/app/game/start/${gameId}`,roomId, user)
+    },
+
+
+    /**
+     * Rejoindre une partie de quiz
+     */
+    async joinGame(gameId: string, user: string): Promise<void> {
+        if (!socketService.isConnected) {
+            await socketService.connect();
+        }
+
+        socketService.send(`/app/game/join/${gameId}`, {gameId: gameId, user: user});
+    },
+
+    /**
+     * Quitter une partie de quiz
+     */
+    leaveGame(gameId: string, player: PlayerAnswer) {
+        socketService.send(`/app/game/leave/${gameId}`, player);
+    },
+
+    /**
+     * Soumettre une réponse à la question en cours
+     */
+    submitAnswer(gameId: string, answer: PlayerAnswer) {
+        socketService.send(`/app/game/answer/${gameId}`, answer);
+    },
 };
 

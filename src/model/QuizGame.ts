@@ -1,0 +1,22 @@
+export interface Question {
+    id: number
+    question: string
+    difficulty: string
+    category: string
+    correctAnswer: string
+    incorrectAnswers: string[]
+    options: string[]
+    correctIndex: number
+}
+
+
+export interface QuizGame {
+    roomId: string
+    gameId:string
+    currentQuestion: Question | null
+    scores: Record<string, number>
+    finished: boolean
+    participants: string[]
+    currentQuestionIndex: number
+    questions: Question[]
+}

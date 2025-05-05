@@ -1,5 +1,4 @@
 import {socketService} from "../ws/socketService.ts";
-import {Room} from "../model/Room.ts";
 import {Message} from "../model/Message.ts";
 
 export const roomApi = {
@@ -26,20 +25,6 @@ export const roomApi = {
      */
     sendMessage(roomId: string, message: Message) {
         socketService.send(`/app/sendMessage/${roomId}`, message);
-    },
-
-    /**
-     * S’abonner aux mises à jour de la room (liste des participants + messages)
-     */
-    onUpdate(roomId: string, handler: (room: Room) => void) {
-        socketService.subscribe(`/chatroom/${roomId}`, handler);
-    },
-
-    /**
-     * Se désabonner des mises à jour de la room
-     */
-    offUpdate(roomId: string) {
-        socketService.unsubscribe(`/chatroom/${roomId}`);
     },
 };
 

@@ -58,6 +58,7 @@ class SocketService {
             destination,
             body: typeof payload !== "string" ? JSON.stringify(payload) : payload,
         });
+
     }
     get isConnected(): boolean {
         return this.client.connected;

@@ -1,7 +1,7 @@
 import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import {useState} from "react";
-import GameRoute from "./components/GameRoute.tsx";
-import GuestRoom from "./components/GuestRoom.tsx";
+import JoinRoom from "./components/JoinRoom.tsx";
+import Login from "./components/Login.tsx";
 
 function App() {
 
@@ -11,8 +11,8 @@ function App() {
       <BrowserRouter>
           <Routes>
               <Route path="/" element={<Navigate to="/game/" replace />} />
-              <Route path="/guest/:id?" element={<GuestRoom setUsername={setUsername}/>} />
-              <Route path="/game/:id?" element={<GameRoute username={username}/>} />
+              <Route path="/guest/:id?" element={<Login setUsername={setUsername}/>} />
+              <Route path="/game/:id?" element={<JoinRoom username={username}/>} />
 
           </Routes>
       </BrowserRouter>

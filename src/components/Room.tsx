@@ -1,24 +1,39 @@
-import {FormEvent, useCallback, useEffect, useState} from "react";
+import {FormEvent, useCallback, useEffect, useRef, useState} from "react";
 import {Navigate, useParams} from "react-router-dom";
-import {Room} from "../model/Room.ts";
+import {ChatRoom} from "../model/ChatRoom.ts";
 import {Message} from "../model/Message.ts";
 import Spinner from "./spinner/spinner.tsx";
 import {useSocket} from "../hook/useSocket.ts";
 import {roomApi} from "../api/roomApi.ts";
+import {v4 as uuidv4} from 'uuid';
+import {gameApi} from "../api/gameApi.ts";
+import {QuizGame} from "../model/QuizGame.ts";
+import {socketService} from "../ws/socketService.ts";
 
 interface ChatProps {
     username: string
 }
 
 
-const Chat = ({username}:ChatProps) => {
-    const {id} = useParams();
-    const [room, setRoom] = useState<Room | null>(null);
-    const [users, setUsers] = useState<string[]>([]);
-    const [isLoading, setLoading] = useState(true);
-    // const [questions, setQuestions] = useState<TriviaQuestion[]>([]);
 
+
+const Room = ({username}:ChatProps) => {
+    const {id} = useParams();
+    const [room, setRoom] = useState<ChatRoom | null>(null);
+    const [quizGame, setQuizGame] = useState<QuizGame | null>(null);
+    const [users, setUsers] = useState<string[]>([]);
+    const [gameUsers, setGameUsers] = useState<string[]>([]);
+
+    const [isLoading, setLoading] = useState(true);
+    const [gameId, setGameId] = useState<string | null>(uuidv4());
     // Fermeture du browser
+
+
+    const getOnClick = (roomId : string | undefined) => {
+        if(!room) return;
+        return () => gameApi.startGame(room?.gameId ?? "", roomId, username);
+
+    }
 
     const handleUnload = useCallback(() => {
         if(!id) return;
@@ -27,13 +42,14 @@ const Chat = ({username}:ChatProps) => {
 
     window.addEventListener('beforeunload', handleUnload);
 
-    useSocket('/chatroom/'+id, (room: Room) => {
+    useSocket('/chatroom/'+id, (room: ChatRoom) => {
         setRoom(room);
         setUsers(room.participants);
 
     });
+
+
     useEffect(() => {
-        console.log("ici");
 
         if(!id) return;
 
@@ -41,16 +57,30 @@ const Chat = ({username}:ChatProps) => {
             try {
                 if(!id) return;
                  roomApi.join(id, username).then(() => {
-                     console.log("alo");
                      setLoading(false);
                  })
+
             } catch (err) {
                 console.error('Erreur joining room →', err)
             }
         }
-        joinRoom();
+        joinRoom()
 
     }, [id, username]);
+
+    useEffect(() => {
+        if (!room?.gameId) return;
+
+        const topic = `/game/${room.gameId}`;
+        socketService.subscribe(topic, (game: QuizGame) => {
+            setQuizGame(game);
+            setGameUsers(game.participants);
+        });
+
+        // si socketService.subscribe renvoie un unsubscribe, on peut le retourner ici :
+        // return () => socketService.unsubscribe(topic);
+    }, [room?.gameId]);
+
 
 
 
@@ -65,8 +95,6 @@ const Chat = ({username}:ChatProps) => {
         };
     }, [username, id, handleUnload]);
 
-
-    // const answers = useRef(shuffleArray(question.current.incorrect_answers.concat(question.current.correct_answer)));
 
 
     const onSend = (e:FormEvent<HTMLFormElement>) => {
@@ -89,7 +117,7 @@ const Chat = ({username}:ChatProps) => {
 
 
 
-    // if(isLoading || !questions.length) return <Spinner />;
+    if(isLoading) return <Spinner />;
 
     if (!username) {
         return <Navigate to={`/guest/${id}`} replace />;
@@ -104,15 +132,6 @@ const Chat = ({username}:ChatProps) => {
             <form onSubmit={onSend} >
 
             <div className="mb-1">Room {id}</div>
-
-                {/*<div className="mb-1">Question : {question.current.question}</div>*/}
-                {/*<div className={ "flex flex-row flex-wrap justify-center"}>*/}
-                {/*    {*/}
-                {/*        answers.current?.map((opt, index) => (*/}
-                {/*            <div key={index} className="flex p-2 flex-1/2 h-20 items-center justify-center"><div className="bg-blue-100 rounded-2xl flex-auto h-full text-center flex justify-center items-center"><span className="text-white">{opt}</span></div></div>*/}
-                {/*        ))*/}
-                {/*    }*/}
-                {/*</div>*/}
 
             <div className="flex flex-row gap-1 gap-y-1 p-2 py-4 justify-center" >
                 <div className="p-2">Utilisateurs : <div className="flex flex-col gap-1">{users.map((usr, index)=> (<div key={index}>{usr}</div>))}</div></div>
@@ -130,9 +149,32 @@ const Chat = ({username}:ChatProps) => {
                 <button type="submit">Envoyer</button>
             </form>
 
+            -----
+
+            {id && quizGame === null && (
+                <div>
+                    <button type={"button"} onClick={getOnClick(id)}>Lancer quiz</button>
+                </div>
+
+)}
+            {id && gameId && quizGame && (
+                <div>
+
+                    <div className="mb-1">Question : {quizGame?.currentQuestion?.question}</div>
+                    <div className={ "flex flex-row flex-wrap justify-center"}>
+                        {
+                            quizGame?.currentQuestion?.options.map((opt, index) => (
+                                <div key={index} className="flex p-2 flex-1/2 h-20 items-center justify-center"><div className="bg-blue-100 rounded-2xl flex-auto h-full text-center flex justify-center items-center"><span className="text-white">{opt}</span></div></div>
+                            ))
+                        }
+                    </div>
+
+
+                </div>
+            )}
         </div>
 
     )
 }
 
-export default Chat;
+export default Room;

@@ -4,7 +4,7 @@ import {FormEvent} from "react";
 interface GuestRoomProps {
     setUsername: (username: string) => void,
 }
-const GuestRoom = ({setUsername}: GuestRoomProps) => {
+const Login = ({setUsername}: GuestRoomProps) => {
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -37,4 +37,4 @@ const GuestRoom = ({setUsername}: GuestRoomProps) => {
     </div>)
 }
 
-export default GuestRoom;
+export default Login;
