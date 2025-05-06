@@ -143,7 +143,7 @@ const Room = ({username}:ChatProps) => {
 
     )}
         <div className="rounded-2xl flex flex-row p-20 gap-20 min-w-1/3 min-h-2/5 bg-white">
-            <div className="p-2"><div className={"font-bold text-tertiary mb-2"}>Utilisateurs</div> <div className="flex flex-col gap-1">{users.map((usr, index)=> (<div key={index}>{usr}{quizGame && (" : " + (quizGame.scores[usr] ?? 0))}</div>))}</div></div>
+            <div className="p-2"><div className={"font-bold text-tertiary mb-2"}>Utilisateurs</div> <div className="flex flex-col gap-1">{users.map((usr, index)=> (<div key={index}>{usr}{quizGame && (" : " + (quizGame.scores.find(score => score.player === usr)?.score ?? 0))}</div>))}</div></div>
 
             <div className={"flex grow-1 flex-col gap-6 items-center justify-center"}>
 
@@ -152,8 +152,8 @@ const Room = ({username}:ChatProps) => {
                     <div className={ "flex h-full justify-center items-center gap-x-8 flex-auto flex-row flex-wrap "}>
                     {
                             quizGame?.currentQuestion?.options.map((opt, index) => (
-                                <div className={"flex basis-[calc(50%-1.5rem)]"}>
-                                    <FlatButton key={index} text={opt} onClick={() => onAnswer(username, index)}/></div>
+                                <div key={index} className={"flex basis-[calc(50%-1.5rem)]"}>
+                                    <FlatButton  text={opt} onClick={() => onAnswer(username, index)}/></div>
                             ))
                         }
                     </div>
