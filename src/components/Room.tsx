@@ -130,10 +130,10 @@ const Room = ({username}:ChatProps) => {
     {id && quizGame && (
         <div className="mb-6 mt-4 font-bold text-2xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
         )}
-        <div className="rounded-2xl flex flex-row p-10 justify-between gap-10 w-2/3 bg-white font-[Roboto]">
-            <form onSubmit={onSend} className={"bg-white border-1 border-solid border-primary p-8"} >
+        <div className="rounded-2xl flex flex-row p-10 gap-20 min-w-1/3 h-2/5 bg-white">
+            <form onSubmit={onSend} className={"bg-white border-1 flex flex-col justify-between border-solid border-primary p-8"} >
 
-            <div className="mb-1 text-primary text-lg font-extrabold">Room {id}</div>
+            <div className="flex justify-center mb-1 text-primary text-lg font-extrabold">Room {id}</div>
 
             <div className="flex flex-row gap-1 gap-y-1 p-2 py-4 justify-center" >
                 <div className="p-2">Utilisateurs : <div className="flex flex-col gap-1">{users.map((usr, index)=> (<div key={index}>{usr}</div>))}</div></div>
@@ -149,7 +149,7 @@ const Room = ({username}:ChatProps) => {
             </div>
                 <div className={"flex flex-row gap-2 items-center justify-center w-full"}>
                 <input placeholder={"Tapez votre message ici..."} name="message" className="border-1 border-solid rounded-sm text-black p-2 focus:none" type="text"></input>
-                <button className="bg-tertiary font-bold" type="submit">Envoyer</button>
+                <button className="bg-tertiary font-bold hover:bg-secondary" type="submit">Envoyer</button>
                 </div>
 
             </form>
@@ -157,18 +157,21 @@ const Room = ({username}:ChatProps) => {
             <div className={"flex grow-1 flex-col gap-6 items-center justify-center"}>
             {id && quizGame === null && (
                 <div>
-                    <button className={"bg-tertiary font-bold"} type={"button"} onClick={getOnClick(id)}>Lancer quiz</button>
+                    <button className={"bg-tertiary font-bold hover:bg-secondary"} type={"button"} onClick={getOnClick(id)}>Lancer quiz</button>
                 </div>
 
 )}
             {id && quizGame && (
-                <div>
-                    <div className={ "flex gap-6 flex-row flex-wrap justify-center"}>
-                        {
+                <div className={"flex grow-1 items-center"}>
+                    <div className={ "flex h-full justify-center items-center gap-x-6 flex-auto flex-row flex-wrap "}>
+                    {/*<div className={ "grid-cols-2 gap-x-3"}>*/}
+
+                    {
                             quizGame?.currentQuestion?.options.map((opt, index) => (
+                                <div className={"flex flex-row grow-1 items-stretch basis-[calc(50%-1.5rem)]"}>
                                     <FlatButton key={index} text={opt} onClick={function (): void {
                                         throw new Error("Function not implemented.");
-                                    }}/>
+                                    }}/></div>
                             ))
                         }
                     </div>
