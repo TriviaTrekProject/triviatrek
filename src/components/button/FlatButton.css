@@ -84,18 +84,18 @@ button.fancy {
     }
 
     &:hover {
-        color: var(--color-secondary);
+        color: var(--color-tertiary);
         background: white;
-        border-color: var(--color-secondary);
+        border-color: var(--color-tertiary);
 
 
         &::before {
             width: 0.9375rem;
-            background: var(--color-secondary);
+            background: white;
         }
 
         .button-text {
-            color: var(--color-secondary);
+            color: var(--color-tertiary);
             padding-left: 1.5em;
         }
 

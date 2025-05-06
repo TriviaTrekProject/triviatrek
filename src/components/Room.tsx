@@ -105,6 +105,10 @@ const Room = ({username}:ChatProps) => {
         e.currentTarget.message.value = "";
     }
 
+    const onAnswer = (username: string, index: number) => {
+        gameApi.submitAnswer(room?.gameId ?? "", {player: username, answerIndex: index})
+    }
+
 
 
 
@@ -127,8 +131,8 @@ const Room = ({username}:ChatProps) => {
     {/*</div>*/}
 
     {id && quizGame && (<>
-        <div className="font-bold text-[64px] text-shadow-black text-shadow-2xl text-white font-[Mea_Culpa]">Question 1</div>
-        <div className="font-bold text-2xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
+        <div className="font-bold text-[64px] text-shadow-black text-shadow-2xl text-white font-[Mea_Culpa]">Question {quizGame?.currentQuestion?.id}</div>
+        <div className="font-bold text-3xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
         </>
         )}
         <div className="rounded-2xl flex flex-row p-20 gap-20 min-w-1/3 min-h-2/5 bg-white">
@@ -168,9 +172,7 @@ const Room = ({username}:ChatProps) => {
                     {
                             quizGame?.currentQuestion?.options.map((opt, index) => (
                                 <div className={"flex basis-[calc(50%-1.5rem)]"}>
-                                    <FlatButton key={index} text={opt} onClick={function (): void {
-                                        throw new Error("Function not implemented.");
-                                    }}/></div>
+                                    <FlatButton key={index} text={opt} onClick={() => onAnswer(username, index)}/></div>
                             ))
                         }
                     </div>
