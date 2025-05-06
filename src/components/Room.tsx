@@ -126,9 +126,13 @@ const Room = ({username}:ChatProps) => {
 
     return (
 
-<div className={"flex flex-col items-center justify-center h-full w-full"}>
+<div className={"flex flex-col items-center justify-center gap-8 h-full w-full"}>
+    <div className={"w-[10rem] h-[10rem] flex bg-white rounded-2xl"}>
+        <img src={"src/assets/Logo.png"} alt={"logo"}/>
+    </div>
+
     {id && quizGame && (
-        <div className="mb-6 mt-4 font-bold text-2xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
+        <div className="font-bold text-2xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
         )}
         <div className="rounded-2xl flex flex-row p-10 gap-20 min-w-1/3 min-h-2/5 bg-white">
             <form onSubmit={onSend} className={"bg-white border-1 flex flex-col justify-between border-solid border-primary p-8"} >
@@ -163,7 +167,7 @@ const Room = ({username}:ChatProps) => {
 )}
             {id && quizGame && (
                 <div className={"flex grow-1 items-center"}>
-                    <div className={ "flex h-full justify-center items-center gap-x-6 flex-auto flex-row flex-wrap "}>
+                    <div className={ "flex h-full justify-center items-center gap-x-8 flex-auto flex-row flex-wrap "}>
                     {
                             quizGame?.currentQuestion?.options.map((opt, index) => (
                                 <div className={"flex basis-[calc(50%-1.5rem)]"}>

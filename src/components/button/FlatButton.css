@@ -87,6 +87,7 @@ button.fancy {
         color: var(--color-secondary);
         background: white;
         border-color: var(--color-secondary);
+        scale: 1.02;
 
 
         &::before {
