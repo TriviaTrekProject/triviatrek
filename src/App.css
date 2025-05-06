@@ -4,7 +4,7 @@
   /*--color-primary: #C2531B;*/
   --color-primary: var(--color-violet-300);
   --color-secondary: #ec904b;
-  --color-tertiary: #DB4123;
+  --color-tertiary: var(--color-violet-500);
 }
 
 #root {

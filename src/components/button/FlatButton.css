@@ -17,7 +17,7 @@ button.fancy {
     position: relative;
     /*text-shadow: 1px 1px white;*/
     text-align: center;
-    font-weight: bolder;
+    font-weight: 900;
     text-decoration: none;
     text-transform: none;
     transition: all .3s ease-in-out;
@@ -43,6 +43,7 @@ button.fancy {
         font-size: 1.125em;
         line-height: 1.33333em;
         padding-left: 2em;
+        font-weight: 900;
         display: block;
         text-align: left;
         -webkit-transition: all 0.3s ease-in-out;
@@ -58,7 +59,7 @@ button.fancy {
         top: -2px;
         left: 0.625rem;
         position: absolute;
-        background: var(--color-primary);
+        background: var(--color-tertiary);
         -webkit-transition: width 0.5s ease-out, left 0.3s ease-out;
         transition: width 0.5s ease-out, left 0.3s ease-out;
     }
@@ -69,7 +70,7 @@ button.fancy {
         right: 1.875rem;
         bottom: -2px;
         position: absolute;
-        background: var(--color-primary);
+        background: var(--color-tertiary);
         -webkit-transition: width 0.5s ease-out, right 0.3s ease-out;
         transition: width 0.5s ease-out, right 0.3s ease-out;
     }
@@ -85,13 +86,14 @@ button.fancy {
     }
 
     &:hover {
-        color: var(--color-primary);
+        color: var(--color-tertiary);
         background: white;
+        border-color: var(--color-tertiary);
 
 
         &::before {
             width: 0.9375rem;
-            background: var(--color-primary);
+            background: var(--color-tertiary);
         }
 
         .button-text {

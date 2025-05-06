@@ -141,15 +141,15 @@ const Room = ({username}:ChatProps) => {
                 <div className="p-2 text-left">
                     {room?.messages.map((line, index) => (
                         <div key={index}>
-                            <span className="text-green-800">{line.sender}</span>: {line.content}
+                            <span className="text-secondary">{line.sender}</span>: {line.content}
                         </div>
                     ))}
                 </div>
 
             </div>
                 <div className={"flex flex-row gap-2 items-center justify-center w-full"}>
-                <input placeholder={"Tapez votre message ici..."} name="message" className="border-2 border-solid rounded-sm text-black p-2 focus:none" type="text"></input>
-                <button className="bg-secondary" type="submit">Envoyer</button>
+                <input placeholder={"Tapez votre message ici..."} name="message" className="border-1 border-solid rounded-sm text-black p-2 focus:none" type="text"></input>
+                <button className="bg-secondary font-bold" type="submit">Envoyer</button>
                 </div>
 
             </form>
@@ -157,7 +157,7 @@ const Room = ({username}:ChatProps) => {
             <div className={"flex grow-1 flex-col gap-6 items-center justify-center"}>
             {id && quizGame === null && (
                 <div>
-                    <button className={"bg-secondary"} type={"button"} onClick={getOnClick(id)}>Lancer quiz</button>
+                    <button className={"bg-secondary font-bold"} type={"button"} onClick={getOnClick(id)}>Lancer quiz</button>
                 </div>
 
 )}
