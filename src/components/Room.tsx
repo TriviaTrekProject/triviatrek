@@ -131,9 +131,9 @@ const Room = ({username}:ChatProps) => {
         <div className="mb-6 mt-4 font-bold text-2xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
         )}
         <div className="rounded-2xl flex flex-row p-10 justify-between gap-10 w-2/3 bg-white font-[Roboto]">
-            <form onSubmit={onSend} className={"bg-white border-1 border-solid border-secondary p-8"} >
+            <form onSubmit={onSend} className={"bg-white border-1 border-solid border-primary p-8"} >
 
-            <div className="mb-1">Room {id}</div>
+            <div className="mb-1 text-primary text-lg font-extrabold">Room {id}</div>
 
             <div className="flex flex-row gap-1 gap-y-1 p-2 py-4 justify-center" >
                 <div className="p-2">Utilisateurs : <div className="flex flex-col gap-1">{users.map((usr, index)=> (<div key={index}>{usr}</div>))}</div></div>
@@ -141,7 +141,7 @@ const Room = ({username}:ChatProps) => {
                 <div className="p-2 text-left">
                     {room?.messages.map((line, index) => (
                         <div key={index}>
-                            <span className="text-secondary">{line.sender}</span>: {line.content}
+                            <span className="text-tertiary">{line.sender}</span>: {line.content}
                         </div>
                     ))}
                 </div>
@@ -149,7 +149,7 @@ const Room = ({username}:ChatProps) => {
             </div>
                 <div className={"flex flex-row gap-2 items-center justify-center w-full"}>
                 <input placeholder={"Tapez votre message ici..."} name="message" className="border-1 border-solid rounded-sm text-black p-2 focus:none" type="text"></input>
-                <button className="bg-secondary font-bold" type="submit">Envoyer</button>
+                <button className="bg-tertiary font-bold" type="submit">Envoyer</button>
                 </div>
 
             </form>
@@ -157,7 +157,7 @@ const Room = ({username}:ChatProps) => {
             <div className={"flex grow-1 flex-col gap-6 items-center justify-center"}>
             {id && quizGame === null && (
                 <div>
-                    <button className={"bg-secondary font-bold"} type={"button"} onClick={getOnClick(id)}>Lancer quiz</button>
+                    <button className={"bg-tertiary font-bold"} type={"button"} onClick={getOnClick(id)}>Lancer quiz</button>
                 </div>
 
 )}
