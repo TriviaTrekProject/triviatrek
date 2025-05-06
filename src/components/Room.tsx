@@ -134,7 +134,7 @@ const Room = ({username}:ChatProps) => {
     {id && quizGame && (
         <div className="font-bold text-2xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
         )}
-        <div className="rounded-2xl flex flex-row p-10 gap-20 min-w-1/3 min-h-2/5 bg-white">
+        <div className="rounded-2xl flex flex-row p-20 gap-20 min-w-1/3 min-h-2/5 bg-white">
             <form onSubmit={onSend} className={"bg-white border-1 flex flex-col justify-between border-solid border-primary p-8"} >
 
             <div className="flex justify-center mb-1 text-primary text-lg font-extrabold">Room {id}</div>
