@@ -44,8 +44,16 @@ const Room = ({username}:ChatProps) => {
     useSocket('/chatroom/'+id, (room: ChatRoom) => {
         setRoom(room);
         setUsers(room.participants);
-
+        socketService.subscribe(`/game/${room.gameId}`, (game: QuizGame) => {setQuizGame(game); setGameUsers(game.participants);});
     });
+
+
+
+    useEffect(() => {
+        if(!id) return;
+        gameApi.joinGame(room?.gameId ?? "", username);
+    }, [id, username, room?.gameId]);
+
 
 
     useEffect(() => {
@@ -66,19 +74,6 @@ const Room = ({username}:ChatProps) => {
         joinRoom()
 
     }, [id, username]);
-
-    useEffect(() => {
-        if (!room?.gameId) return;
-
-        const topic = `/game/${room.gameId}`;
-        socketService.subscribe(topic, (game: QuizGame) => {
-            setQuizGame(game);
-            setGameUsers(game.participants);
-        });
-
-        // si socketService.subscribe renvoie un unsubscribe, on peut le retourner ici :
-        // return () => socketService.unsubscribe(topic);
-    }, [room?.gameId]);
 
 
 
@@ -127,12 +122,14 @@ const Room = ({username}:ChatProps) => {
     return (
 
 <div className={"flex flex-col items-center justify-center gap-8 h-full w-full"}>
-    <div className={"w-[10rem] h-[10rem] flex bg-white rounded-2xl"}>
-        <img src={"src/assets/Logo.png"} alt={"logo"}/>
-    </div>
+    {/*<div className={"w-[10rem] h-[10rem] flex bg-white rounded-2xl"}>*/}
+    {/*    <img src={"src/assets/Logo.png"} alt={"logo"}/>*/}
+    {/*</div>*/}
 
-    {id && quizGame && (
+    {id && quizGame && (<>
+        <div className="font-bold text-[64px] text-shadow-black text-shadow-2xl text-white font-[Mea_Culpa]">Question 1</div>
         <div className="font-bold text-2xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
+        </>
         )}
         <div className="rounded-2xl flex flex-row p-20 gap-20 min-w-1/3 min-h-2/5 bg-white">
             <form onSubmit={onSend} className={"bg-white border-1 flex flex-col justify-between border-solid border-primary p-8"} >
