@@ -130,7 +130,7 @@ const Room = ({username}:ChatProps) => {
     {id && quizGame && (
         <div className="mb-6 mt-4 font-bold text-2xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
         )}
-        <div className="rounded-2xl flex flex-row p-10 gap-20 min-w-1/3 h-2/5 bg-white">
+        <div className="rounded-2xl flex flex-row p-10 gap-20 min-w-1/3 min-h-2/5 bg-white">
             <form onSubmit={onSend} className={"bg-white border-1 flex flex-col justify-between border-solid border-primary p-8"} >
 
             <div className="flex justify-center mb-1 text-primary text-lg font-extrabold">Room {id}</div>
@@ -164,11 +164,9 @@ const Room = ({username}:ChatProps) => {
             {id && quizGame && (
                 <div className={"flex grow-1 items-center"}>
                     <div className={ "flex h-full justify-center items-center gap-x-6 flex-auto flex-row flex-wrap "}>
-                    {/*<div className={ "grid-cols-2 gap-x-3"}>*/}
-
                     {
                             quizGame?.currentQuestion?.options.map((opt, index) => (
-                                <div className={"flex flex-row grow-1 items-stretch basis-[calc(50%-1.5rem)]"}>
+                                <div className={"flex basis-[calc(50%-1.5rem)]"}>
                                     <FlatButton key={index} text={opt} onClick={function (): void {
                                         throw new Error("Function not implemented.");
                                     }}/></div>
