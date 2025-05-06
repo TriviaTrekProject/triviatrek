@@ -8,6 +8,7 @@ import {roomApi} from "../api/roomApi.ts";
 import {gameApi} from "../api/gameApi.ts";
 import {QuizGame} from "../model/QuizGame.ts";
 import {socketService} from "../ws/socketService.ts";
+import FlatButton from "./button/FlatButton.tsx";
 
 interface ChatProps {
     username: string
@@ -125,9 +126,12 @@ const Room = ({username}:ChatProps) => {
 
     return (
 
-
-        <div className="bg-white p-8 rounded shadow flex flex-row justify-around gap-10 w-2/3 m-auto font-[Roboto]">
-            <form onSubmit={onSend} >
+<div className={"flex flex-col items-center justify-center h-full w-full"}>
+    {id && quizGame && (
+        <div className="mb-6 mt-4 font-bold text-2xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
+        )}
+        <div className="rounded-2xl flex flex-row p-10 justify-between gap-10 w-2/3 bg-white font-[Roboto]">
+            <form onSubmit={onSend} className={"bg-white border-1 border-solid border-secondary p-8"} >
 
             <div className="mb-1">Room {id}</div>
 
@@ -143,14 +147,14 @@ const Room = ({username}:ChatProps) => {
                 </div>
 
             </div>
-                <div className={"flex flex-row gap-2 items-center justify-center"}>
-                <input placeholder={"Tapez votre message ici..."} name="message" className="border-2 border-solid border-cyan-900 rounded-sm text-black p-2 focus:none" type="text"></input>
-                <button className="bg-tertiary" type="submit">Envoyer</button>
+                <div className={"flex flex-row gap-2 items-center justify-center w-full"}>
+                <input placeholder={"Tapez votre message ici..."} name="message" className="border-2 border-solid rounded-sm text-black p-2 focus:none" type="text"></input>
+                <button className="bg-secondary" type="submit">Envoyer</button>
                 </div>
 
             </form>
 
-<div className={"flex flex-col gap-6 items-center justify-center"}>
+            <div className={"flex grow-1 flex-col gap-6 items-center justify-center"}>
             {id && quizGame === null && (
                 <div>
                     <button className={"bg-secondary"} type={"button"} onClick={getOnClick(id)}>Lancer quiz</button>
@@ -159,22 +163,20 @@ const Room = ({username}:ChatProps) => {
 )}
             {id && quizGame && (
                 <div>
-
-                    <div className="mb-6 mt-4 font-bold text-xl">{quizGame?.currentQuestion?.question}</div>
                     <div className={ "flex gap-6 flex-row flex-wrap justify-center"}>
                         {
                             quizGame?.currentQuestion?.options.map((opt, index) => (
-                                <div key={index} className="flex p-2 flex-1/3 h-20  bg-gradient-to-br from-blue-300 to-blue-500 rounded-2xl shadow-secondary shadow-xl/30 items-center justify-center"><div className="flex-auto h-full text-center flex justify-center items-center"><span className="text-white text-2xl font-bold">{opt}</span></div></div>
+                                    <FlatButton key={index} text={opt} onClick={function (): void {
+                                        throw new Error("Function not implemented.");
+                                    }}/>
                             ))
                         }
                     </div>
-
-
                 </div>
             )}
-</div>
+            </div>
         </div>
-
+</div>
     )
 }
 

@@ -20,16 +20,16 @@ const Login = ({setUsername}: GuestRoomProps) => {
 
         <div className="flex items-center justify-center h-full flex-1/2 self-center w-full">
         <form onSubmit={onSubmit} className="bg-white p-6 rounded w-80">
-            <h2 className="text-xl mb-4">Jouer en invité</h2>
+            <h2 className="text-xl mb-4 font-bold text-primary">Jouer en invité</h2>
             <input
                 type="text"
                 placeholder="Entrez votre nom"
                 name="username"
-                className="border p-2 w-full mb-4 rounded"
+                className="border p-2 w-full mb-4 text-black rounded"
             />
             <button
                 type="submit"
-                className="bg-secondary text-white py-2 px-4 rounded w-full hover:bg-tertiary"
+                className="bg-primary text-primary py-2 px-4 rounded w-full hover:bg-secondary"
             >
                 Commencer
             </button>
