@@ -133,39 +133,20 @@ const Room = ({username}:ChatProps) => {
     {id && quizGame && (<>
         <div className="font-bold text-[64px] text-shadow-black text-shadow-2xl text-white font-[Mea_Culpa]">Question {quizGame?.currentQuestion?.id}</div>
         <div className="font-bold text-3xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
+
         </>
         )}
+    {id && quizGame === null && (
+        <div>
+            <button className={"bg-tertiary font-bold hover:bg-secondary"} type={"button"} onClick={getOnClick(id)}>Lancer quiz</button>
+        </div>
+
+    )}
         <div className="rounded-2xl flex flex-row p-20 gap-20 min-w-1/3 min-h-2/5 bg-white">
-            <form onSubmit={onSend} className={"bg-white border-1 flex flex-col justify-between border-solid border-primary p-8"} >
-
-            <div className="flex justify-center mb-1 text-primary text-lg font-extrabold">Room {id}</div>
-
-            <div className="flex flex-row gap-1 gap-y-1 p-2 py-4 justify-center" >
-                <div className="p-2">Utilisateurs : <div className="flex flex-col gap-1">{users.map((usr, index)=> (<div key={index}>{usr}</div>))}</div></div>
-                <div className="border-r-1 border-gray-500"></div>
-                <div className="p-2 text-left">
-                    {room?.messages.map((line, index) => (
-                        <div key={index}>
-                            <span className="text-tertiary">{line.sender}</span>: {line.content}
-                        </div>
-                    ))}
-                </div>
-
-            </div>
-                <div className={"flex flex-row gap-2 items-center justify-center w-full"}>
-                <input placeholder={"Tapez votre message ici..."} name="message" className="border-1 border-solid rounded-sm text-black p-2 focus:none" type="text"></input>
-                <button className="bg-tertiary font-bold hover:bg-secondary" type="submit">Envoyer</button>
-                </div>
-
-            </form>
+            <div className="p-2"><div className={"font-bold text-tertiary mb-2"}>Utilisateurs</div> <div className="flex flex-col gap-1">{users.map((usr, index)=> (<div key={index}>{usr}{quizGame && (" : " + (quizGame.scores[usr] ?? 0))}</div>))}</div></div>
 
             <div className={"flex grow-1 flex-col gap-6 items-center justify-center"}>
-            {id && quizGame === null && (
-                <div>
-                    <button className={"bg-tertiary font-bold hover:bg-secondary"} type={"button"} onClick={getOnClick(id)}>Lancer quiz</button>
-                </div>
 
-)}
             {id && quizGame && (
                 <div className={"flex grow-1 items-center"}>
                     <div className={ "flex h-full justify-center items-center gap-x-8 flex-auto flex-row flex-wrap "}>
@@ -179,6 +160,27 @@ const Room = ({username}:ChatProps) => {
                 </div>
             )}
             </div>
+
+            <form onSubmit={onSend} className={"bg-white border-1 flex flex-col justify-between border-solid border-primary p-8"} >
+
+                <div className="flex justify-center mb-1 text-primary text-lg font-extrabold">Room {id}</div>
+
+                <div className="flex flex-row gap-1 gap-y-1 p-2 py-4 justify-flex-start" >
+                    <div className="p-2 text-left">
+                        {room?.messages.map((line, index) => (
+                            <div key={index}>
+                                <span className="text-tertiary">{line.sender}</span>: {line.content}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className={"flex flex-row gap-2 items-center justify-center w-full"}>
+                    <input placeholder={"Tapez votre message ici..."} name="message" className="border-1 border-solid rounded-sm text-black p-2 focus:none" type="text"></input>
+                    <button className="bg-tertiary font-bold hover:bg-secondary" type="submit">Envoyer</button>
+                </div>
+
+            </form>
         </div>
 </div>
     )

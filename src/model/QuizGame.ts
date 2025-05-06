@@ -14,9 +14,14 @@ export interface QuizGame {
     roomId: string
     gameId:string
     currentQuestion: Question | null
-    scores: Record<string, number>
+    scores: {[player: string]: {score: number}}
     finished: boolean
     participants: string[]
     currentQuestionIndex: number
     questions: Question[]
+}
+
+export interface Score {
+    player: string
+    score: number
 }

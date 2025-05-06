@@ -11,7 +11,7 @@ export const gameApi = {
                 await socketService.connect();
             }
             console.log("Lancement de la game " + gameId + " dans la room " + roomId);
-        socketService.send(`/app/game/start/${gameId}`,roomId, user)
+        socketService.send(`/app/game/start/${gameId}`, {roomId: roomId, user: user});
     },
 
 
@@ -23,7 +23,7 @@ export const gameApi = {
             await socketService.connect();
         }
 
-        socketService.send(`/app/game/join/${gameId}`, {gameId: gameId, user: user});
+        socketService.send(`/app/game/join/${gameId}`, user);
     },
 
     /**
