@@ -105,8 +105,8 @@ const Room = ({username}:ChatProps) => {
         e.currentTarget.message.value = "";
     }
 
-    const onAnswer = (username: string, index: number) => {
-        gameApi.submitAnswer(room?.gameId ?? "", {player: username, answerIndex: index})
+    const onAnswer = (username: string, answer: string) => {
+        gameApi.submitAnswer(room?.gameId ?? "", {player: username, answer: answer})
     }
 
 
@@ -153,7 +153,7 @@ const Room = ({username}:ChatProps) => {
                     {
                             quizGame?.currentQuestion?.options.map((opt, index) => (
                                 <div key={index} className={"flex basis-[calc(50%-1.5rem)]"}>
-                                    <FlatButton  text={opt} onClick={() => onAnswer(username, index)}/></div>
+                                    <FlatButton  text={opt} onClick={() => onAnswer(username, opt)}/></div>
                             ))
                         }
                     </div>
