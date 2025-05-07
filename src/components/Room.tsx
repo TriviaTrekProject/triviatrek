@@ -27,6 +27,15 @@ const Room = ({username}:ChatProps) => {
     const [isLoading, setLoading] = useState(true);
     // Fermeture du browser
 
+    const onRoomSubscribe = useCallback(() => {
+        console.log("ici ! ");
+        if(!id) return;
+        roomApi.join(id, username).then(() => {
+            console.log("la ! ");
+            setLoading(false);
+            socketService.subscribe(`/game/${room?.gameId}`, (game: QuizGame) => {setQuizGame(game); setGameUsers(game.participants);})
+        })
+    },[id, username, room?.gameId, setQuizGame, setGameUsers, setLoading]);
 
     const getOnClick = (roomId : string | undefined) => {
         if(!room || !roomId) return;
@@ -109,12 +118,6 @@ const Room = ({username}:ChatProps) => {
         gameApi.submitAnswer(room?.gameId ?? "", {player: username, answer: answer})
     }
 
-
-
-
-
-
-
     if(isLoading) return <Spinner />;
 
     if (!username) {
@@ -136,18 +139,19 @@ const Room = ({username}:ChatProps) => {
 
         </>
         )}
-    {id && quizGame === null && (
-        <div>
-            <button className={"bg-tertiary font-bold hover:bg-secondary"} type={"button"} onClick={getOnClick(id)}>Lancer quiz</button>
-        </div>
-
-    )}
-        <div className="rounded-2xl flex flex-row p-20 gap-20 min-w-1/3 min-h-2/5 bg-white">
+        <div className="rounded-2xl flex flex-row p-20 gap-20 min-w-3/4 min-h-2/5 bg-white">
             <div className="p-2"><div className={"font-bold text-tertiary mb-2"}>Utilisateurs</div> <div className="flex flex-col gap-1">{users.map((usr, index)=> (<div key={index}>{usr}{quizGame && (" : " + (quizGame.scores.find(score => score.player === usr)?.score ?? 0))}</div>))}</div></div>
 
             <div className={"flex grow-1 flex-col gap-6 items-center justify-center"}>
 
-            {id && quizGame && (
+                {id && quizGame === null && (
+                    <div>
+                        <button className={"bg-tertiary font-bold hover:bg-secondary"} type={"button"} onClick={getOnClick(id)}>Lancer quiz</button>
+                    </div>
+
+                )}
+
+                {id && quizGame && (
                 <div className={"flex grow-1 items-center"}>
                     <div className={ "flex h-full justify-center items-center gap-x-8 flex-auto flex-row flex-wrap "}>
                     {
