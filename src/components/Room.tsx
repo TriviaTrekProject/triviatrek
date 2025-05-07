@@ -133,12 +133,23 @@ const Room = ({username}:ChatProps) => {
     {/*    <img src={"src/assets/Logo.png"} alt={"logo"}/>*/}
     {/*</div>*/}
 
-    {id && quizGame && (<>
+    {id && quizGame && !quizGame.finished &&(<>
         <div className="font-bold text-[64px] text-shadow-black text-shadow-2xl text-white font-[Mea_Culpa]">Question {quizGame?.currentQuestion?.id}</div>
         <div className="font-bold text-3xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
 
         </>
         )}
+    {id && quizGame && quizGame.finished && (<>
+        <div className="font-bold text-[64px] text-shadow-black text-shadow-2xl text-white font-[Mea_Culpa]">Partie terminée !</div>
+        <div className="font-bold text-3xl text-shadow-black text-shadow-2xl text-white">  {quizGame.scores.length > 0
+            ? quizGame.scores
+                .reduce((best, current) => current.score > best.score ? current : best)
+                .player
+            : "Personne"} a gagné !
+        </div>
+        </>
+    )
+    }
         <div className="rounded-2xl flex flex-row p-20 gap-20 min-w-3/4 min-h-2/5 bg-white">
             <div className="p-2"><div className={"font-bold text-tertiary mb-2"}>Utilisateurs</div> <div className="flex flex-col gap-1">{users.map((usr, index)=> (<div key={index}>{usr}{quizGame && (" : " + (quizGame.scores.find(score => score.player === usr)?.score ?? 0))}</div>))}</div></div>
 

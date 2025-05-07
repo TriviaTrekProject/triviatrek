@@ -29,8 +29,8 @@ export const gameApi = {
     /**
      * Quitter une partie de quiz
      */
-    leaveGame(gameId: string, player: PlayerAnswer) {
-        socketService.send(`/app/game/leave/${gameId}`, player);
+    leaveGame(gameId: string, user: string) {
+        socketService.send(`/app/game/leave/${gameId}`, user);
     },
 
     /**
