@@ -10,7 +10,7 @@ interface ChatProps {
 
 const ChatComponent = (props:ChatProps) => {
     return <form onSubmit={props.onSubmit}
-                 className={"bg-white border-1 flex flex-col justify-between border-solid border-primary p-8"}>
+                 className={"bg-white flex flex-col justify-between p-8 rounded-2xl"}>
 
         <div className="flex justify-center mb-1 text-primary text-lg font-extrabold">Room {props.id}</div>
 

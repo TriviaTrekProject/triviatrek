@@ -8,7 +8,7 @@ import {roomApi} from "../api/roomApi.ts";
 import {gameApi} from "../api/gameApi.ts";
 import {QuizGame} from "../model/QuizGame.ts";
 import {socketService} from "../ws/socketService.ts";
-import QuizGameComponent from "./game/QuizGameComponent.tsx";
+import QuizGameAnswersComponent from "./game/QuizGameAnswersComponent.tsx";
 import ChatComponent from "./room/ChatComponent.tsx";
 
 interface ChatProps {
@@ -137,14 +137,14 @@ const Room = ({username}:ChatProps) => {
         </>
     )
     }
-    <div className="rounded-2xl flex flex-row p-20 gap-20 min-w-3/4 min-h-2/5 bg-white">
-        <div className="p-2">
-            <div className={"font-bold text-tertiary mb-2"}>Utilisateurs</div>
+    <div className="rounded-2xl flex flex-row p-5 gap-20 min-w-3/4 min-h-2/5 bg-transparent">
+        <div className="bg-white rounded-2xl">
+            <div className={"font-bold text-white mb-2 p-4 rounded-tl-2xl rounded-tr-2xl bg-primary"}>Utilisateurs</div>
             <div className="flex flex-col gap-1">{users.map((usr, index) => (<div
                 key={index}>{usr}{quizGame && (" : " + (quizGame.scores.find(score => score.player === usr)?.score ?? 0))}</div>))}</div>
         </div>
 
-        <QuizGameComponent id={id} quizGame={quizGame} onClick={getOnClick(id)} username={username}/>
+        <QuizGameAnswersComponent id={id} quizGame={quizGame} onClick={getOnClick(id)} username={username}/>
 
         <ChatComponent onSubmit={onSend} id={id} room={room}/>
     </div>

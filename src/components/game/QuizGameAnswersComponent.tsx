@@ -14,15 +14,19 @@ const onAnswer = (username: string, answer: string, gameId: string | undefined) 
     gameApi.submitAnswer(gameId ?? "", {player: username, answer: answer})
 }
 
-const QuizGameComponent = (props: QuizGameComponentProps) => {
+const StartGameButton = (props: { onClick: (() => Promise<void>) | undefined }) => {
+    return <div>
+        <button className={"bg-tertiary font-bold hover:bg-secondary"} type={"button"}
+                onClick={props.onClick}>Lancer quiz
+        </button>
+    </div>;
+}
+
+const QuizGameAnswersComponent = (props: QuizGameComponentProps) => {
     return <div className={"flex grow-1 flex-col gap-6 items-center justify-center"}>
 
         {props.id && props.quizGame === null && (
-            <div>
-                <button className={"bg-tertiary font-bold hover:bg-secondary"} type={"button"}
-                        onClick={props.onClick}>Lancer quiz
-                </button>
-            </div>
+            <StartGameButton onClick={props.onClick}/>
 
         )}
 
@@ -43,4 +47,4 @@ const QuizGameComponent = (props: QuizGameComponentProps) => {
     </div>;
 }
 
-export default QuizGameComponent;
+export default QuizGameAnswersComponent;
