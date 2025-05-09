@@ -1,21 +1,21 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import {useState} from "react";
-import {User} from "./model/User.ts";
-import GuestRoom from "./components/GuestRoom.tsx";
-import Chat from "./components/Chat.tsx";
+import JoinRoom from "./components/JoinRoom.tsx";
+import Login from "./components/Login.tsx";
+import BaseLayout from "./components/BaseLayout.tsx";
 
 function App() {
 
-    const [user, setUser] = useState<User | null>(null);
+    const [username, setUsername] = useState<string | null>(null);
 
   return (
       <BrowserRouter>
           <Routes>
-              {/*<Route path="/" element={<Navigate to="/login" replace />} />*/}
-              <Route path="/" element={user ? <Chat user={user} /> : <GuestRoom setUser={setUser} />} />
-              <Route path="/guest" element={<GuestRoom setUser={setUser} />} />
-              <Route path="/game/:id" element={user ? <Chat user={user} /> : <GuestRoom setUser={setUser} />} />
-
+              <Route element={<BaseLayout />}>
+              <Route path="/" element={<Navigate to="/game/" replace />} />
+              <Route path="/guest/:id?" element={<Login setUsername={setUsername}/>} />
+              <Route path="/game/:id?" element={<JoinRoom username={username}/>} />
+              </Route>
           </Routes>
       </BrowserRouter>
   )

@@ -1,10 +1,18 @@
 @import "tailwindcss";
+
+@theme {
+  /*--color-primary: #C2531B;*/
+  --color-primary: var(--color-violet-300);
+  --color-secondary: #ec904b;
+  --color-tertiary: var(--color-violet-500);
+}
+
 #root {
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
   width: 100%;
   display: flex;
   justify-content: center;
+  font-family: "Roboto Light", sans-serif;
 
 }
