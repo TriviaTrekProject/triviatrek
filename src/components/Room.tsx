@@ -117,7 +117,7 @@ const Room = ({username}:ChatProps) => {
 <div className={"flex flex-col items-center justify-center gap-8 h-full w-full"}>
     {id && quizGame && !quizGame.finished && (<>
             <div
-                className="font-bold text-[64px] text-shadow-black text-shadow-2xl text-white font-[Mea_Culpa]">Question {quizGame?.currentQuestion?.id}</div>
+                className="font-bold text-[64px] text-shadow-black text-shadow-2xl text-white font-[Mea_Culpa]">Question {quizGame.questions.findIndex( question => question.id === quizGame?.currentQuestion?.id)+1 }</div>
             <div
                 className="font-bold text-3xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
 
