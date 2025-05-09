@@ -138,10 +138,10 @@ const Room = ({username}:ChatProps) => {
     )
     }
     <div className="rounded-2xl flex flex-row p-5 gap-20 min-w-3/4 min-h-2/5 bg-transparent">
-        <div className="bg-white rounded-2xl">
-            <div className={"font-bold text-white mb-2 px-6 py-5 pt-6 rounded-tl-2xl rounded-tr-2xl bg-primary"}>Utilisateurs</div>
-            <div className="flex flex-col gap-1">{users.map((usr, index) => (<div
-                key={index}>{usr}{quizGame && (" : " + (quizGame.scores.find(score => score.player === usr)?.score ?? 0))}</div>))}</div>
+        <div className="bg-transparent">
+            <div className={"font-bold text-white p-2 bg-transparent border-solid border-b-4 mb-2 border-white"}>Utilisateurs</div>
+            <div className="flex flex-col text-white gap-1">{users.map((usr, index) => (<div
+                key={index} className={"py-1 font-bold"}>{usr}{quizGame && (" : " + (quizGame.scores.find(score => score.player === usr)?.score ?? 0) + " pts")}</div>))}</div>
         </div>
 
         <QuizGameAnswersComponent id={id} quizGame={quizGame} onClick={getOnClick(id)} username={username}/>
