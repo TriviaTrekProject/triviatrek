@@ -32,7 +32,7 @@ const QuizGameAnswersComponent = (props: QuizGameComponentProps) => {
 
         {props.id && props.quizGame && (
             <div className={"flex grow-1 items-center"}>
-                <div className={"flex h-full justify-center items-center gap-x-8 flex-auto flex-row flex-wrap "}>
+                <div className={"flex h-auto justify-center items-center gap-8 flex-auto flex-row flex-wrap "}>
                     {
                         props.quizGame?.currentQuestion?.options.map((opt, index) => (
                             <div key={index} className={"flex basis-[calc(50%-1.5rem)]"}>
