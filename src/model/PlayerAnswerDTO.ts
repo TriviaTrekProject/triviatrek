@@ -1,4 +1,4 @@
-export interface PlayerAnswer {
+export interface PlayerAnswerDTO {
     player: string;
     answer: string;
 }

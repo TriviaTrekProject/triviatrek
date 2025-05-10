@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { socketService } from '../ws/socketService';
 
-export function useSocket(
+const useSocket = (
     topic: string,
     onMessage: (payload: any) => void
-) {
+) => {
+
+    const [isSubscribed, setIsSubscribed] = useState(false);
+
     useEffect(() => {
         // 1. Connection
         if(!socketService.isConnected) {
@@ -13,13 +16,15 @@ export function useSocket(
                 .then(() => {
                     // 2. Souscription
                     socketService.subscribe(topic, onMessage);
+                    setIsSubscribed(true);
                 })
                 .catch(err => {
                     console.error('Erreur WS →', err);
                 });
         }
             else {
-                socketService.subscribe(topic, onMessage);
+             socketService.subscribe(topic, onMessage);
+            setIsSubscribed(true);
             }
 
 
@@ -28,4 +33,8 @@ export function useSocket(
         return () => {
         };
     }, [topic, onMessage]);
+
+    return isSubscribed;
 }
+
+export default useSocket;

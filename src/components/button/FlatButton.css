@@ -22,25 +22,10 @@ button.fancy {
     transition: all .3s ease-in-out;
     user-select: none;
 
-    &::before {
-        content: " ";
-        width: 1.5625rem;
-        height: 2px;
-        background: white;
-        top: 50%;
-        left: 1.5em;
-        position: absolute;
-        -webkit-transform: translateY(-50%);
-        transform: translateY(-50%);
-        -webkit-transform-origin: center;
-        transform-origin: center;
-        -webkit-transition: background 0.3s linear, width 0.3s linear;
-        transition: background 0.3s linear, width 0.3s linear;
-    }
+
     .button-text {
         font-size: 1.125em;
         line-height: 1.33333em;
-        padding-left: 2em;
         font-weight: 900;
         display: block;
         text-align: left;
@@ -90,13 +75,13 @@ button.fancy {
 
 
         &::before {
-            width: 0.9375rem;
+            width: 0rem;
             background: white;
         }
 
         .button-text {
             color: var(--color-secondary);
-            padding-left: 1.5em;
+            scale: 1.03;
         }
 
         .top-key {

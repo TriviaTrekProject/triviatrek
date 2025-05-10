@@ -1,6 +1,6 @@
 import {Client} from "@stomp/stompjs";
 
-export interface User {
+export interface UserDTO {
     username: string;
     client : Client;
 }

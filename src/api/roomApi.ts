@@ -1,5 +1,5 @@
 import {socketService} from "../ws/socketService.ts";
-import {Message} from "../model/Message.ts";
+import {MessageDTO} from "../model/MessageDTO.ts";
 
 export const roomApi = {
     /**
@@ -23,7 +23,7 @@ export const roomApi = {
     /**
      * Envoyer un message dans la room
      */
-    sendMessage(roomId: string, message: Message) {
+    sendMessage(roomId: string, message: MessageDTO) {
         socketService.send(`/app/sendMessage/${roomId}`, message);
     },
 };
