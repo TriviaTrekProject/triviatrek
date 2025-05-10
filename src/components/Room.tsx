@@ -35,10 +35,18 @@ const Room = ({username}:ChatProps) => {
         roomApi.leave(id, username);
     },[id, username]);
 
-    useSocket('/chatroom/'+id, (room: RoomDTO) => {
+    const onRoomMessage = useCallback((room: RoomDTO) => {
         setRoom(room);
         setUsers(room.participants);
-    }) ;
+    },[])
+    
+    const onRoomSubscribe = useCallback(() => {
+        if (id) roomApi.join(id, username).then(() => {
+            setLoading(false);
+        })
+    },[id, username]);
+
+    useSocket('/chatroom/'+id, onRoomMessage, onRoomSubscribe) ;
 
     useHandleUnmount(handleUnload);
 
@@ -60,18 +68,11 @@ const Room = ({username}:ChatProps) => {
 
 
 
-    useEffect(() => {
-        if(!id) return;
-        roomApi.join(id, username).then(() => {
-            setLoading(false);
-        })
-    }, [id, username]);
-
+    if(isLoading) return <Spinner />;
 
     if (!username) {
         return <Navigate to={`/guest/${id}`} replace />;
     }
-    if(isLoading) return <Spinner />;
 
     return (
 

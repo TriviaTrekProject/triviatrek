@@ -3,7 +3,8 @@ import { socketService } from '../ws/socketService';
 
 const useSocket = (
     topic: string,
-    onMessage: (payload: any) => void
+    onMessage: (payload: any) => void,
+    onSubscribe: () => void,
 ) => {
 
     const [isSubscribed, setIsSubscribed] = useState(false);
@@ -16,6 +17,7 @@ const useSocket = (
                 .then(() => {
                     // 2. Souscription
                     socketService.subscribe(topic, onMessage);
+                    onSubscribe();
                     setIsSubscribed(true);
                 })
                 .catch(err => {
@@ -24,6 +26,7 @@ const useSocket = (
         }
             else {
              socketService.subscribe(topic, onMessage);
+            onSubscribe();
             setIsSubscribed(true);
             }
 
@@ -32,7 +35,7 @@ const useSocket = (
         // 3. Cleanup
         return () => {
         };
-    }, [topic, onMessage]);
+    }, [topic, onMessage, onSubscribe]);
 
     return isSubscribed;
 }
