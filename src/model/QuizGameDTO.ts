@@ -1,4 +1,4 @@
-export interface Question {
+export interface QuestionDTO {
     id: number
     question: string
     difficulty: string
@@ -10,18 +10,18 @@ export interface Question {
 }
 
 
-export interface QuizGame {
+export interface QuizGameDTO {
     roomId: string
     gameId:string
-    currentQuestion: Question | null
-    scores: Score[]
+    currentQuestion: QuestionDTO | null
+    scores: ScoreDTO[]
     finished: boolean
     participants: string[]
     currentQuestionIndex: number
-    questions: Question[]
+    questions: QuestionDTO[]
 }
 
-export interface Score {
+export interface ScoreDTO {
     player: string
     score: number
 }

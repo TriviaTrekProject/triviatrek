@@ -1,17 +1,17 @@
 import {socketService} from "../ws/socketService.ts";
-import {PlayerAnswer} from "../model/PlayerAnswer.ts";
-import {QuizGame} from "../model/QuizGame.ts";
+import {PlayerAnswerDTO} from "../model/PlayerAnswerDTO.ts";
+import {QuizGameDTO} from "../model/QuizGameDTO.ts";
 
-export type GameCallback = (game: QuizGame) => void
+export type GameCallback = (game: QuizGameDTO) => void
 
 export const gameApi = {
 
-        async startGame(gameId: string, roomId: string, user: string): Promise<void> {
+        async startQuizGame(gameId: string, roomId: string, user: string): Promise<void> {
             if (!socketService.isConnected) {
                 await socketService.connect();
             }
             console.log("Lancement de la game " + gameId + " dans la room " + roomId);
-        socketService.send(`/app/game/start/${gameId}`, {roomId: roomId, user: user});
+        socketService.send(`/app/game/startQuiz/${gameId}`, {roomId: roomId, user: user});
     },
 
 
@@ -36,7 +36,7 @@ export const gameApi = {
     /**
      * Soumettre une réponse à la question en cours
      */
-    submitAnswer(gameId: string, answer: PlayerAnswer) {
+    submitAnswer(gameId: string, answer: PlayerAnswerDTO) {
         socketService.send(`/app/game/answer/${gameId}`, answer);
     },
 };
