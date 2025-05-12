@@ -27,7 +27,6 @@ const Room = ({username}:ChatProps) => {
     const [isListeningGame, setListeningGame] = useState<boolean>(false);
 
     const [isLoading, setLoading] = useState(true);
-    // Fermeture du browser
 
 
     const handleUnload = useCallback(() => {
