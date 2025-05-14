@@ -26,6 +26,7 @@ button.fancy {
     .button-text {
         font-size: 1.125em;
         line-height: 1.33333em;
+        text-align: center;
         font-weight: 900;
         display: block;
         text-align: left;
