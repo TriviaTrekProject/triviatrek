@@ -12,6 +12,7 @@ import RoomUsers from "./room/RoomUsers.tsx";
 import QuizGameHeader from "./game/QuizGameHeader.tsx";
 import useSocket from "../hook/useSocket.ts";
 import useHandleUnmount from "../hook/useHandleUnmount.ts";
+import useIsMobile from "../hook/useIsMobile.ts";
 
 interface ChatProps {
     username: string
@@ -27,6 +28,7 @@ const Room = ({username}:ChatProps) => {
     const [isListeningGame, setListeningGame] = useState<boolean>(false);
 
     const [isLoading, setLoading] = useState(true);
+    const isMobile = useIsMobile();
 
 
     const handleUnload = useCallback(() => {
@@ -73,11 +75,24 @@ const Room = ({username}:ChatProps) => {
         return <Navigate to={`/guest/${id}`} replace />;
     }
 
+    if (isMobile) {
+        return (
+            <div className={"flex flex-col items-center justify-center gap-4 h-full w-full"}>
+                <QuizGameHeader idRoom={id} quizGame={quizGame} />
+                <div className="rounded-2xl w-full flex flex-col p-4 gap-8 bg-transparent">
+                    <RoomUsers users={users} scores={quizGame?.scores ?? []}/>
+                    {room && (<QuizGameAnswersComponent idRoom={id} quizGame={quizGame} username={username} gameId={room.gameId}/>)}
+                    <ChatComponent roomId={id} room={room} username={username}/>
+                </div>
+            </div>
+        );
+    }
+
     return (
 
 <div className={"flex flex-col items-center justify-center gap-8 h-full w-full"}>
-    <QuizGameHeader idRoom={id} quizGame={quizGame}  />
-    <div className="rounded-2xl flex flex-row p-5 gap-20 min-w-3/4 min-h-2/5 bg-transparent">
+    <QuizGameHeader idRoom={id} quizGame={quizGame} />
+    <div className="rounded-2xl flex flex-row p-5 gap-20 w-full min-h-2/5 bg-transparent">
         <RoomUsers users={users} scores={quizGame?.scores ?? []}/>
         {room && (<QuizGameAnswersComponent idRoom={id} quizGame={quizGame} username={username} gameId={room.gameId}/>)}
         <ChatComponent roomId={id} room={room} username={username}/>

@@ -1,4 +1,5 @@
 import {QuizGameDTO} from "../../model/QuizGameDTO.ts";
+import useIsMobile from "../../hook/useIsMobile.ts";
 
 
 interface QuizGameComponentProps {
@@ -7,6 +8,7 @@ interface QuizGameComponentProps {
 }
 
 const QuizGameHeader = ({idRoom, quizGame}: QuizGameComponentProps) => {
+    const isMobile = useIsMobile();
 
     return(
 <>
@@ -14,7 +16,7 @@ const QuizGameHeader = ({idRoom, quizGame}: QuizGameComponentProps) => {
                 <div
                     className="font-bold text-[64px] text-shadow-black text-shadow-2xl text-white font-[Mea_Culpa]">Question {quizGame.questions.findIndex( question => question.id === quizGame?.currentQuestion?.id)+1 }</div>
                 <div
-                    className="font-bold text-3xl text-shadow-black text-shadow-2xl text-white">{quizGame?.currentQuestion?.question}</div>
+                    className={`font-bold ${!isMobile ?'text-3xl' : 'text-xl'} text-shadow-black text-shadow-2xl text-white`}>{quizGame?.currentQuestion?.question}</div>
 
             </>
         )}
