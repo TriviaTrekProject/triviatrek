@@ -29,7 +29,6 @@ button.fancy {
         text-align: center;
         font-weight: 900;
         display: block;
-        text-align: left;
         -webkit-transition: all 0.3s ease-in-out;
         transition: all 0.3s ease-in-out;
         text-transform: uppercase;
