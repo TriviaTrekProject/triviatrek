@@ -21,7 +21,7 @@ const Login = ({setUsername}: GuestRoomProps) => {
         <div className="flex items-center gap-8 justify-center h-full flex-1/2 self-center w-full">
             <form onSubmit={onSubmit} className="bg-white p-6 rounded w-80 flex flex-col justify-center items-center">
                 <div className={"w-[10rem] h-[10rem] flex"}>
-                    <img src={"assets/Logo.png"} alt={"logo"}/>
+                    <img src={"assets/LogoTriviatrek.png"} alt={"logo"}/>
                 </div>
 
                 <h2 className="text-xl mb-4 font-bold text-primary">Jouer en invité</h2>
