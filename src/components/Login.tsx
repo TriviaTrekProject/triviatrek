@@ -11,7 +11,7 @@ const Login = ({setUsername}: GuestRoomProps) => {
     const onSubmit = (e:FormEvent<HTMLFormElement>
     ) => {
         e.preventDefault();
-        const roomId = id ?? Math.random().toString(36).substring(2, 8);
+        const roomId = id ?? Math.random().toString(36).substring(2, 12);
         setUsername(e.currentTarget.username.value);
         navigate(`/game/${roomId}`, { state: { username: e.currentTarget.username.value } });
 
