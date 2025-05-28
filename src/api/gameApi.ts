@@ -1,6 +1,7 @@
 import {socketService} from "../ws/socketService.ts";
 import {PlayerAnswerDTO} from "../model/PlayerAnswerDTO.ts";
 import {QuizGameDTO} from "../model/QuizGameDTO.ts";
+import axios from "axios";
 
 export type GameCallback = (game: QuizGameDTO) => void
 
@@ -39,5 +40,10 @@ export const gameApi = {
     submitAnswer(gameId: string, answer: PlayerAnswerDTO) {
         socketService.send(`/app/game/answer/${gameId}`, answer);
     },
+    async getGame(gameId: string): Promise<QuizGameDTO> {
+        const res = await axios.get(`/app/games/${gameId}`);
+        return res.data.results;
+
+    }
 };
 

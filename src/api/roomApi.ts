@@ -1,5 +1,7 @@
 import {socketService} from "../ws/socketService.ts";
 import {MessageDTO} from "../model/MessageDTO.ts";
+import {RoomDTO} from "../model/RoomDTO.ts";
+import axios from "axios";
 
 export const roomApi = {
     /**
@@ -26,5 +28,11 @@ export const roomApi = {
     sendMessage(roomId: string, message: MessageDTO) {
         socketService.send(`/app/sendMessage/${roomId}`, message);
     },
+
+    async getRoom(roomId: string): Promise<RoomDTO> {
+        const res = await axios.get(`/app/rooms/${roomId}`);
+        return res.data.results;
+
+    }
 };
 
