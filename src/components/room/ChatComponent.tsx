@@ -32,18 +32,29 @@ const ChatComponent = ({roomId, room, username}:ChatProps) => {
     }
 
     return <form onSubmit={onSend}
-                 className={"bg-white flex flex-col justify-between p-8 rounded-2xl"}>
+                 className={"bg-white flex flex-col justify-between p-8 rounded-2xl max-h-[40dvh]"}>
 
         <div className="flex justify-center mb-1 text-primary text-lg font-extrabold">Room {roomId}</div>
 
-        <div className="flex flex-row gap-1 gap-y-1 p-2 py-4 justify-flex-start w-full">
+        <div className="flex flex-row gap-1 gap-y-1 p-2 py-4 my-4 justify-flex-start w-full overflow-y-scroll overflow-x-auto">
             <div className="p-2 text-left">
-                {room?.messages.map((line, index) =>
-                    (
-                    <div key={index}>
-                        <span className="text-tertiary">{line.sender}</span>: {line.content}
-                    </div>
-                ))}
+                {room?.messages.map((line, index) => {
+
+                    if(line.sender === "SYSTEM") {
+                        return (
+                            <div key={index}>
+                                <span className="text-secondary">{line.content}</span>
+                            </div>
+                        )
+                    }
+
+                        return (
+                            <div key={index}>
+                                <span className="text-tertiary">{line.sender}</span>: {line.content}
+                            </div>
+                        )
+                    }
+                )}
             </div>
         </div>
 
