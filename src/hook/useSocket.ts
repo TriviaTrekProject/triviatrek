@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useRef} from 'react';
 import { socketService } from '../ws/socketService';
 
 const useSocket = (
@@ -7,9 +7,11 @@ const useSocket = (
     onSubscribe: () => void,
 ) => {
 
-    const [isSubscribed, setIsSubscribed] = useState(false);
+    const isSubscribed = useRef(false);
+    isSubscribed.current = false;
 
     useEffect(() => {
+        if(isSubscribed.current) return;
         // 1. Connection
         if(!socketService.isConnected) {
             socketService
@@ -18,7 +20,7 @@ const useSocket = (
                     // 2. Souscription
                     socketService.subscribe(topic, onMessage);
                     onSubscribe();
-                    setIsSubscribed(true);
+                    isSubscribed.current = true;
                 })
                 .catch(err => {
                     console.error('Erreur WS →', err);
@@ -27,10 +29,7 @@ const useSocket = (
             else {
              socketService.subscribe(topic, onMessage);
             onSubscribe();
-            setIsSubscribed(true);
-            }
-
-
+            isSubscribed.current = true            }
 
         // 3. Cleanup
         return () => {

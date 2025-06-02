@@ -26,6 +26,9 @@ class SocketService {
         this.client.onWebSocketClose = () => {
             console.log('WebSocket connection closed');
             this.connectionStatus = 'disconnected';
+            // Supprimer les souscriptions car elles ne sont plus valides
+            this.subscriptions.clear();
+
             this.handleReconnect();
         };
 
