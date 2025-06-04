@@ -15,8 +15,8 @@ class SocketService {
         this.client = new Client({
             webSocketFactory: () => new SockJS(this.endpoint),
             reconnectDelay: 5_000,
-            heartbeatIncoming: 4000,
-            heartbeatOutgoing: 4000,
+            heartbeatIncoming: 10000,
+            heartbeatOutgoing: 10000,
         });
 
         this.setupConnectionHandlers();
