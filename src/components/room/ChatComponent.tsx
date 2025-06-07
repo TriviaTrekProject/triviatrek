@@ -32,7 +32,7 @@ const ChatComponent = ({roomId, room, username}:ChatProps) => {
     }
 
     return <form onSubmit={onSend}
-                 className={"bg-white flex flex-col justify-between p-8 rounded-2xl max-h-[40dvh]"}>
+                 className={"bg-white flex flex-col justify-between p-8 rounded-2xl min-h-[250px] max-h-[40dvh]"}>
 
         <div className="flex justify-center mb-1 text-primary text-lg font-extrabold">Room {roomId}</div>
 
