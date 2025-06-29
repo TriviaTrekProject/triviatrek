@@ -39,24 +39,47 @@ export const useRoom = (username: string) => {
         }
     }, [id, username]);
 
+    useEffect(()=> {
+        console.log("quizGame : ", quizGame);
+        setRevealAnswer(false);
+
+    },[quizGame])
+
     // Gère la souscription aux mises à jour du jeu, évite les abonnements multiples
     const subscribeToGameUpdates = useCallback(() => {
         if (!id || !room?.gameId || hasSubscribedToGameUpdates) return;
 
         socketService.subscribe(`/game/${room.gameId}`, (game: QuizGameDTO) => {
-            // Révélation des réponses si la question courante a changé
-            if (game.currentQuestion?.id !== quizGame?.currentQuestion?.id) {
+
+            setQuizGame(prev => {
+                if (!prev) {
+                    setHasSubscribedToGameUpdates(true);
+                    return game;
+                }
+
+                if (prev.currentQuestion?.id === game.currentQuestion?.id) {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    const { currentQuestion, currentQuestionIndex, questions, ...partial } = game;
+                    return {
+                        ...partial,
+                        currentQuestion: prev.currentQuestion,
+                        currentQuestionIndex: prev.currentQuestionIndex,
+                        questions: prev.questions,
+                    };
+                }
+
+                // Question différente
                 setRevealAnswer(true);
                 setTimeout(() => {
                     setRevealAnswer(false);
-                    setQuizGame(game); // Met à jour les données du jeu
+                    setQuizGame(game);
                 }, REVEAL_ANSWER_DELAY);
-            } else {
-                setQuizGame(game); // Met à jour directement s'il n'y a pas de changement de question
-            }
-            setHasSubscribedToGameUpdates(true); // Marque le jeu comme "abonné"
+
+                // on ne change pas l'état maintenant pour attendre le timeout
+                return prev;
+            });
         });
-    }, [id, room?.gameId, hasSubscribedToGameUpdates, quizGame]);
+    }, [id, room?.gameId, hasSubscribedToGameUpdates]);
 
     // Rejoindre la partie active s'il y en a une
     const handleJoinActiveGame = useCallback(() => {
