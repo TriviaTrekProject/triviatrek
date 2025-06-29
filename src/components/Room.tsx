@@ -24,6 +24,7 @@ const Room = ({username}:ChatProps) => {
     const [room, setRoom] = useState<RoomDTO | null>(null);
     const [quizGame, setQuizGame] = useState<QuizGameDTO | null>(null);
     const [users, setUsers] = useState<string[]>([]);
+    const [revealAnswer, setRevealAnswer] = useState<boolean>(false);
 
     const [isListeningGame, setListeningGame] = useState<boolean>(false);
 
@@ -54,8 +55,17 @@ const Room = ({username}:ChatProps) => {
     useEffect(() => {
         if(!room || !id) return;
         if(!isListeningGame && room?.gameId) socketService.subscribe(`/game/${room?.gameId}`, (game: QuizGameDTO) => {
-            setQuizGame(game);
-            setListeningGame(true);}
+            if(game.currentQuestion?.id !== quizGame?.currentQuestion?.id) {
+                setRevealAnswer(true);
+                setTimeout(()=> {
+                    setRevealAnswer(false);
+                    setQuizGame(game);
+                }, 3000);
+            }
+            else {
+                setQuizGame(game);
+                setListeningGame(true);}
+            }
         );
 
     }, [id, isListeningGame, quizGame, quizGame?.currentQuestion?.id, room, room?.gameId]);
@@ -81,7 +91,7 @@ const Room = ({username}:ChatProps) => {
                 <QuizGameHeader idRoom={id} quizGame={quizGame} />
                 <div className="rounded-2xl w-full flex flex-col p-4 gap-8 bg-transparent">
                     <RoomUsers users={users} scores={quizGame?.scores ?? []}/>
-                    {room && (<QuizGameAnswersComponent idRoom={id} quizGame={quizGame} username={username} gameId={room.gameId}/>)}
+                    {room && (<QuizGameAnswersComponent idRoom={id} quizGame={quizGame} username={username} gameId={room.gameId} isRevealed={revealAnswer}/>)}
                     <ChatComponent roomId={id} room={room} username={username}/>
                 </div>
             </div>
@@ -94,7 +104,8 @@ const Room = ({username}:ChatProps) => {
     <QuizGameHeader idRoom={id} quizGame={quizGame} />
     <div className="rounded-2xl flex flex-row p-5 gap-20 w-full min-h-2/5 bg-transparent">
         <RoomUsers users={users} scores={quizGame?.scores ?? []}/>
-        {room && (<QuizGameAnswersComponent idRoom={id} quizGame={quizGame} username={username} gameId={room.gameId}/>)}
+        {room && (<QuizGameAnswersComponent idRoom={id} quizGame={quizGame} username={username} gameId={room.gameId}
+                                            isRevealed={revealAnswer}/>)}
         <ChatComponent roomId={id} room={room} username={username}/>
     </div>
 </div>
