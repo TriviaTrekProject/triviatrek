@@ -2,12 +2,14 @@ import {QuizGameDTO} from "../../model/QuizGameDTO.ts";
 import FlatButton from "../button/FlatButton.tsx";
 import {gameApi} from "../../api/gameApi.ts";
 import useIsMobile from "../../hook/useIsMobile.ts";
+import {useEffect, useState} from "react";
 
 interface QuizGameComponentProps {
     idRoom: string | undefined,
     quizGame: QuizGameDTO | null,
     username: string
     gameId: string,
+    isRevealed: boolean
 
 }
 
@@ -17,9 +19,7 @@ const onClick = (roomId : string | undefined, gameId : string, username:string) 
 
 }
 
-const onAnswer = (username: string, answer: string, gameId: string | undefined) => {
-    gameApi.submitAnswer(gameId ?? "", {player: username, answer: answer})
-}
+
 
 const StartGameButton = (props: { onClick: (() => Promise<void>) | undefined }) => {
     return <div>
@@ -29,15 +29,39 @@ const StartGameButton = (props: { onClick: (() => Promise<void>) | undefined }) 
     </div>;
 }
 
-const QuizGameAnswersComponent = ({idRoom, quizGame, gameId, username}:QuizGameComponentProps) => {
+interface DelayedButtonProps {
+    onClick: (() => Promise<void>),
+    label: string,
+    isCorrect: boolean,
+    isRevealed: boolean
+}
+
+const DelayedButton = ({ onClick, label, isCorrect, isRevealed }:DelayedButtonProps) => {
+
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+    useEffect(()=> {
+        setIsButtonDisabled(true);
+        setTimeout(() => setIsButtonDisabled(false), 1500);
+    },[label])
+
+    return (
+    <>
+    <FlatButton className={!isRevealed ? 'bg-tertiary' :  (isCorrect ? 'bg-green-400 pointer-events-none' : 'bg-red-400 pointer-events-none')} disabled={isButtonDisabled}  text={label} onClick={onClick}/>
+</>)
+
+}
+
+const QuizGameAnswersComponent = ({idRoom, quizGame, gameId, username, isRevealed}:QuizGameComponentProps) => {
     const isMobile = useIsMobile();
 
+    const onAnswer = (username: string, answer: string, gameId: string | undefined) => {
+        return gameApi.submitAnswer(gameId ?? "", {player: username, answer: answer})
+    }
 
     return <div className={"flex grow-1 flex-col gap-6 items-center justify-center w-full"}>
-        {idRoom && gameId && quizGame === null && (
-            <StartGameButton onClick={onClick(idRoom, gameId, username)}/>
-
-        )}
+        {(!gameId || !idRoom) &&  <div className={"text-primary"}>En attente de la partie...</div>}
+        {(idRoom && gameId && quizGame === null) ? <StartGameButton onClick={onClick(idRoom, gameId, username)}/> : <div></div>}
 
         {idRoom && quizGame && (
             <div className={"flex grow-1 items-center w-full"}>
@@ -46,7 +70,7 @@ const QuizGameAnswersComponent = ({idRoom, quizGame, gameId, username}:QuizGameC
                         {
                             quizGame?.currentQuestion?.options.map((opt, index) => (
                                 <div key={index} className={"flex basis-full"}>
-                                    <FlatButton text={opt} onClick={() => onAnswer(username, opt, quizGame?.gameId)}/>
+                                    <DelayedButton onClick={async () => onAnswer(username, opt, quizGame?.gameId)} label={opt} isCorrect={opt === quizGame?.currentQuestion?.correctAnswer} isRevealed={isRevealed}/>
                                 </div>
                             ))
 
@@ -59,7 +83,7 @@ const QuizGameAnswersComponent = ({idRoom, quizGame, gameId, username}:QuizGameC
                 {
                     quizGame?.currentQuestion?.options.map((opt, index) => (
                         <div key={index} className={"flex basis-[calc(50%-1.5rem)]"}>
-                            <FlatButton text={opt} onClick={() => onAnswer(username, opt, quizGame?.gameId)}/>
+                            <DelayedButton onClick={async () => onAnswer(username, opt, quizGame?.gameId)} label={opt} isCorrect={opt === quizGame?.currentQuestion?.correctAnswer} isRevealed={isRevealed}/>
                         </div>
                     ))
 
