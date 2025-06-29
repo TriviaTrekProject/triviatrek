@@ -6,15 +6,28 @@ import RoomUsers from "./room/RoomUsers.tsx";
 import QuizGameHeader from "./game/QuizGameHeader.tsx";
 import useIsMobile from "../hook/useIsMobile.ts";
 import {useRoom} from "../hook/useRoom.ts";
+import {gameApi} from "../api/gameApi.ts";
+import StartGameButton from "./game/StartGameButton.tsx";
 
 
 interface ChatProps {
     username: string;
 }
+const onClick = (
+    roomId: string | undefined,
+    gameId: string,
+    username: string
+) => {
+    if (!gameId || !roomId) return;
+    return () => gameApi.startQuizGame(gameId, roomId, username);
+};
+
+
 
 const Room = ({ username }: ChatProps) => {
     const { room, quizGame, users, revealAnswer, isLoading } = useRoom(username);
     const isMobile = useIsMobile();
+
 
     if (isLoading) return <Spinner />;
     if (!username) return <Navigate to={`/guest/${room?.roomId}`} replace />;
@@ -24,15 +37,20 @@ const Room = ({ username }: ChatProps) => {
             <QuizGameHeader idRoom={room?.roomId} quizGame={quizGame} />
             <div className="rounded-2xl w-full flex flex-col p-4 gap-8 bg-transparent">
                 <RoomUsers users={users} scores={quizGame?.scores ?? []} />
-                {room && (
+                {room && quizGame && quizGame?.currentQuestion && (
                     <QuizGameAnswersComponent
                         idRoom={room.roomId}
-                        quizGame={quizGame}
+                        currentQuestion={quizGame.currentQuestion}
                         username={username}
                         gameId={room.gameId}
                         isRevealed={revealAnswer}
                     />
                 )}
+
+                {room && !quizGame && (
+                    <StartGameButton onClick={onClick(room?.roomId, room?.gameId, username)}/>
+                )}
+
                 <ChatComponent roomId={room?.roomId} room={room} username={username} />
             </div>
         </div>
@@ -41,14 +59,17 @@ const Room = ({ username }: ChatProps) => {
             <QuizGameHeader idRoom={room?.roomId} quizGame={quizGame} />
             <div className="rounded-2xl flex flex-row p-5 gap-20 w-full min-h-2/5 bg-transparent">
                 <RoomUsers users={users} scores={quizGame?.scores ?? []} />
-                {room && (
+                {room && quizGame && quizGame?.currentQuestion && (
                     <QuizGameAnswersComponent
                         idRoom={room.roomId}
-                        quizGame={quizGame}
+                        currentQuestion={quizGame.currentQuestion}
                         username={username}
                         gameId={room.gameId}
                         isRevealed={revealAnswer}
                     />
+                )}
+                {room && !quizGame && (
+                    <StartGameButton onClick={onClick(room?.roomId, room?.gameId, username)}/>
                 )}
                 <ChatComponent roomId={room?.roomId} room={room} username={username} />
             </div>

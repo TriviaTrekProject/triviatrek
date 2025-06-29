@@ -1,4 +1,4 @@
-import { QuizGameDTO } from "../../model/QuizGameDTO.ts";
+import {QuestionDTO} from "../../model/QuizGameDTO.ts";
 import FlatButton from "../button/FlatButton.tsx";
 import { gameApi } from "../../api/gameApi.ts";
 import useIsMobile from "../../hook/useIsMobile.ts";
@@ -6,48 +6,32 @@ import { useEffect, useState } from "react";
 
 interface QuizGameComponentProps {
     idRoom: string | undefined;
-    quizGame: QuizGameDTO | null;
+    currentQuestion: QuestionDTO;
     username: string;
     gameId: string;
     isRevealed: boolean;
 }
 
-const onClick = (
-    roomId: string | undefined,
-    gameId: string,
-    username: string
-) => {
-    if (!gameId || !roomId) return;
-    return () => gameApi.startQuizGame(gameId, roomId, username);
-};
 
-const StartGameButton = ({ onClick }: { onClick: (() => Promise<void>) | undefined }) => (
-    <div>
-        <button
-            className="bg-tertiary font-bold hover:bg-secondary"
-            type="button"
-            onClick={onClick}
-        >
-            Lancer quiz
-        </button>
-    </div>
-);
+
 
 interface DelayedButtonProps {
     onClick: (() => Promise<void>);
     label: string;
     isCorrect: boolean;
     isRevealed: boolean;
+    time: number;
 }
 
-const DelayedButton = ({ onClick, label, isCorrect, isRevealed }: DelayedButtonProps) => {
-    const [isDisabled, setDisabled] = useState(true);
+const DelayedButton = ({ onClick, label, isCorrect, isRevealed, time }: DelayedButtonProps) => {
+    const [hidden, setHidden] = useState(true);
+    const [disabled, setDisabled] = useState(true);
 
     useEffect(() => {
-        setDisabled(true);
-        const timer = setTimeout(() => setDisabled(false), 1500);
-        return () => clearTimeout(timer);
-    }, [label]);
+        const timer = setTimeout(() => setHidden(false), time);
+        const timerDisable = setTimeout(() => setDisabled(false), 15000);
+        return () => {clearTimeout(timer); clearTimeout(timerDisable)};
+    }, [label, time]);
 
     const buttonClass = !isRevealed
         ? "bg-tertiary"
@@ -57,20 +41,20 @@ const DelayedButton = ({ onClick, label, isCorrect, isRevealed }: DelayedButtonP
 
     return (
         <FlatButton
-            className={buttonClass}
-            disabled={isDisabled}
+            className={`${hidden ? 'invisible' : ''} ${buttonClass}`}
             text={label}
             onClick={onClick}
+            disabled={disabled}
         />
     );
 };
 
 const QuizGameAnswersComponent = ({
                                       idRoom,
-                                      quizGame,
+                                      currentQuestion,
                                       gameId,
                                       username,
-                                      isRevealed,
+                                      isRevealed
                                   }: QuizGameComponentProps) => {
     const isMobile = useIsMobile();
 
@@ -91,13 +75,15 @@ const QuizGameAnswersComponent = ({
 
         return (
             <div className={wrapperClass}>
-                {quizGame?.currentQuestion?.options.map((option, index) => (
+                {currentQuestion?.options.map((option, index) => (
                     <div key={index} className={optionClass}>
                         <DelayedButton
+                            key={option}
                             onClick={async () => onAnswer(option)}
                             label={option}
-                            isCorrect={option === quizGame?.currentQuestion?.correctAnswer}
+                            isCorrect={option === currentQuestion?.correctAnswer}
                             isRevealed={isRevealed}
+                            time={(5000 + index * 2000)}
                         />
                     </div>
                 ))}
@@ -109,11 +95,7 @@ const QuizGameAnswersComponent = ({
         <div className="flex grow-1 flex-col gap-6 items-center justify-center w-full">
             {(!gameId || !idRoom) && <div className="text-primary">En attente de la partie...</div>}
 
-            {idRoom && gameId && quizGame === null && (
-                <StartGameButton onClick={onClick(idRoom, gameId, username)} />
-            )}
-
-            {idRoom && quizGame && (
+            {idRoom && currentQuestion && (
                 <div className="flex grow-1 items-center w-full">
                     {isMobile ? renderOptions("mobile") : renderOptions("desktop")}
                 </div>
