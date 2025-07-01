@@ -41,7 +41,7 @@ button.fancy {
         top: -4px;
         left: 0.625rem;
         position: absolute;
-        background: var(--color-tertiary);
+        background: var(--color-primary-dark);
         -webkit-transition: width 0.5s ease-out, left 0.3s ease-out;
         transition: width 0.5s ease-out, left 0.3s ease-out;
     }
@@ -52,7 +52,7 @@ button.fancy {
         right: 1.875rem;
         bottom: -4px;
         position: absolute;
-        background: var(--color-tertiary);
+        background: var(--color-primary-dark);
         -webkit-transition: width 0.5s ease-out, right 0.3s ease-out;
         transition: width 0.5s ease-out, right 0.3s ease-out;
     }
@@ -68,9 +68,9 @@ button.fancy {
     }
 
     &:hover {
-        color: var(--color-secondary);
+        color: var(--color-secondary-dark);
         background: white;
-        border-color: var(--color-secondary);
+        border-color: var(--color-secondary-dark);
 
 
         &::before {
@@ -79,7 +79,7 @@ button.fancy {
         }
 
         .button-text {
-            color: var(--color-secondary);
+            color: var(--color-secondary-dark);
             scale: 1.03;
         }
 

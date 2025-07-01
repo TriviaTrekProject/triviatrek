@@ -2,7 +2,7 @@
     @supports (background-clip: text) or (-webkit-background-clip: text) {
         /* Raccourcis locaux pour plus de lisibilité */
         --primary:   var(--color-primary);
-        --secondary: var(--color-secondary);
+        --secondary-dark: var(--color-secondary-dark);
 
         /* 1️⃣   Composition de 4 calques :
                • 3 cercles (radial-gradient)

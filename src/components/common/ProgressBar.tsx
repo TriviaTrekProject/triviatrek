@@ -21,9 +21,9 @@ const ProgressBar = ({
                          duration,
                          restartKey,
                          onFinish,
-                         heightClass = "h-2",
-                         trackClassName = "bg-gray-300",
-                         barClassName   = "bg-primary",
+                         heightClass = "h-3",
+                         trackClassName = "bg-secondary",
+                         barClassName   = "bg-secondary-dark",
                      }: ProgressBarProps) => {
     const [percent, setPercent] = useState(100);
     const animFrameRef = useRef<number | null>(null);
@@ -51,7 +51,7 @@ const ProgressBar = ({
     }, [duration, restartKey, onFinish]);
 
     return (
-        <div className={`w-full ${heightClass} ${trackClassName} rounded overflow-hidden`}>
+        <div className={`w-full ${heightClass} ${trackClassName} rounded overflow-hidden mx-2`}>
             <div
                 className={`${barClassName} h-full transition-[width] duration-50`}
                 style={{ width: `${percent}%` }}

@@ -1,7 +1,7 @@
 const StartGameButton = ({ onClick }: { onClick: (() => void) | undefined }) => (
     <div>
         <button
-            className="bg-tertiary font-bold hover:bg-secondary"
+            className="bg-secondary-dark border-solid border-white font-bold hover:bg-secondary"
             type="button"
             onClick={onClick}
         >

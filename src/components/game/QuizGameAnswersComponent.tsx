@@ -3,6 +3,11 @@ import FlatButton from "../button/FlatButton.tsx";
 import { gameApi } from "../../api/gameApi.ts";
 import useIsMobile from "../../hook/useIsMobile.ts";
 import { useEffect, useState } from "react";
+import {
+    DELAY_TIME_BY_OPTION,
+    DELAY_TIME_BY_QUESTION,
+    DELAY_TIME_DISABLED,
+} from "../../hook/useRoom.ts";
 
 interface QuizGameComponentProps {
     idRoom: string | undefined;
@@ -26,15 +31,14 @@ interface DelayedButtonProps {
 const DelayedButton = ({ onClick, label, isCorrect, isRevealed, time }: DelayedButtonProps) => {
     const [hidden, setHidden] = useState(true);
     const [disabled, setDisabled] = useState(true);
-
     useEffect(() => {
         const timer = setTimeout(() => setHidden(false), time);
-        const timerDisable = setTimeout(() => setDisabled(false), 15000);
+        const timerDisable = setTimeout(() => setDisabled(false), DELAY_TIME_DISABLED);
         return () => {clearTimeout(timer); clearTimeout(timerDisable)};
     }, [label, time]);
 
     const buttonClass = !isRevealed
-        ? "bg-tertiary"
+        ? "bg-primary-dark"
         : isCorrect
             ? "bg-green-400 pointer-events-none"
             : "bg-red-400 pointer-events-none";
@@ -83,7 +87,7 @@ const QuizGameAnswersComponent = ({
                             label={option}
                             isCorrect={option === currentQuestion?.correctAnswer}
                             isRevealed={isRevealed}
-                            time={(5000 + index * 2000)}
+                            time={(DELAY_TIME_BY_QUESTION + index * DELAY_TIME_BY_OPTION)}
                         />
                     </div>
                 ))}

@@ -5,9 +5,10 @@ import ChatComponent from "./room/ChatComponent.tsx";
 import RoomUsers from "./room/RoomUsers.tsx";
 import QuizGameHeader from "./game/QuizGameHeader.tsx";
 import useIsMobile from "../hook/useIsMobile.ts";
-import {useRoom} from "../hook/useRoom.ts";
+import {REVEAL_ANSWER_DELAY, useRoom} from "../hook/useRoom.ts";
 import {gameApi} from "../api/gameApi.ts";
 import StartGameButton from "./game/StartGameButton.tsx";
+import ProgressBar from "./common/ProgressBar.tsx";
 
 
 interface ChatProps {
@@ -35,6 +36,7 @@ const Room = ({ username }: ChatProps) => {
     return isMobile ? (
         <div className="flex flex-col items-center justify-center gap-4 h-full w-full">
             <QuizGameHeader idRoom={room?.roomId} quizGame={quizGame} />
+            {revealAnswer ? (<ProgressBar duration={REVEAL_ANSWER_DELAY}/>) :(<div className='w-full h-3'/>)}
             <div className="rounded-2xl w-full flex flex-col p-4 gap-8 bg-transparent">
                 <RoomUsers users={users} scores={quizGame?.scores ?? []} />
                 {room && quizGame && quizGame?.currentQuestion && (
@@ -55,8 +57,12 @@ const Room = ({ username }: ChatProps) => {
             </div>
         </div>
     ) : (
-        <div className="flex flex-col items-center justify-center gap-8 h-full w-full">
-            <QuizGameHeader idRoom={room?.roomId} quizGame={quizGame} />
+        <div className="flex flex-col items-center justify-center gap-1 h-full w-full">
+            <div className={"flex flex-col items-center justify-center gap-4 h-auto w-full"}>
+                <QuizGameHeader idRoom={room?.roomId} quizGame={quizGame} />
+            {revealAnswer ? (<ProgressBar duration={REVEAL_ANSWER_DELAY}/>) :(<div className='w-full h-3'/>)}
+            </div>
+
             <div className="rounded-2xl flex flex-row p-5 gap-20 w-full min-h-2/5 bg-transparent">
                 <RoomUsers users={users} scores={quizGame?.scores ?? []} />
                 {room && quizGame && quizGame?.currentQuestion && (

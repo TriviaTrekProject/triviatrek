@@ -9,7 +9,10 @@ import useSocket from "../hook/useSocket.ts";
 import useHandleUnmount from "../hook/useHandleUnmount.ts";
 
 // Constante pour le délai de révélation des réponses
-const REVEAL_ANSWER_DELAY = 3000;
+export const REVEAL_ANSWER_DELAY = 7000;
+export const DELAY_TIME_BY_OPTION = 2000;
+export const DELAY_TIME_BY_QUESTION = 4000;
+export const DELAY_TIME_DISABLED = 4 * DELAY_TIME_BY_OPTION + DELAY_TIME_BY_QUESTION;
 
 // Hook personnalisé pour gérer l'état et les comportements liés à la Room
 export const useRoom = (username: string) => {
@@ -40,7 +43,6 @@ export const useRoom = (username: string) => {
     }, [id, username]);
 
     useEffect(()=> {
-        console.log("quizGame : ", quizGame);
         setRevealAnswer(false);
 
     },[quizGame])
