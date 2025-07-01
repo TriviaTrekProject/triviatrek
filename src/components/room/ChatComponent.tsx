@@ -43,14 +43,14 @@ const ChatComponent = ({roomId, room, username}:ChatProps) => {
                     if(line.sender === "SYSTEM") {
                         return (
                             <div key={index}>
-                                <span className="text-secondary">{line.content}</span>
+                                <span className="text-secondary-dark">{line.content}</span>
                             </div>
                         )
                     }
 
                         return (
                             <div key={index}>
-                                <span className="text-tertiary">{line.sender}</span>: {line.content}
+                                <span className="text-primary-dark">{line.sender}</span>: {line.content}
                             </div>
                         )
                     }
@@ -61,7 +61,7 @@ const ChatComponent = ({roomId, room, username}:ChatProps) => {
         <div className={`flex flex-row gap-2 items-center justify-center w-full ${isMobile && 'flex-wrap'}`}>
             <input placeholder={"Tapez votre message ici..."} name="message"
                    className={`border-1 border-solid rounded-sm text-black p-2 focus:none ${isMobile && 'w-full'}`} type="text"></input>
-            <button className={`justify-center bg-tertiary font-bold hover:bg-secondary flex ${isMobile && 'grow-1'}`} type="submit">Envoyer</button>
+            <button className={`justify-center bg-primary-dark font-bold hover:bg-secondary-dark flex ${isMobile && 'grow-1'}`} type="submit">Envoyer</button>
         </div>
 
     </form>;
