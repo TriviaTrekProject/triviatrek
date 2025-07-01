@@ -69,7 +69,7 @@ const Room = ({ username }: ChatProps) => {
 
                 {/* Bouton pour ouvrir/fermer le chat */}
                 <button
-                    className={`fixed top-1/4 right-0 z-50 h-12 rounded-b-none bg-secondary-dark text-white px-3 py-2 hover:bg-secondary-darker overflow-hidden ${isChatOpen ? 'w-80' : 'w-16'} transition-[width] duration-300`}
+                    className={`fixed top-1/4 right-0 z-50 h-12 bg-secondary-dark text-white px-3 py-2 hover:bg-secondary-darker overflow-hidden ${isChatOpen ? 'w-80 chat-toggle' : 'w-16'} transition-[width] duration-300`}
 
                     onClick={() => setChatOpen((prev) => !prev)}
                 >
