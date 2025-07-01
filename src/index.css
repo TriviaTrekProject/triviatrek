@@ -41,5 +41,4 @@ button {
   font-family: "Roboto Light", sans-serif;
   color: #fff;
   cursor: pointer;
-  transition: border-color 0.25s;
 }

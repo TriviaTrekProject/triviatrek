@@ -1,7 +1,7 @@
 const StartGameButton = ({ onClick }: { onClick: (() => void) | undefined }) => (
-    <div>
+    <div className={"w-full flex justify-center items-center"}>
         <button
-            className="bg-secondary-dark border-solid border-white font-bold hover:bg-secondary"
+            className="bg-secondary-dark border-solid border-white font-bold hover:bg-secondary-darker"
             type="button"
             onClick={onClick}
         >

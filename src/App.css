@@ -6,6 +6,8 @@
 
   --color-secondary: var(--color-orange-100);
   --color-secondary-dark: var(--color-orange-300);
+  --color-secondary-darker: var(--color-orange-400);
+
 }
 
 #root {

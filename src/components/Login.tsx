@@ -33,7 +33,7 @@ const Login = ({setUsername}: GuestRoomProps) => {
             />
             <button
                 type="submit"
-                className="bg-primary font-extrabold text-primary py-2 px-4 rounded w-full hover:bg-secondary-dark"
+                className="bg-secondary-dark font-extrabold text-primary py-2 px-4 rounded w-full hover:bg-secondary-darker"
             >
                 Commencer
             </button>
