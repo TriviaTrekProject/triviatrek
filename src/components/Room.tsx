@@ -46,7 +46,7 @@ const Room = ({ username }: ChatProps) => {
                 {revealAnswer ? (<ProgressBar duration={REVEAL_ANSWER_DELAY}/>) :(<div className='w-full h-3'/>)}
                 <QuizGameHeader idRoom={room?.roomId} quizGame={quizGame} />
             </div>
-            <div className="rounded-2xl w-full flex flex-col p-4 gap-8 bg-transparent">
+            <div className="rounded-2xl w-full flex flex-col p-4 gap-4 bg-transparent">
                 <RoomUsers users={users} scores={quizGame?.scores ?? []} />
                 {room && quizGame && quizGame?.currentQuestion && (
                     <QuizGameAnswersComponent
@@ -62,7 +62,7 @@ const Room = ({ username }: ChatProps) => {
                     <StartGameButton onClick={onClick(room?.roomId, room?.gameId, username)}/>
                 )}
 
-                <ChatComponent roomId={room?.roomId} room={room} username={username} />
+                <ChatComponent roomId={room?.roomId} messages={room?.messages} username={username} />
             </div>
         </div>
     ) : (<>
@@ -84,13 +84,13 @@ const Room = ({ username }: ChatProps) => {
                         " w-full sm:w-80"
                     }
                 >
-                    <ChatComponent roomId={room?.roomId} room={room} username={username} />
+                    <ChatComponent roomId={room?.roomId} messages={room?.messages} username={username} />
                 </div>
-                    <div className="flex flex-row items-center justify-center gap-4 h-full w-full">
+                    <div className="flex flex-row items-center justify-center gap-16 h-full w-full">
 
                         <RoomUsers users={users} scores={quizGame?.scores ?? []} />
                         <div className="flex flex-col items-center justify-center gap-1 h-full w-full">
-                            <div className={"flex flex-col items-center justify-center gap-4 h-auto w-full"}>
+                            <div className={"flex flex-col items-center justify-center gap-8 h-auto w-full"}>
                                 {revealAnswer ? (<ProgressBar duration={REVEAL_ANSWER_DELAY}/>) :(<div className='w-full h-3'/>)}
                                 <QuizGameHeader idRoom={room?.roomId} quizGame={quizGame} />
                             </div>

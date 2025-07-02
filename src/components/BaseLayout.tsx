@@ -1,13 +1,11 @@
 import { Outlet } from "react-router-dom";
-import useIsMobile from "../hook/useIsMobile.ts";
 
 export default function BaseLayout() {
 
-    const isMobile = useIsMobile();
 
     return (<div className={ "flex flex-col w-screen p-4 min-h-screen bg-primary-dark justify-center items-center"}>
 
-        <div className={`flex h-full z-50 justify-center items-center ${isMobile ? 'w-full' : 'w-10/12'}`}>
+        <div className={`flex h-full z-50 justify-center items-center w-full p-12`}>
             {/* ici header / nav */}
             <Outlet />
             {/* ici footer */}
