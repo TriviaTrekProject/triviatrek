@@ -1,14 +1,24 @@
 import {ScoreDTO} from "../../model/QuizGameDTO.ts";
 import useIsMobile from "../../hook/useIsMobile.ts";
+import PlayerIcon from "../common/Icons/PlayerIcon.tsx";
 
 const RoomUsers = ({users, scores}: {users:string[], scores:ScoreDTO[]} ) => {
     const isMobile = useIsMobile();
 
     return(
-        <div className={`bg-transparent ${isMobile ? 'px-6' : 'p-2'}`}>
+        <div className={`bg-transparent flex flex-col ${isMobile ? 'px-6' : 'p-2'}`}>
             <div className={"font-bold text-white p-2 bg-transparent border-solid border-b-4 mb-2 border-white"}>Utilisateurs</div>
             <div className="flex flex-col text-white gap-1">{users.map((usr, index) => (<div
-                key={index} className={"py-1 font-bold"}>{usr}{scores && scores.length > 0 && (" : " + (scores.find(score => score.player === usr)?.score ?? 0) + " pts")}</div>))}</div>
+                key={index} className={"py-1 font-bold flex flex-row justify-start items-center gap-2"}>
+                <div className={"flex shrink-0"}>
+                    <PlayerIcon className={"h-8 w-8"} />
+                </div>
+                <div className={"flex flex-col items-start"}>
+                    <div>{usr}</div>
+                    {scores && scores.length > 0 && ((scores.find(score => score.player === usr)?.score ?? 0) + " pts")}
+                </div>
+                </div>))}
+            </div>
         </div>
     )
 }

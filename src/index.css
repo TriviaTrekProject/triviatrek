@@ -41,4 +41,11 @@ button {
   font-family: "Roboto Light", sans-serif;
   color: #fff;
   cursor: pointer;
+
 }
+/* à la fin de index.css */
+button.chat-toggle {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+

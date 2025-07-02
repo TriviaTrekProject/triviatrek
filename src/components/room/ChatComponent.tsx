@@ -1,21 +1,32 @@
-import {RoomDTO} from "../../model/RoomDTO.ts";
 import {MessageDTO} from "../../model/MessageDTO.ts";
 import {roomApi} from "../../api/roomApi.ts";
-import {FormEvent} from "react";
+import {FormEvent, useEffect, useRef} from "react";
 import useIsMobile from "../../hook/useIsMobile.ts";
 
 interface ChatProps {
 
     roomId: string | undefined,
-    room: RoomDTO | null,
+    messages?: Array<MessageDTO>,
     username: string
 
 }
 
 
 
-const ChatComponent = ({roomId, room, username}:ChatProps) => {
+const ChatComponent = ({roomId, username, messages}:ChatProps) => {
     const isMobile = useIsMobile();
+    const chatRef = useRef<HTMLDivElement>(null);
+
+    const handleScrollToBottom = () => {
+        if (chatRef.current) {
+            chatRef.current.scrollTop = chatRef.current.scrollHeight;
+        }
+    };
+
+
+    useEffect(()=> {
+        handleScrollToBottom();
+    },[messages])
 
     const onSend = (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -36,9 +47,9 @@ const ChatComponent = ({roomId, room, username}:ChatProps) => {
 
         <div className="flex justify-center mb-1 text-primary text-lg font-extrabold underline">Room {roomId}</div>
 
-        <div className="flex flex-row grow-1 gap-1 gap-y-1 p-2 py-4 mt-5 mb-5 justify-flex-start w-full min-h-[50px] overflow-y-auto overflow-x-auto">
+        <div ref={chatRef} className="flex flex-row grow-1 gap-1 gap-y-1 p-2 py-4 mt-5 mb-5 justify-flex-start w-full min-h-[50px] overflow-y-auto overflow-x-auto">
             <div className="p-2 text-left">
-                {room?.messages.map((line, index) => {
+                {messages?.map((line, index) => {
 
                     if(line.sender === "SYSTEM") {
                         return (
