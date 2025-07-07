@@ -53,7 +53,9 @@ const ProgressBar = ({
     return (
         <div className={`w-full ${heightClass} ${trackClassName} rounded overflow-hidden mx-2`}>
             <div
-                className={`${barClassName} h-full transition-[width] duration-50`}
+                className={`${barClassName} h-full transition-[width] duration-50 animate-pulse
+                    
+`}
                 style={{ width: `${percent}%` }}
             />
         </div>
