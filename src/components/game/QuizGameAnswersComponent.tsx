@@ -1,13 +1,13 @@
 import {QuestionDTO} from "../../model/QuizGameDTO.ts";
-import FlatButton from "../button/FlatButton.tsx";
 import { gameApi } from "../../api/gameApi.ts";
 import useIsMobile from "../../hook/useIsMobile.ts";
-import { useEffect, useState } from "react";
+import { motion } from "motion/react"
+
 import {
     DELAY_TIME_BY_OPTION,
     DELAY_TIME_BY_QUESTION,
-    DELAY_TIME_DISABLED,
 } from "../../hook/useRoom.ts";
+import DelayedButton from "../button/DelayedButton.tsx";
 
 interface QuizGameComponentProps {
     idRoom: string | undefined;
@@ -17,41 +17,8 @@ interface QuizGameComponentProps {
     isRevealed: boolean;
 }
 
+const MotionDelayedButton = motion.create(DelayedButton)
 
-
-
-interface DelayedButtonProps {
-    onClick: (() => Promise<void>);
-    label: string;
-    isCorrect: boolean;
-    isRevealed: boolean;
-    time: number;
-}
-
-const DelayedButton = ({ onClick, label, isCorrect, isRevealed, time }: DelayedButtonProps) => {
-    const [hidden, setHidden] = useState(true);
-    const [disabled, setDisabled] = useState(true);
-    useEffect(() => {
-        const timer = setTimeout(() => setHidden(false), time);
-        const timerDisable = setTimeout(() => setDisabled(false), DELAY_TIME_DISABLED);
-        return () => {clearTimeout(timer); clearTimeout(timerDisable)};
-    }, [label, time]);
-
-    const buttonClass = !isRevealed
-        ? "bg-primary-dark"
-        : isCorrect
-            ? "bg-green-400 pointer-events-none"
-            : "bg-red-400 pointer-events-none";
-
-    return (
-        <FlatButton
-            className={`${hidden ? 'invisible' : ''} ${buttonClass}`}
-            text={label}
-            onClick={onClick}
-            disabled={disabled}
-        />
-    );
-};
 
 const QuizGameAnswersComponent = ({
                                       idRoom,
@@ -80,8 +47,19 @@ const QuizGameAnswersComponent = ({
         return (
             <div className={wrapperClass}>
                 {currentQuestion?.options.map((option, index) => (
-                    <div key={index} className={optionClass}>
-                        <DelayedButton
+                    <div key={index} className={optionClass}
+                    >
+                        <MotionDelayedButton
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                                // DELAY en millisecondes => delay en secondes
+                                delay: (DELAY_TIME_BY_QUESTION + index * DELAY_TIME_BY_OPTION) / 1000,
+                                // vous pouvez aussi ajuster la durée globale
+                                duration: 0.3
+                            }}
                             key={option}
                             onClick={async () => onAnswer(option)}
                             label={option}
