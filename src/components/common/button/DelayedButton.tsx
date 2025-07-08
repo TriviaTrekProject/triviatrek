@@ -1,5 +1,5 @@
 import {RefObject, useEffect, useState} from "react";
-import {DELAY_TIME_DISABLED} from "../../hook/useRoom.ts";
+import {DELAY_TIME_DISABLED} from "../../../hook/useRoom.ts";
 import FlatButton from "./FlatButton.tsx";
 
 interface DelayedButtonProps {
