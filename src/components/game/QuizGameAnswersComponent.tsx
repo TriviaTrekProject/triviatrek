@@ -7,7 +7,7 @@ import {
     DELAY_TIME_BY_OPTION,
     DELAY_TIME_BY_QUESTION,
 } from "../../hook/useRoom.ts";
-import DelayedButton from "../button/DelayedButton.tsx";
+import DelayedButton from "../common/button/DelayedButton.tsx";
 
 interface QuizGameComponentProps {
     idRoom: string | undefined;

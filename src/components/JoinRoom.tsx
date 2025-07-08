@@ -1,5 +1,5 @@
 import { useParams, Navigate } from "react-router-dom";
-import Room from "./Room.tsx";
+import Room from "./room/Room.tsx";
 
 interface GuestRoomProps {
     username: string | null;

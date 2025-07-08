@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import Spinner from './spinner/spinner';
-import useIsMobile from '../hook/useIsMobile';
-import { useRoom } from '../hook/useRoom';
-import MobileRoomView from './room/MobileRoomView';
-import DesktopRoomView from './room/DesktopRoomView';
-import { gameApi } from '../api/gameApi';
+import Spinner from '../spinner/spinner.tsx';
+import useIsMobile from '../../hook/useIsMobile.ts';
+import { useRoom } from '../../hook/useRoom.ts';
+import MobileRoomView from './MobileRoomView.tsx';
+import DesktopRoomView from './DesktopRoomView.tsx';
+import { gameApi } from '../../api/gameApi.ts';
 
 interface RoomProps {
     username: string;
