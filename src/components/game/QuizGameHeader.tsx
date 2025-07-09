@@ -1,5 +1,8 @@
 import {QuizGameDTO} from "../../model/QuizGameDTO.ts";
 import QuizIcon from "../common/Icons/QuizIcon.tsx";
+import EasyIcon from "../common/Icons/EasyIcon.tsx";
+import MediumIcon from "../common/Icons/MediumIcon.tsx";
+import HardIcon from "../common/Icons/HardIcon.tsx";
 
 
 interface QuizGameComponentProps {
@@ -16,6 +19,11 @@ const QuizGameHeader = ({idRoom, quizGame, revealAnswer, messageSystem}: QuizGam
         {idRoom && quizGame && !quizGame.finished && (<>
                 <div
                     className="flex flex-row justif-center items-center gap-2 font-bold text-4xl sm:text-5xl md:text-6xl lg:text-[64px] leading-tight font-[Nova_Square]"><QuizIcon /><span className={"p-4 bg-clip-text text-white"}>Question {quizGame.questions.findIndex( question => question.id === quizGame?.currentQuestion?.id)+1 }</span></div>
+
+                {quizGame?.currentQuestion?.difficulty === "easy" && <EasyIcon />}
+                {quizGame?.currentQuestion?.difficulty === "medium" && <MediumIcon />}
+                {quizGame?.currentQuestion?.difficulty === "hard" && <HardIcon />}
+
                 <div
                     className={`font-bold text-3xl text-white font-[Nova_Square]`}>{quizGame?.currentQuestion?.question}</div>
                 <div
