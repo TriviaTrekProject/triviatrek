@@ -3,7 +3,7 @@ import {RefObject} from "react";
 const RockBg = ({ref, className}: {ref:RefObject<SVGSVGElement>, className: string}) => {
 
     return (
-        <svg ref={ref} className={className + " rock"} xmlns="http://www.w3.org/2000/svg" version="1.2" viewBox="0 0 2428 970" width="2428" height="970">
+        <svg ref={ref} className={className + " rock"} xmlns="http://www.w3.org/2000/svg" version="1.2" viewBox="0 0 2428 970">
             <defs>
                 <clipPath clipPathUnits="userSpaceOnUse" id="rock-cp1">
                     <path d="m2425.88 969.85h-2425.88v-970.35h2425.88z"/>
