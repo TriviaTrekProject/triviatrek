@@ -34,11 +34,12 @@ const MobileRoomView = ({
       {revealAnswer
         ? <ProgressBar duration={REVEAL_ANSWER_DELAY}/>
         : <div className="w-full h-3"/>}
-      <QuizGameHeader idRoom={roomId} quizGame={quizGame}/>
+      <QuizGameHeader idRoom={roomId} quizGame={quizGame} revealAnswer={revealAnswer} messageSystem={messages?.findLast(message => message.sender === "GAME_SYSTEM")?.content}
+      />
     </div>
 
     <div className="rounded-2xl w-full flex flex-col p-4 gap-4 bg-transparent">
-      <RoomUsers users={users} scores={quizGame?.scores ?? []}/>
+      <RoomUsers username={username} users={users} scores={quizGame?.scores ?? []}/>
 
       {quizGame?.currentQuestion
         ? (

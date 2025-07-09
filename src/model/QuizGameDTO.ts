@@ -19,6 +19,7 @@ export interface QuizGameDTO {
     participants: string[]
     currentQuestionIndex: number
     questions: QuestionDTO[]
+    messageSystem?: string
 }
 
 export interface ScoreDTO {

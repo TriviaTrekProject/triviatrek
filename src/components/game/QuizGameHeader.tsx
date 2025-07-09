@@ -5,9 +5,11 @@ import QuizIcon from "../common/Icons/QuizIcon.tsx";
 interface QuizGameComponentProps {
     idRoom: string | undefined,
     quizGame: QuizGameDTO | null,
+    revealAnswer: boolean,
+    messageSystem?: string
 }
 
-const QuizGameHeader = ({idRoom, quizGame}: QuizGameComponentProps) => {
+const QuizGameHeader = ({idRoom, quizGame, revealAnswer, messageSystem}: QuizGameComponentProps) => {
 
     return(
 <>
@@ -16,7 +18,8 @@ const QuizGameHeader = ({idRoom, quizGame}: QuizGameComponentProps) => {
                     className="flex flex-row justif-center items-center gap-2 font-bold text-4xl sm:text-5xl md:text-6xl lg:text-[64px] leading-tight font-[Nova_Square]"><QuizIcon /><span className={"p-4 bg-clip-text text-white"}>Question {quizGame.questions.findIndex( question => question.id === quizGame?.currentQuestion?.id)+1 }</span></div>
                 <div
                     className={`font-bold text-3xl text-white font-[Nova_Square]`}>{quizGame?.currentQuestion?.question}</div>
-
+                <div
+                    className={`font-bold text-3xl text-secondary-dark font-[Nova_Square] ${!revealAnswer && messageSystem && 'invisible'}`}>{messageSystem}</div>
             </>
         )}
     {idRoom && quizGame && quizGame.finished && (<>
