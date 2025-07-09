@@ -24,9 +24,9 @@ function useParallaxValue(
 const ParallaxBackground = ({pointerX, pointerY}:{pointerX: MotionValue<number>, pointerY: MotionValue<number>}) => {
 
     // somme normalisée de X et Y
-    const pointerSum = useTransform<[number, number], number>(
+    const pointerSum = useTransform(
         [pointerX, pointerY],
-        ([x, y]) => x + y
+        ([x, y]: number[]) => x + y
     );
 
 
@@ -48,7 +48,6 @@ const ParallaxBackground = ({pointerX, pointerY}:{pointerX: MotionValue<number>,
             className="fixed w-full h-full overflow-hidden -z-1"
 
         >
-            {/*flex justify-center items-center*/}
             <MotionSkyBg className="absolute h-full w-auto" />
             <MotionRockBg className="absolute h-full w-auto" />
 
