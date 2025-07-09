@@ -1,5 +1,4 @@
 import {QuizGameDTO} from "../../model/QuizGameDTO.ts";
-import "./QuizGameHeader.css"
 import QuizIcon from "../common/Icons/QuizIcon.tsx";
 
 

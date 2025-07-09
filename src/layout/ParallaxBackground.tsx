@@ -44,46 +44,33 @@ const ParallaxBackground = ({pointerX, pointerY}:{pointerX: MotionValue<number>,
     const MotionBird1Bg = motion.create(Bird1Bg);
     const MotionBird2Bg = motion.create(Bird2Bg);
     return (
-        <div
-            className="fixed w-full h-full overflow-hidden -z-1"
-
-        >
+        <div className="fixed w-full h-full overflow-hidden -z-1">
             <MotionSkyBg className="absolute h-full w-auto" />
             <MotionRockBg style={{
                 x: xBackground,
                 willChange: "transform",
-
             }} className="absolute h-full w-auto -left-20" />
 
                 <MotionSeaBg style={{
                     x:xBackground,
                     willChange: "transform",
-
-
-
                 }} className="absolute h-full w-auto -left-20" />
+
                 <MotionBird1Bg style={{
                     x:xForeground2,
                     willChange: "transform",
-
-
-
-                }} className="absolute h-full w-auto [transform-box:fill-box] origin-[500px_280px] transform scale-x-[-1]
-
-"
+                }} className="absolute h-full w-auto [transform-box:fill-box] origin-[500px_280px] transform scale-x-[-1]"
 
                 />
 
                 <MotionBird2Bg style={{
                     x: xBackground2,
                     willChange: "transform",
-
                 }} className="absolute h-full w-auto" />
 
                 <MotionShipBg style={{
                     x,
                     willChange: "transform",
-
                 }} className="absolute h-full w-auto [transform-box:fill-box] origin-[50%_50%]" />
             <MotionShoreBg className="absolute h-full w-auto" />
         </div>
