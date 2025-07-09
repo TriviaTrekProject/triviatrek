@@ -53,7 +53,7 @@ const ParallaxBackground = ({pointerX, pointerY}:{pointerX: MotionValue<number>,
                 x: xBackground,
                 willChange: "transform",
 
-            }} className="absolute h-full w-auto" />
+            }} className="absolute h-full w-auto -left-20" />
 
                 <MotionSeaBg style={{
                     x:xBackground,
@@ -61,7 +61,7 @@ const ParallaxBackground = ({pointerX, pointerY}:{pointerX: MotionValue<number>,
 
 
 
-                }} className="absolute h-full w-auto" />
+                }} className="absolute h-full w-auto -left-20" />
                 <MotionBird1Bg style={{
                     x:xForeground2,
                     willChange: "transform",
