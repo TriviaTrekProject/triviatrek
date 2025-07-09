@@ -2,7 +2,7 @@
 
 @theme {
   --color-primary: var(--color-violet-300);
-  --color-primary-dark: var(--color-violet-500);
+  --color-primary-dark: #8f94cd;
 
   --color-secondary: var(--color-orange-100);
   --color-secondary-dark: var(--color-orange-300);

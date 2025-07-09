@@ -47,7 +47,7 @@ const ChatComponent = ({roomId, username, messages}:ChatProps) => {
 
         <div className="flex justify-center mb-1 text-primary text-lg font-extrabold underline">Room {roomId}</div>
 
-        <div ref={chatRef} className="flex flex-row grow-1 gap-1 gap-y-1 p-2 py-4 mt-5 mb-5 justify-flex-start w-full min-h-[50px] overflow-y-auto overflow-x-auto">
+        <div ref={chatRef} className="flex flex-row grow-1 gap-1 gap-y-1 p-2 py-4 mt-5 mb-5 justify-flex-start w-full min-h-[50px] max-h-[250px] overflow-y-auto overflow-x-auto">
             <div className="p-2 text-left">
                 {messages?.map((line, index) => {
 
