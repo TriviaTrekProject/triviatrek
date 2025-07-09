@@ -6,7 +6,7 @@ const SkyBg = ({ref, className}: {ref:RefObject<SVGSVGElement>, className: strin
 
     return (
         <svg ref={ref} className={className + " sky"}
-             xmlns="http://www.w3.org/2000/svg" version="1.2" viewBox="0 0 2428 970" width="2428" height="970">
+             xmlns="http://www.w3.org/2000/svg" version="1.2" viewBox="0 0 2428 970">
             <defs>
                 <clipPath clipPathUnits="userSpaceOnUse" id="sky-cp1">
                     <path d="m2425.88 969.85h-2425.88v-970.35h2425.88z"/>

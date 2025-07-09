@@ -48,19 +48,19 @@ const ParallaxBackground = ({pointerX, pointerY}:{pointerX: MotionValue<number>,
             className="fixed w-full h-full overflow-hidden -z-1"
 
         >
+            {/*flex justify-center items-center*/}
+            <MotionSkyBg className="absolute h-full w-auto" />
+            <MotionRockBg className="absolute h-full w-auto" />
 
-            <MotionSkyBg className="absolute min-w-max h-auto" />
-            <MotionRockBg className="absolute min-w-max h-auto" />
-
-                <MotionSeaBg className="absolute min-w-max h-auto" />
-                <MotionBird1Bg className="absolute min-w-max h-auto" />
-                <MotionBird2Bg className="absolute min-w-max h-auto" />
+                <MotionSeaBg className="absolute h-full w-auto" />
+                <MotionBird1Bg className="absolute h-full w-auto" />
+                <MotionBird2Bg className="absolute h-full w-auto" />
 
                 <MotionShipBg style={{
                     x,
                     willChange: "transform",
-                }} className="absolute min-w-max h-auto" />
-            <MotionShoreBg className="absolute min-w-max h-auto" />
+                }} className="absolute h-full w-auto" />
+            <MotionShoreBg className="absolute h-full w-auto" />
         </div>
     );
 };
