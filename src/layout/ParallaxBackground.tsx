@@ -31,9 +31,10 @@ const ParallaxBackground = ({pointerX, pointerY}:{pointerX: MotionValue<number>,
 
 
     const x = useParallaxValue(pointerSum, Math.random()*200);
-    const xForeground2 = useParallaxValue(pointerSum, Math.random()*50);
+    const xForeground2 = useParallaxValue(pointerSum, Math.random()*100);
 
     const xBackground = useParallaxValue(pointerSum, Math.random()*-30);
+    const xBackground2 = useParallaxValue(pointerSum, Math.random()*-20);
 
     const MotionSkyBg = motion.create(SkyBg);
     const MotionShoreBg = motion.create(ShoreBg);
@@ -74,7 +75,7 @@ const ParallaxBackground = ({pointerX, pointerY}:{pointerX: MotionValue<number>,
                 />
 
                 <MotionBird2Bg style={{
-                    x: xBackground,
+                    x: xBackground2,
                     willChange: "transform",
 
                 }} className="absolute h-full w-auto" />
