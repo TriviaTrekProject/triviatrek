@@ -34,6 +34,8 @@ const DesktopRoomView = ({
     onStart
 }:DesktopRoomViewProps) => (
   <>
+    <div className="w-full h-full absolute -z-1 bg-black opacity-40 pointer-events-none" />
+
     <ChatPanel
       roomId={roomId}
       messages={messages}

@@ -8,6 +8,7 @@ import {
     DELAY_TIME_BY_QUESTION,
 } from "../../hook/useRoom.ts";
 import DelayedButton from "../common/button/DelayedButton.tsx";
+import {useState} from "react";
 
 interface QuizGameComponentProps {
     idRoom: string | undefined;
@@ -28,10 +29,13 @@ const QuizGameAnswersComponent = ({
                                       isRevealed
                                   }: QuizGameComponentProps) => {
     const isMobile = useIsMobile();
+    const [disableAnswer,setDisableAnswer] = useState(false);
 
     const onAnswer = async (answer: string) => {
         if (!gameId) return;
+        setDisableAnswer(true);
         await gameApi.submitAnswer(gameId, { player: username, answer });
+        setDisableAnswer(false);
     };
 
     // Helper function to render options
@@ -66,6 +70,8 @@ const QuizGameAnswersComponent = ({
                             isCorrect={option === currentQuestion?.correctAnswer}
                             isRevealed={isRevealed}
                             time={(DELAY_TIME_BY_QUESTION + index * DELAY_TIME_BY_OPTION)}
+                            isDisabled={disableAnswer}
+
                         />
                     </div>
                 ))}

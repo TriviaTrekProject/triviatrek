@@ -8,10 +8,11 @@ interface DelayedButtonProps {
     isCorrect: boolean;
     isRevealed: boolean;
     time: number;
-    ref:RefObject<HTMLDivElement>
+    ref:RefObject<HTMLDivElement>;
+    isDisabled?: boolean;
 }
 
-const DelayedButton = ({ onClick, label, isCorrect, isRevealed, time, ref }: DelayedButtonProps) => {
+const DelayedButton = ({ onClick, label, isCorrect, isRevealed, time, ref, isDisabled }: DelayedButtonProps) => {
     const [hidden, setHidden] = useState(true);
     const [disabled, setDisabled] = useState(true);
     useEffect(() => {
@@ -33,7 +34,7 @@ const DelayedButton = ({ onClick, label, isCorrect, isRevealed, time, ref }: Del
             className={`${hidden ? 'invisible' : ''} ${buttonClass}`}
             text={label}
             onClick={onClick}
-            disabled={disabled}
+            disabled={disabled || isDisabled}
         />
     );
 };
