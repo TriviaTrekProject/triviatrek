@@ -45,14 +45,13 @@ const DesktopRoomView = ({
     />
 
     <div className="flex flex-row items-center justify-center gap-16 h-full w-full">
-      <RoomUsers users={users} scores={quizGame?.scores ?? []}/>
-
+      <RoomUsers username={username} users={users} scores={quizGame?.scores ?? []}/>
       <div className="flex flex-col items-center justify-center gap-1 h-full w-full">
         <div className="flex flex-col items-center justify-center gap-8 w-full">
           {revealAnswer
             ? <ProgressBar duration={REVEAL_ANSWER_DELAY}/>
             : <div className="w-full h-3"/>}
-          <QuizGameHeader idRoom={roomId} quizGame={quizGame}/>
+          <QuizGameHeader idRoom={roomId} quizGame={quizGame} revealAnswer={revealAnswer} messageSystem={messages?.findLast(message => message.sender === "GAME_SYSTEM")?.content}/>
         </div>
 
         <div className="rounded-2xl flex flex-row p-5 gap-20 w-full min-h-2/5 bg-transparent">
