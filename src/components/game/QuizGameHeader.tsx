@@ -34,14 +34,17 @@ const QuizGameHeader = ({idRoom, quizGame, revealAnswer, messageSystem, username
                 <JokerContainer handleSendJoker={() => handleSendJoker(quizGame?.gameId, quizGame?.participants.find(participant => participant.username === username)?.participantId, username)}/>
 
                 <div
-                    className="flex flex-row justif-center items-center gap-2 font-bold text-4xl sm:text-5xl md:text-6xl lg:text-[64px] leading-tight font-[Nova_Square]"><QuizIcon /><span className={"p-4 bg-clip-text text-white"}>Question {quizGame.questions.findIndex( question => question.id === quizGame?.currentQuestion?.id)+1 }</span></div>
-
-                {quizGame?.currentQuestion?.difficulty === "easy" && <EasyIcon />}
+                    className="flex flex-row justif-center items-center gap-2 font-bold text-4xl sm:text-5xl md:text-6xl lg:text-[64px] leading-tight font-[Nova_Square]"><QuizIcon /><span className={"p-4 bg-clip-text text-white text-shadow-lg"}>Question {quizGame.questions.findIndex( question => question.id === quizGame?.currentQuestion?.id)+1 }</span></div>
+                <div className={"flex flex-row justify-center items-center gap-4 bg-primary/50 backdrop-blur-sm p-4 border border-white/20 rounded-2xl"}>
+                    <div className={"font-bold text-2xl text-white italic text-shadow-lg"}>{quizGame?.currentQuestion?.category}</div>
+                {quizGame?.currentQuestion?.difficulty === "easy" && <EasyIcon  />}
                 {quizGame?.currentQuestion?.difficulty === "medium" && <MediumIcon />}
                 {quizGame?.currentQuestion?.difficulty === "hard" && <HardIcon />}
 
+                </div>
+
                 <div
-                    className={`font-bold text-3xl text-white font-[Nova_Square]`}>{quizGame?.currentQuestion?.question}</div>
+                    className={`font-bold text-3xl text-white font-[Nova_Square] text-shadow-lg`}>{quizGame?.currentQuestion?.question}</div>
                 {revealAnswer && messageSystem && (<div
                     className={`absolute border border-white/30 rounded-xl bg-white backdrop-blur-sm shadow-lg p-5 text-2xl left-15 top-25 font-bold text-secondary-dark font-[Nova_Square]`}>{messageSystem}</div>)}
             </>

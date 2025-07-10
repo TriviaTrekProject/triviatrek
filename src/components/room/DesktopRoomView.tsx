@@ -47,12 +47,10 @@ const DesktopRoomView = ({
     <div className="flex flex-row items-center justify-center gap-16 h-full w-full">
       <RoomUsers username={username} users={users} scores={quizGame?.scores ?? []}/>
       <div className="flex flex-col items-center justify-center gap-1 h-full w-full">
-        <div className="flex flex-col items-center justify-center gap-8 w-full">
+        <div className="flex flex-col items-center justify-center gap-6 w-full">
 
           <QuizGameHeader username={username} idRoom={roomId} quizGame={quizGame} revealAnswer={revealAnswer} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}/>
-          {revealAnswer
-              ? <ProgressBar duration={REVEAL_ANSWER_DELAY}/>
-              : <div className="w-full h-3"/>}
+
         </div>
 
         <div className="rounded-2xl flex flex-row p-5 gap-20 w-full min-h-2/5 bg-transparent">
@@ -71,6 +69,9 @@ const DesktopRoomView = ({
             )
           }
         </div>
+        {revealAnswer
+            ? <ProgressBar duration={REVEAL_ANSWER_DELAY}/>
+            : <div className="w-full h-3"/>}
       </div>
     </div>
   </>
