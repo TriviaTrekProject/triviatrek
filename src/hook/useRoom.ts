@@ -7,7 +7,7 @@ import {gameApi} from "../api/gameApi.ts";
 import {socketService} from "../ws/socketService.ts";
 import useSocket from "../hook/useSocket.ts";
 import useHandleUnmount from "../hook/useHandleUnmount.ts";
-import {JokerDTO} from "../model/Request/JokerDTO.ts";
+import {JokerDTO} from "../model/JokerDTO.ts";
 import {JokerType} from "../model/Request/PlayerJokerRequest.ts";
 
 // Constante pour le délai de révélation des réponses
@@ -25,6 +25,7 @@ export const useRoom = (username: string) => {
     const [revealAnswer, setRevealAnswer] = useState<boolean>(false); // État pour révéler les réponses
     const [hasSubscribedToGameUpdates, setHasSubscribedToGameUpdates] = useState<boolean>(false); // Gestion des abonnements aux mises à jour
     const [isLoading, setLoading] = useState(true);               // Indique si les données sont en train de se charger
+    const [effetGlace, setEffetGlace] = useState(false);
 
     // Déclenchée lorsqu'un utilisateur quitte la room ou l'application
     const handleUnload = useCallback(() => {
@@ -92,7 +93,11 @@ export const useRoom = (username: string) => {
         socketService.subscribe(`/game/joker/${room.gameId}`, (joker: JokerDTO) => {
             if (joker.jokerType === JokerType.PRIORITE_REPONSE && joker.username !== username)
             {
-                alert('Vous avez été pranked !');
+                setEffetGlace(true)   ;
+                setTimeout(()=> {
+                    setEffetGlace(false);
+                },8000);
+
             }
 
         });
@@ -121,5 +126,5 @@ export const useRoom = (username: string) => {
     useEffect(subscribeToJokerUpdates, [subscribeToJokerUpdates]);
 
     // Retourne les données de la Room et du jeu nécessaires aux composants
-    return { room, quizGame, users, revealAnswer, isLoading };
+    return { room, quizGame, users, revealAnswer, isLoading, effetGlace };
 };

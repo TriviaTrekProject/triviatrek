@@ -7,6 +7,7 @@ import { REVEAL_ANSWER_DELAY } from '../../hook/useRoom';
 import ChatPanel from './ChatPanel';
 import {MessageDTO} from "../../model/MessageDTO.ts";
 import {QuizGameDTO} from "../../model/QuizGameDTO.ts";
+import ParallaxBackgroundIce from "../../layout/ParallaxBackgroundIce.tsx";
 
 interface DesktopRoomViewProps {
   roomId?: string;
@@ -19,6 +20,7 @@ interface DesktopRoomViewProps {
   toggleChat: () => void;
   onStart?: () => void;
   messages?: MessageDTO[];
+  effetGlace?: boolean;
 }
 
 const DesktopRoomView = ({
@@ -31,13 +33,15 @@ const DesktopRoomView = ({
   isChatOpen,
   toggleChat,
   messages,
-    onStart
+    onStart,
+    effetGlace
 }:DesktopRoomViewProps) => (
   <>
     <div className="w-full h-full absolute -z-1 bg-black opacity-40 pointer-events-none" />
-
+    {effetGlace && (<ParallaxBackgroundIce/>)
+    }
     <ChatPanel
-      roomId={roomId}
+        roomId={roomId}
       messages={messages}
       username={username}
       isOpen={isChatOpen}
