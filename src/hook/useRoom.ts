@@ -90,7 +90,6 @@ export const useRoom = (username: string) => {
     const subscribeToJokerUpdates = useCallback(() => {
         if (!id || !room?.gameId) return;
         socketService.subscribe(`/game/joker/${room.gameId}`, (joker: JokerDTO) => {
-            console.log("Joker", joker);
             if (joker.jokerType === JokerType.PRIORITE_REPONSE && joker.username !== username) alert('Vous avez été pranked !');
 
         });
