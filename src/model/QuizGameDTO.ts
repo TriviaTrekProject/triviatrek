@@ -9,6 +9,12 @@ export interface QuestionDTO {
     correctIndex: number
 }
 
+export interface ParticipantDTO {
+    participantId: string
+    username: string
+    delaiReponse: number
+}
+
 
 export interface QuizGameDTO {
     roomId: string
@@ -16,7 +22,7 @@ export interface QuizGameDTO {
     currentQuestion: QuestionDTO | null
     scores: ScoreDTO[]
     finished: boolean
-    participants: string[]
+    participants: ParticipantDTO[]
     currentQuestionIndex: number
     questions: QuestionDTO[]
     messageSystem?: string

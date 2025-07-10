@@ -51,7 +51,7 @@ const DesktopRoomView = ({
           {revealAnswer
             ? <ProgressBar duration={REVEAL_ANSWER_DELAY}/>
             : <div className="w-full h-3"/>}
-          <QuizGameHeader idRoom={roomId} quizGame={quizGame} revealAnswer={revealAnswer} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}/>
+          <QuizGameHeader username={username} idRoom={roomId} quizGame={quizGame} revealAnswer={revealAnswer} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}/>
         </div>
 
         <div className="rounded-2xl flex flex-row p-5 gap-20 w-full min-h-2/5 bg-transparent">
