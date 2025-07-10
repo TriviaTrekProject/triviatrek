@@ -59,7 +59,7 @@ const ChatComponent = ({roomId, username, messages}:ChatProps) => {
                         )
                     }
 
-                    else if(line.sender !== "GAME_SYSTEM") {
+                    else if(!line.sender.startsWith("GAME_SYSTEM")) {
                         return (
                             <div key={index}>
                                 <span className="text-primary-dark">{line.sender}</span>: {line.content}
