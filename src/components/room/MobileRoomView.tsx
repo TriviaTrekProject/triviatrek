@@ -34,7 +34,7 @@ const MobileRoomView = ({
       {revealAnswer
         ? <ProgressBar duration={REVEAL_ANSWER_DELAY}/>
         : <div className="w-full h-3"/>}
-      <QuizGameHeader idRoom={roomId} quizGame={quizGame} revealAnswer={revealAnswer} messageSystem={messages?.findLast(message => message.sender === "GAME_SYSTEM")?.content}
+      <QuizGameHeader idRoom={roomId} quizGame={quizGame} revealAnswer={revealAnswer} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}
       />
     </div>
 
