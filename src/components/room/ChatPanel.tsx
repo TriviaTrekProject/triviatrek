@@ -21,7 +21,7 @@ const ChatPanel = ({
   <>
     {/* Bouton pour ouvrir/fermer le chat */}
     <div
-      className={`fixed top-1/5 right-0 z-50 h-12 bg-secondary-dark text-white hover:bg-secondary-darker overflow-hidden flex grow-1
+      className={`fixed top-1/3 right-0 z-50 h-12 bg-secondary-dark text-white hover:bg-secondary-darker overflow-hidden flex grow-1
         ${isOpen ? 'w-80 rounded-t-2xl' : 'w-45 rounded-2xl'}
         transition-[width] duration-300 flex justify-center items-center`}
     >
@@ -38,7 +38,7 @@ const ChatPanel = ({
     {/* Panneau latéral Chat */}
     <div
       className={
-        `fixed top-[calc(20%+48px)] right-0 z-40 h-auto scroll shadow-lg bg-white
+        `fixed top-[calc(33%+48px)] right-0 z-40 h-auto scroll shadow-lg bg-white
          transform transition-transform duration-300 ease-in-out
          ${isOpen ? 'translate-x-0 rounded-b-2xl' : 'translate-x-full'}
          w-full sm:w-80 pt-6`

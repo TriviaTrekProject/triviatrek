@@ -1,4 +1,4 @@
-import {JokerType} from "./PlayerJokerRequest.ts";
+import {JokerType} from "./Request/PlayerJokerRequest.ts";
 
 export interface JokerDTO {
 
