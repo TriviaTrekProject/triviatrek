@@ -5,6 +5,7 @@ import MediumIcon from "../common/Icons/MediumIcon.tsx";
 import HardIcon from "../common/Icons/HardIcon.tsx";
 import { gameApi } from "../../api/gameApi.ts";
 import {JokerType, PlayerJokerRequest} from "../../model/Request/PlayerJokerRequest.ts";
+import JokerContainer from "./JokerContainer.tsx";
 
 
 interface QuizGameComponentProps {
@@ -29,7 +30,9 @@ const QuizGameHeader = ({idRoom, quizGame, revealAnswer, messageSystem, username
     return(
 <>
         {idRoom && quizGame && !quizGame.finished && (<>
-                <button className={"border-1 border-solid border-red-500 p-4"} onClick={()=>handleSendJoker(quizGame?.gameId, quizGame?.participants.find(participant => participant.username === username)?.participantId, username)}>Joker délai</button>
+
+                <JokerContainer handleSendJoker={() => handleSendJoker(quizGame?.gameId, quizGame?.participants.find(participant => participant.username === username)?.participantId, username)}/>
+
                 <div
                     className="flex flex-row justif-center items-center gap-2 font-bold text-4xl sm:text-5xl md:text-6xl lg:text-[64px] leading-tight font-[Nova_Square]"><QuizIcon /><span className={"p-4 bg-clip-text text-white"}>Question {quizGame.questions.findIndex( question => question.id === quizGame?.currentQuestion?.id)+1 }</span></div>
 
@@ -39,8 +42,8 @@ const QuizGameHeader = ({idRoom, quizGame, revealAnswer, messageSystem, username
 
                 <div
                     className={`font-bold text-3xl text-white font-[Nova_Square]`}>{quizGame?.currentQuestion?.question}</div>
-                <div
-                    className={`font-bold text-3xl text-secondary-dark font-[Nova_Square] ${!revealAnswer && messageSystem && 'invisible'}`}>{messageSystem}</div>
+                {revealAnswer && messageSystem && (<div
+                    className={`absolute border border-white/30 rounded-xl bg-white backdrop-blur-sm shadow-lg p-5 text-2xl left-15 top-25 font-bold text-secondary-dark font-[Nova_Square]`}>{messageSystem}</div>)}
             </>
         )}
     {idRoom && quizGame && quizGame.finished && (<>
