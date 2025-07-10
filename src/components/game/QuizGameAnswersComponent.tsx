@@ -59,9 +59,7 @@ const QuizGameAnswersComponent = ({
                             initial={{ opacity: 0, y: 8 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{
-                                // DELAY en millisecondes => delay en secondes
                                 delay: (DELAY_TIME_BY_QUESTION + index * DELAY_TIME_BY_OPTION) / 1000,
-                                // vous pouvez aussi ajuster la durée globale
                                 duration: 0.3
                             }}
                             key={option}

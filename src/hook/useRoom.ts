@@ -1,12 +1,14 @@
-import { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
-import { RoomDTO } from "../model/RoomDTO.ts";
-import { QuizGameDTO } from "../model/QuizGameDTO.ts";
-import { roomApi } from "../api/roomApi.ts";
-import { gameApi } from "../api/gameApi.ts";
-import { socketService } from "../ws/socketService.ts";
+import {useCallback, useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {RoomDTO} from "../model/RoomDTO.ts";
+import {QuizGameDTO} from "../model/QuizGameDTO.ts";
+import {roomApi} from "../api/roomApi.ts";
+import {gameApi} from "../api/gameApi.ts";
+import {socketService} from "../ws/socketService.ts";
 import useSocket from "../hook/useSocket.ts";
 import useHandleUnmount from "../hook/useHandleUnmount.ts";
+import {JokerDTO} from "../model/Request/JokerDTO.ts";
+import {JokerType} from "../model/Request/PlayerJokerRequest.ts";
 
 // Constante pour le délai de révélation des réponses
 export const REVEAL_ANSWER_DELAY = 7000;
@@ -81,8 +83,19 @@ export const useRoom = (username: string) => {
                 return prev;
             });
         });
+
+
     }, [id, room?.gameId, hasSubscribedToGameUpdates]);
 
+    const subscribeToJokerUpdates = useCallback(() => {
+        if (!id || !room?.gameId) return;
+        socketService.subscribe(`/game/joker/${room.gameId}`, (joker: JokerDTO) => {
+            console.log("Joker", joker);
+            if (joker.jokerType === JokerType.PRIORITE_REPONSE && joker.username !== username) alert('Vous avez été pranked !');
+
+        });
+    },[id, room?.gameId, username]);
+    
     // Rejoindre la partie active s'il y en a une
     const handleJoinActiveGame = useCallback(() => {
         if (id && room?.activeGame && !quizGame) {
@@ -101,6 +114,9 @@ export const useRoom = (username: string) => {
 
     // Ajoute l'utilisateur à une partie active existante
     useEffect(handleJoinActiveGame, [handleJoinActiveGame]);
+
+    // Souscrit automatiquement aux mises à jour dûes aux jokers
+    useEffect(subscribeToJokerUpdates, [subscribeToJokerUpdates]);
 
     // Retourne les données de la Room et du jeu nécessaires aux composants
     return { room, quizGame, users, revealAnswer, isLoading };
