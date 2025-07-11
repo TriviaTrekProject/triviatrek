@@ -6,6 +6,7 @@ import HardIcon from "../common/Icons/HardIcon.tsx";
 import { gameApi } from "../../api/gameApi.ts";
 import {JokerType, PlayerJokerRequest} from "../../model/Request/PlayerJokerRequest.ts";
 import JokerContainer from "./JokerContainer.tsx";
+import {useCallback, useState} from "react";
 
 
 interface QuizGameComponentProps {
@@ -14,20 +15,28 @@ interface QuizGameComponentProps {
     revealAnswer: boolean,
     messageSystem?: string,
     username: string,
-    currentParticipantId: string | null
+    currentParticipantId: string | null,
 }
 
-const handleSendJoker = (gameId:string, participantId:string|null, username: string) => {
-    console.log(gameId, participantId, username);
-    if(!gameId || !participantId) return;
-    const request: PlayerJokerRequest = {
-        username: username,
-        jokerType: JokerType.PRIORITE_REPONSE,
-        participantId: participantId
-    }
-    gameApi.submitJoker(gameId, request)
-}
+
 const QuizGameHeader = ({idRoom, quizGame, revealAnswer, messageSystem, username, currentParticipantId}: QuizGameComponentProps) => {
+
+    const [usedJokerGlace, setUsedJokerGlace] = useState(false);
+
+    const handleSendJoker = useCallback((gameId:string, participantId:string|null, username: string) => {
+        console.log(gameId, participantId, username);
+        if(!gameId || !participantId) return;
+        const request: PlayerJokerRequest = {
+            username: username,
+            jokerType: JokerType.PRIORITE_REPONSE,
+            participantId: participantId
+        }
+        gameApi.submitJoker(gameId, request);
+        setUsedJokerGlace(true);
+        setTimeout(()=> {
+            setUsedJokerGlace(false);
+        }, 8000)
+    },[]);
 
     return(
 <>
@@ -49,6 +58,7 @@ const QuizGameHeader = ({idRoom, quizGame, revealAnswer, messageSystem, username
                     className={`font-bold text-3xl text-white font-[Nova_Square] text-shadow-lg`}>{quizGame?.currentQuestion?.question}</div>
                 {revealAnswer && messageSystem && (<div
                     className={`absolute border border-white/30 rounded-xl bg-white backdrop-blur-sm shadow-lg p-5 text-2xl left-15 top-25 font-bold text-secondary-dark font-[Nova_Square]`}>{messageSystem}</div>)}
+                {!revealAnswer && usedJokerGlace && (<div className={`absolute border border-white/30 rounded-xl bg-white backdrop-blur-sm shadow-lg p-5 text-2xl left-15 top-25 font-bold text-secondary-dark font-[Nova_Square]`}>Vous avez gelé vos adversaires !</div>)}
             </>
         )}
     {idRoom && quizGame && quizGame.finished && (<>
