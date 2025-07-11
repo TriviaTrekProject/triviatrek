@@ -1,67 +1,67 @@
 import {motion} from "motion/react";
 import Hill1Bg from "../components/common/background/Hill1Bg.tsx";
 import Hill2Bg from "../components/common/background/Hill2Bg.tsx";
-import Hill3Bg from "../components/common/background/Hill3Bg.tsx";
-import SkyIceBg from "../components/common/background/SkyIceBg.tsx";
 import SnowBg from "../components/common/background/SnowBg.tsx";
-import IceIcon from "../components/common/Icons/IceIcon.tsx";
 import React from "react";
+import IceMountainBg from "../components/common/background/IceMountainBg.tsx";
 
 const MotionHill1Bg = motion.create(Hill1Bg);
 const MotionHill2Bg = motion.create(Hill2Bg);
-const MotionHill3Bg = motion.create(Hill3Bg);
-const MotionSkyIceBg = motion.create(SkyIceBg);
 const MotionSnowBg = motion.create(SnowBg);
+// const MotionGivreBg = motion.create(GivreBg);
+const MotionIceMoutainBg= motion.create(IceMountainBg);
 
 const ParallaxBackgroundIce = () => {
 
 
     return(
-        <div className={"top-0 w-full h-full absolute z-40 bg-cyan-500/80 pointer-events-auto w-auto left-0 overflow-hidden flex "}>
+        <div className={"top-0 w-full h-full absolute z-40 pointer-events-auto w-auto left-0 overflow-hidden flex"}>
 
-            <div className={"absolute w-full h-full justify-center items-center z-50 font-[Nova_Square] tracking-wider text-7xl font-bold text-shadow-lg text-blue-500 flex flex-row gap-4"}> <div className={"bg-[#ffffffb3] flex flex-row justify-center items-center rounded-2xl"}><IceIcon className={"h-24 w-auto"}/><div> Gelé ! </div><IceIcon className={"h-24 w-auto"}/></div></div>
-            <MotionSkyIceBg
-                initial={{ y: 500, opacity: 0.5 }}
-                animate={{ y: 0, opacity: 1 }}
-                className="absolute -left-25 w-auto h-full"/>
+            <div className={"bg-radial-[at_50%_50%] from-transparent to-sky-200 to-95% w-full h-full absolute z-50 pointer-events-auto "}/>
 
+
+            <MotionIceMoutainBg                 initial={{ y: -1000 }}
+                                                animate={{ y: 0, opacity: 1 }}
+                                                transition={{
+                                                    type: "spring",
+                                                    stiffness: 250,   // rigidité du ressort
+                                                    damping: 15,      // amortissement
+                                                    bounce: 0.5       // rebond (0 = sans rebond, 1 = très rebondissant)
+                                                }}
+                                                className={"absolute top-0 w-full h-auto"}/>
 
             <MotionHill1Bg
-                initial={{ x:400 }}
-                animate={{ x:100 }}
+                initial={{ x:1400 }}
+                animate={{ x:800 }}
                 transition={{
                     duration: 7,
-                    delay: 1,
+                    delay:1
 
                 }}
-                className="absolute right-0 -bottom-20 w-auto h-full"/>
+                className="absolute right-0 -bottom-70 w-auto h-full"/>
+
+
 
             <MotionHill2Bg
-                initial={{ x:-500 }}
-                animate={{ x:0 }}
+                initial={{ x:-1500 }}
+                animate={{ x:-500 }}
                 transition={{
-                    duration: 7
+                    duration: 7,
+                    delay:1
                 }}
 
-                className="absolute -left-20 -bottom-20 w-auto h-full"/>
+                className="absolute -left-20 -bottom-85 w-auto h-full"/>
 
-            <MotionHill3Bg
-                initial={{ x:250 }}
-                animate={{ x:100 }}
-                transition={{
-                    duration: 5,
-                    delay: 1,
-
-                }}                className="absolute right-0 -bottom-20 w-auto h-full"/>
             <MotionSnowBg
                 initial={{ y: -1000, opacity: 0.3 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{
-                    delay: 1,
+                    delay: 0,
                     duration: 8
                 }}
 
-                className="absolute -left-20 top-0 w-auto h-full"/>
+                className="absolute -left-20 top-0 w-auto h-full "/>
+
 
 
 
