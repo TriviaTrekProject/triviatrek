@@ -12,7 +12,7 @@ interface RoomProps {
 }
 
 const Room: React.FC<RoomProps> = ({ username }) => {
-    const { room, quizGame, users, revealAnswer, isLoading, effetGlace } = useRoom(username);
+    const { room, quizGame, users, revealAnswer, isLoading, effetGlace, currentParticipantId } = useRoom(username);
     const isMobile = useIsMobile();
     const [isChatOpen, setChatOpen] = useState(false);
 
@@ -38,6 +38,7 @@ const Room: React.FC<RoomProps> = ({ username }) => {
                         username={username}
                         onStart={handleStart}
                         messages={room?.messages}
+                        currentParticipantId={currentParticipantId}
                     />
                 )
                 : (
@@ -53,6 +54,7 @@ const Room: React.FC<RoomProps> = ({ username }) => {
                         onStart={handleStart}
                         messages={room?.messages}
                         effetGlace={effetGlace}
+                        currentParticipantId={currentParticipantId}
                     />
                 )
             }

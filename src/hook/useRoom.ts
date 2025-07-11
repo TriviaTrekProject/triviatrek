@@ -26,6 +26,7 @@ export const useRoom = (username: string) => {
     const [hasSubscribedToGameUpdates, setHasSubscribedToGameUpdates] = useState<boolean>(false); // Gestion des abonnements aux mises à jour
     const [isLoading, setLoading] = useState(true);               // Indique si les données sont en train de se charger
     const [effetGlace, setEffetGlace] = useState(false);
+    const [currentParticipantId, setCurrentParticipantId] = useState<string | null>(null);
 
     // Déclenchée lorsqu'un utilisateur quitte la room ou l'application
     const handleUnload = useCallback(() => {
@@ -57,6 +58,15 @@ export const useRoom = (username: string) => {
         socketService.subscribe(`/game/${room.gameId}`, (game: QuizGameDTO) => {
 
             setQuizGame(prev => {
+                if (game?.participants?.length) {
+                    const participantId =
+                        game.participants.find(p => p.username === username)
+                            ?.participantId
+                        ?? null;
+                    setCurrentParticipantId(participantId);
+                }
+
+
                 if (!prev) {
                     setHasSubscribedToGameUpdates(true);
                     return game;
@@ -86,7 +96,7 @@ export const useRoom = (username: string) => {
         });
 
 
-    }, [id, room?.gameId, hasSubscribedToGameUpdates]);
+    }, [id, room?.gameId, hasSubscribedToGameUpdates, username]);
 
     const subscribeToJokerUpdates = useCallback(() => {
         if (!id || !room?.gameId) return;
@@ -126,5 +136,5 @@ export const useRoom = (username: string) => {
     useEffect(subscribeToJokerUpdates, [subscribeToJokerUpdates]);
 
     // Retourne les données de la Room et du jeu nécessaires aux composants
-    return { room, quizGame, users, revealAnswer, isLoading, effetGlace };
+    return { room, quizGame, users, revealAnswer, isLoading, effetGlace, currentParticipantId };
 };

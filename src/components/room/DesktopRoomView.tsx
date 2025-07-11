@@ -21,6 +21,7 @@ interface DesktopRoomViewProps {
   onStart?: () => void;
   messages?: MessageDTO[];
   effetGlace?: boolean;
+  currentParticipantId: string | null;
 }
 
 const DesktopRoomView = ({
@@ -34,7 +35,8 @@ const DesktopRoomView = ({
   toggleChat,
   messages,
     onStart,
-    effetGlace
+    effetGlace,
+                           currentParticipantId
 }:DesktopRoomViewProps) => (
   <>
     <div className="w-full h-full absolute -z-1 bg-black opacity-40 pointer-events-none" />
@@ -53,7 +55,7 @@ const DesktopRoomView = ({
       <div className="flex flex-col items-center justify-center gap-1 h-full w-full">
         <div className="flex flex-col items-center justify-center gap-6 w-full">
 
-          <QuizGameHeader username={username} idRoom={roomId} quizGame={quizGame} revealAnswer={revealAnswer} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}/>
+          <QuizGameHeader currentParticipantId={currentParticipantId} username={username} idRoom={roomId} quizGame={quizGame} revealAnswer={revealAnswer} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}/>
 
         </div>
 
