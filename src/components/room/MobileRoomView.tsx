@@ -17,6 +17,7 @@ interface MobileRoomViewProps {
   username: string;
   onStart?: () => void;
   messages?: MessageDTO[];
+    currentParticipantId: string | null;
 }
 
 const MobileRoomView = ({
@@ -27,11 +28,12 @@ const MobileRoomView = ({
                                                          revealAnswer,
                                                          username,
                                                          onStart,
-                                                         messages
+                                                         messages,
+                            currentParticipantId
 }:MobileRoomViewProps) => (
   <div className="flex flex-col items-center justify-center gap-4 h-full w-full">
     <div className="flex flex-col items-center justify-center gap-4 w-full">
-      <QuizGameHeader username={username} idRoom={roomId} quizGame={quizGame} revealAnswer={revealAnswer} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}
+      <QuizGameHeader currentParticipantId={currentParticipantId} username={username} idRoom={roomId} quizGame={quizGame} revealAnswer={revealAnswer} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}
       />
         {revealAnswer
             ? <ProgressBar duration={REVEAL_ANSWER_DELAY}/>

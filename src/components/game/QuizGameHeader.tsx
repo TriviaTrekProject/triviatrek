@@ -13,10 +13,12 @@ interface QuizGameComponentProps {
     quizGame: QuizGameDTO | null,
     revealAnswer: boolean,
     messageSystem?: string,
-    username: string
+    username: string,
+    currentParticipantId: string | null
 }
 
-const handleSendJoker = (gameId:string, participantId:string|undefined, username: string) => {
+const handleSendJoker = (gameId:string, participantId:string|null, username: string) => {
+    console.log(gameId, participantId, username);
     if(!gameId || !participantId) return;
     const request: PlayerJokerRequest = {
         username: username,
@@ -25,13 +27,13 @@ const handleSendJoker = (gameId:string, participantId:string|undefined, username
     }
     gameApi.submitJoker(gameId, request)
 }
-const QuizGameHeader = ({idRoom, quizGame, revealAnswer, messageSystem, username}: QuizGameComponentProps) => {
+const QuizGameHeader = ({idRoom, quizGame, revealAnswer, messageSystem, username, currentParticipantId}: QuizGameComponentProps) => {
 
     return(
 <>
         {idRoom && quizGame && !quizGame.finished && (<>
 
-                <JokerContainer handleSendJoker={() => handleSendJoker(quizGame?.gameId, quizGame?.participants.find(participant => participant.username === username)?.participantId, username)}/>
+                <JokerContainer handleSendJoker={() => handleSendJoker(quizGame?.gameId, currentParticipantId, username)}/>
 
                 <div
                     className="flex flex-row justif-center items-center gap-2 font-bold text-4xl sm:text-5xl md:text-6xl lg:text-[64px] leading-tight font-[Nova_Square]"><QuizIcon /><span className={"px-4 bg-clip-text text-white text-shadow-lg"}>Question {quizGame.questions.findIndex( question => question.id === quizGame?.currentQuestion?.id)+1 }</span></div>
