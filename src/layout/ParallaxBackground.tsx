@@ -1,81 +1,108 @@
-import {  motion } from "motion/react";
-import {useTransform} from "framer-motion";
-import {MotionValue} from "motion";
-import SkyBg from "../components/common/background/SkyBg.tsx";
-import ShoreBg from "../components/common/background/ShoreBg.tsx";
-import RockBg from "../components/common/background/RockBg.tsx";
-import ShipBg from "../components/common/background/ShipBg.tsx";
-import SeaBg from "../components/common/background/SeaBg.tsx";
-import Bird1Bg from "../components/common/background/Bird1Bg.tsx";
-import Bird2Bg from "../components/common/background/Bird2Bg.tsx";
+import React from "react";
+import { motion } from "motion/react";
+import SkyBg from "../components/common/background/SkyBg";
+import ShoreBg from "../components/common/background/ShoreBg";
+import RockBg from "../components/common/background/RockBg";
+import SeaBg from "../components/common/background/SeaBg";
+import ShipBg from "../components/common/background/ShipBg";
+import Bird1Bg from "../components/common/background/Bird1Bg";
+import Bird2Bg from "../components/common/background/Bird2Bg";
 
+const MotionSkyBg    = motion.create(SkyBg);
+const MotionShoreBg  = motion.create(ShoreBg);
+const MotionSeaBg    = motion.create(SeaBg);
+const MotionRockBg   = motion.create(RockBg);
+const MotionShipBg   = motion.create(ShipBg);
+const MotionBird1Bg  = motion.create(Bird1Bg);
+const MotionBird2Bg  = motion.create(Bird2Bg);
 
-
-function useParallaxValue(
-    value: MotionValue<number>,
-    distance: number
-) {
-    // transforme [-1,1] en [-distance, distance]
-    return useTransform(value, [-1, 1], [-distance, distance]);
+interface ParallaxBackgroundProps {
+    disableAnimation?: boolean;
 }
 
+const ParallaxBackground: React.FC<ParallaxBackgroundProps> = ({
+                                                                   disableAnimation = false,
+                                                               }) => {
+    const commonTransition = {
+        duration: 7,
+        ease: "easeInOut" as const,
+        repeat: Infinity,
+        repeatType: "reverse" as const,
+        repeatDelay: 1.5,
+    };
 
-
-const ParallaxBackground = ({pointerX, pointerY}:{pointerX: MotionValue<number>, pointerY: MotionValue<number>}) => {
-
-    // somme normalisée de X et Y
-    const pointerSum = useTransform(
-        [pointerX, pointerY],
-        ([x, y]: number[]) => x + y
-    );
-
-
-    const x = useParallaxValue(pointerSum, Math.random()*200);
-    const xForeground2 = useParallaxValue(pointerSum, Math.random()*100);
-
-    const xBackground = useParallaxValue(pointerSum, Math.random()*-30);
-    const xBackground2 = useParallaxValue(pointerSum, Math.random()*-20);
-
-    const MotionSkyBg = motion.create(SkyBg);
-    const MotionShoreBg = motion.create(ShoreBg);
-    const MotionSeaBg = motion.create(SeaBg);
-    const MotionRockBg = motion.create(RockBg);
-    const MotionShipBg = motion.create(ShipBg);
-    const MotionBird1Bg = motion.create(Bird1Bg);
-    const MotionBird2Bg = motion.create(Bird2Bg);
     return (
         <div className="fixed w-full h-full overflow-hidden -z-1">
             <MotionSkyBg className="absolute h-full w-auto" />
-            <MotionRockBg style={{
-                x: xBackground,
-                willChange: "transform",
-            }} className="absolute h-full w-auto -left-20" />
 
-                <MotionSeaBg style={{
-                    x:xBackground,
-                    willChange: "transform",
-                }} className="absolute h-full w-auto -left-20" />
+            <MotionRockBg
+                {...(!disableAnimation && {
+                    initial: { x: 0 },
+                    animate: { x: 75 },
+                    transition: commonTransition,
+                    style: {
+                        willChange: "transform",
+                        transform: "translateZ(0)",
+                    },
+                })}
+                className="absolute h-full w-auto -left-20 transform-gpu [transform-box:fill-box]"
+            />
 
-                <MotionBird1Bg style={{
-                    x:xForeground2,
-                    willChange: "transform",
-                }} className="absolute h-full w-auto [transform-box:fill-box] origin-[500px_280px] transform scale-x-[-1]"
+            <MotionSeaBg
+                {...(!disableAnimation && {
+                    initial: { x: 0 },
+                    animate: { x: 75 },
+                    transition: commonTransition,
+                    style: {
+                        willChange: "transform",
+                        transform: "translateZ(0)",
+                    },
+                })}
+                className="absolute h-full w-auto -left-20 transform-gpu [transform-box:fill-box]"
+            />
 
-                />
+            <MotionBird1Bg
+                {...(!disableAnimation && {
+                    initial: { x: 50 },
+                    animate: { x: -150 },
+                    transition: { ...commonTransition, delay: 0.5 },
+                    style: {
+                        willChange: "transform",
+                        transform: "translateZ(0)",
+                    },
+                })}
+                className="absolute h-full w-auto [transform-box:fill-box] origin-[500px_280px] transform scale-x-[-1] transform-gpu"
+            />
 
-                <MotionBird2Bg style={{
-                    x: xBackground2,
-                    willChange: "transform",
-                }} className="absolute h-full w-auto" />
+            <MotionBird2Bg
+                {...(!disableAnimation && {
+                    initial: { x: -100 },
+                    animate: { x: -150 },
+                    transition: { ...commonTransition, delay: 0.5 },
+                    style: {
+                        willChange: "transform",
+                        transform: "translateZ(0)",
+                    },
+                })}
+                className="absolute h-full w-auto transform-gpu [transform-box:fill-box]"
+            />
 
-                <MotionShipBg style={{
-                    x,
-                    willChange: "transform",
-                }} className="absolute h-full w-auto [transform-box:fill-box] origin-[50%_50%]" />
+            <MotionShipBg
+                {...(!disableAnimation && {
+                    initial: { x: -100 },
+                    animate: { x: -275 },
+                    transition: commonTransition,
+                    style: {
+                        willChange: "transform",
+                        transform: "translateZ(0)",
+                    },
+                })}
+                className="absolute h-full w-auto transform-gpu [transform-box:fill-box] origin-[50%_50%]"
+            />
+
             <MotionShoreBg className="absolute h-full w-auto" />
         </div>
     );
 };
 
-
-export default ParallaxBackground;
+export default React.memo(ParallaxBackground);
