@@ -3,14 +3,17 @@ import Room from "./room/Room.tsx";
 
 interface GuestRoomProps {
     username: string | null;
+    setDisableParallax: (disable: boolean) => void;
 }
 
-export default function JoinRoom({ username }: GuestRoomProps) {
+export default function JoinRoom({ username, setDisableParallax }: GuestRoomProps) {
     const { id } = useParams();        // on récupère l’id depuis l’URL
     if (!username) {
         // on redirige dynamiquement vers /guest/ID
         return <Navigate to={`/guest/${id ?? ""}`} replace />;
     }
     // sinon on rend bien le chat
+
+    setDisableParallax(true);
     return <Room username={username!} />;
 }
