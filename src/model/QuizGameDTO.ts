@@ -13,6 +13,7 @@ export interface ParticipantDTO {
     participantId: string
     username: string
     delaiReponse: number
+    tempId: string
 }
 
 

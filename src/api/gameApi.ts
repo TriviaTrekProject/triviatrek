@@ -13,7 +13,7 @@ export const gameApi = {
                 await socketService.connect();
             }
             console.log("Lancement de la game " + gameId + " dans la room " + roomId);
-        socketService.send(`/app/game/startQuiz/${gameId}`, {roomId: roomId, user: user});
+        socketService.send(`/app/game/startQuiz/${gameId}`, {roomId: roomId, participantId: user});
     },
 
 

@@ -13,7 +13,7 @@ import {useState} from "react";
 interface QuizGameComponentProps {
     idRoom: string | undefined;
     currentQuestion: QuestionDTO;
-    username: string;
+    currentParticipantId: string|null;
     gameId: string;
     isRevealed: boolean;
 }
@@ -25,16 +25,16 @@ const QuizGameAnswersComponent = ({
                                       idRoom,
                                       currentQuestion,
                                       gameId,
-                                      username,
+                                      currentParticipantId,
                                       isRevealed
                                   }: QuizGameComponentProps) => {
     const isMobile = useIsMobile();
     const [disableAnswer,setDisableAnswer] = useState(false);
 
     const onAnswer = async (answer: string) => {
-        if (!gameId) return;
+        if (!gameId || !currentParticipantId) return;
         setDisableAnswer(true);
-        await gameApi.submitAnswer(gameId, { player: username, answer });
+        await gameApi.submitAnswer(gameId, { participantId: currentParticipantId, answer });
         setDisableAnswer(false);
     };
 

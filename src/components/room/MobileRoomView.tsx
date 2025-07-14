@@ -4,7 +4,7 @@ import QuizGameAnswersComponent from '../game/QuizGameAnswersComponent';
 import StartGameButton from '../game/StartGameButton';
 import ProgressBar from '../common/ProgressBar';
 import { REVEAL_ANSWER_DELAY } from '../../hook/useRoom';
-import {QuizGameDTO} from "../../model/QuizGameDTO.ts";
+import {ParticipantDTO, QuizGameDTO} from "../../model/QuizGameDTO.ts";
 import {MessageDTO} from "../../model/MessageDTO.ts";
 import ChatComponent from "./ChatComponent.tsx";
 
@@ -12,7 +12,7 @@ interface MobileRoomViewProps {
   roomId?: string;
   gameId?: string;
   quizGame: QuizGameDTO | null;
-  users: string[];
+  users: ParticipantDTO[];
   revealAnswer: boolean;
   username: string;
   onStart?: () => void;
@@ -42,7 +42,7 @@ const MobileRoomView = ({
     </div>
 
     <div className="rounded-2xl w-full flex flex-col p-4 gap-4 bg-transparent">
-      <RoomUsers username={username} users={users} scores={quizGame?.scores ?? []}/>
+      <RoomUsers currentParticipantId={currentParticipantId} username={username} users={users} scores={quizGame?.scores ?? []}/>
 
       {quizGame?.currentQuestion
         ? (
@@ -50,7 +50,7 @@ const MobileRoomView = ({
             idRoom={roomId!}
             gameId={gameId!}
             currentQuestion={quizGame.currentQuestion}
-            username={username}
+            currentParticipantId={currentParticipantId}
             isRevealed={revealAnswer}
           />
         )

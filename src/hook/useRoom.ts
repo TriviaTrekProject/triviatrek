@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useParams} from "react-router-dom";
 import {RoomDTO} from "../model/RoomDTO.ts";
-import {QuizGameDTO} from "../model/QuizGameDTO.ts";
+import {ParticipantDTO, QuizGameDTO} from "../model/QuizGameDTO.ts";
 import {roomApi} from "../api/roomApi.ts";
 import {gameApi} from "../api/gameApi.ts";
 import {socketService} from "../ws/socketService.ts";
@@ -9,6 +9,8 @@ import useSocket from "../hook/useSocket.ts";
 import useHandleUnmount from "../hook/useHandleUnmount.ts";
 import {JokerDTO} from "../model/JokerDTO.ts";
 import {JokerType} from "../model/Request/PlayerJokerRequest.ts";
+import { v4 as uuidv4 } from "uuid";
+
 
 // Constante pour le délai de révélation des réponses
 export const REVEAL_ANSWER_DELAY = 7000;
@@ -21,7 +23,7 @@ export const useRoom = (username: string) => {
     const { id } = useParams();
     const [room, setRoom] = useState<RoomDTO | null>(null);        // Stocke les données de la Room
     const [quizGame, setQuizGame] = useState<QuizGameDTO | null>(null); // Stocke les données du quiz en cours
-    const [users, setUsers] = useState<string[]>([]);             // Liste des participants
+    const [users, setUsers] = useState<ParticipantDTO[]>([]);             // Liste des participants
     const [revealAnswer, setRevealAnswer] = useState<boolean>(false); // État pour révéler les réponses
     const [hasSubscribedToGameUpdates, setHasSubscribedToGameUpdates] = useState<boolean>(false); // Gestion des abonnements aux mises à jour
     const [isLoading, setLoading] = useState(true);               // Indique si les données sont en train de se charger
@@ -29,26 +31,39 @@ export const useRoom = (username: string) => {
     const [currentParticipantId, setCurrentParticipantId] = useState<string | null>(null);
     const joinedRef = useRef(false);
 
+    // 1) Génération d'un identifiant temporaire côté client
+    const tempIdRef = useRef<string>(uuidv4());
+
     // Déclenchée lorsqu'un utilisateur quitte la room ou l'application
     const handleUnload = useCallback(() => {
         if (id) roomApi.leave(id, username); // Appel l'API pour quitter la room
     }, [id, username]);
 
-    // Déclenchée lorsque des données de Room sont reçues via WebSocket
-    const onRoomMessage = useCallback((room: RoomDTO) => {
-        setRoom(room);       // Met à jour les données de la Room
-        setUsers(room.participants); // Mets à jour la liste des participants
-    }, []);
+    // 2) Callback WebSocket : on repère le participant via tempId
+    const onRoomMessage = useCallback((roomDTO: RoomDTO) => {
+        setRoom(roomDTO);
+        setUsers(roomDTO.participants);
 
-    // Abonne l'utilisateur à une Room
+        if (currentParticipantId === null) {
+            const me = roomDTO.participants.find(
+                // on suppose que le back renvoie aussi tempId dans chaque ParticipantDTO
+                (p: ParticipantDTO) => p.tempId === tempIdRef.current
+            );
+            if (me) setCurrentParticipantId(me.participantId);
+        }
+    }, [currentParticipantId]);
+
+    // 3) Envoi de join avec tempId
     const onRoomSubscribe = useCallback(() => {
         if (!joinedRef.current && id) {
             joinedRef.current = true;
-            roomApi.join(id, username)
-                .then(() => setLoading(false))
-                .catch(() => setLoading(false));
+            roomApi
+                .join(id, username!, tempIdRef.current)
+                .catch(() => {/* gérer l’erreur */})
+                .finally(() => setLoading(false));
         }
     }, [id, username]);
+
 
 
     useEffect(()=> {
@@ -63,14 +78,6 @@ export const useRoom = (username: string) => {
         socketService.subscribe(`/game/${room.gameId}`, (game: QuizGameDTO) => {
 
             setQuizGame(prev => {
-                if (game?.participants?.length) {
-                    const participantId =
-                        game.participants.find(p => p.username === username)
-                            ?.participantId
-                        ?? null;
-                    setCurrentParticipantId(participantId);
-                }
-
 
                 if (!prev) {
                     setHasSubscribedToGameUpdates(true);
@@ -120,10 +127,10 @@ export const useRoom = (username: string) => {
     
     // Rejoindre la partie active s'il y en a une
     const handleJoinActiveGame = useCallback(() => {
-        if (id && room?.activeGame && !quizGame) {
-            gameApi.joinGame(room.gameId, username);
+        if (id && room?.activeGame && !quizGame && currentParticipantId) {
+            gameApi.joinGame(room.gameId, currentParticipantId);
         }
-    }, [id, room?.activeGame, room?.gameId, username, quizGame]);
+    }, [id, room?.activeGame, room?.gameId, quizGame, currentParticipantId]);
 
     // Connexion au WebSocket de la Room
     useSocket(`/chatroom/${id}`, onRoomMessage, onRoomSubscribe);
