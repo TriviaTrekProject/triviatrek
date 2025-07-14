@@ -17,8 +17,8 @@ const Room: React.FC<RoomProps> = ({ username }) => {
     const [isChatOpen, setChatOpen] = useState(false);
 
     const handleStart = () => {
-        if (room?.roomId && room.gameId) {
-            gameApi.startQuizGame(room.gameId, room.roomId, username);
+        if (room?.roomId && room.gameId && currentParticipantId) {
+            gameApi.startQuizGame(room.gameId, room.roomId, currentParticipantId);
         }
     };
 

@@ -7,11 +7,11 @@ export const roomApi = {
     /**
      * Rejoindre une room de chat
      */
-    async join(roomId: string, user: string): Promise<void> {
+    async join(roomId: string, user: string, uuid: string): Promise<void> {
             if (!socketService.isConnected) {
                 await socketService.connect();
             }
-            socketService.send(`/app/join/${roomId}`, user);
+            socketService.send(`/app/join/${roomId}`, {username: user, tempId: uuid});
     },
 
 

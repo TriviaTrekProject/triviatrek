@@ -1,4 +1,4 @@
 export interface PlayerAnswerDTO {
-    player: string;
+    participantId: string;
     answer: string;
 }

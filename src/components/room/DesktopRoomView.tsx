@@ -6,14 +6,14 @@ import ProgressBar from '../common/ProgressBar';
 import { REVEAL_ANSWER_DELAY } from '../../hook/useRoom';
 import ChatPanel from './ChatPanel';
 import {MessageDTO} from "../../model/MessageDTO.ts";
-import {QuizGameDTO} from "../../model/QuizGameDTO.ts";
+import {ParticipantDTO, QuizGameDTO} from "../../model/QuizGameDTO.ts";
 import ParallaxBackgroundIce from "../../layout/ParallaxBackgroundIce.tsx";
 
 interface DesktopRoomViewProps {
   roomId?: string;
   gameId?: string;
   quizGame: QuizGameDTO | null;
-  users: string[];
+  users: ParticipantDTO[];
   revealAnswer: boolean;
   username: string;
   isChatOpen: boolean;
@@ -51,7 +51,7 @@ const DesktopRoomView = ({
     />
 
     <div className="flex flex-row items-center justify-center gap-16 h-full w-full">
-      <RoomUsers username={username} users={users} scores={quizGame?.scores ?? []}/>
+      <RoomUsers currentParticipantId={currentParticipantId} username={username} users={users} scores={quizGame?.scores ?? []}/>
       <div className="flex flex-col items-center justify-center gap-1 h-full w-full">
         <div className="flex flex-col items-center justify-center gap-6 w-full">
 
@@ -66,7 +66,7 @@ const DesktopRoomView = ({
                 idRoom={roomId!}
                 gameId={gameId!}
                 currentQuestion={quizGame.currentQuestion}
-                username={username}
+                currentParticipantId={currentParticipantId}
                 isRevealed={revealAnswer}
               />
             )

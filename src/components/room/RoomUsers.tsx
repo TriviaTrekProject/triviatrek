@@ -1,8 +1,8 @@
-import {ScoreDTO} from "../../model/QuizGameDTO.ts";
+import {ParticipantDTO, ScoreDTO} from "../../model/QuizGameDTO.ts";
 import useIsMobile from "../../hook/useIsMobile.ts";
 import PlayerIcon from "../common/Icons/PlayerIcon.tsx";
 
-const RoomUsers = ({users, scores, username}: {users:string[], scores:ScoreDTO[], username:string} ) => {
+const RoomUsers = ({users, scores, currentParticipantId}: {users:ParticipantDTO[], scores:ScoreDTO[], username:string, currentParticipantId:string|null} ) => {
     const isMobile = useIsMobile();
 
     return(
@@ -13,9 +13,9 @@ const RoomUsers = ({users, scores, username}: {users:string[], scores:ScoreDTO[]
                 <div className={"flex shrink-0"}>
                     <PlayerIcon className={"h-8 w-8"} />
                 </div>
-                <div className={`flex flex-col items-start ${usr === username && 'text-secondary-dark'}`}>
-                    <div>{usr}</div>
-                    {scores && scores.length > 0 && ((scores.find(score => score.player === usr)?.score ?? 0) + " pts")}
+                <div className={`flex flex-col items-start ${usr.participantId === currentParticipantId && 'text-secondary-dark'}`}>
+                    <div>{usr.username}</div>
+                    {scores && scores.length > 0 && ((scores.find(score => score.player === usr.username)?.score ?? 0) + " pts")}
                 </div>
                 </div>))}
             </div>
