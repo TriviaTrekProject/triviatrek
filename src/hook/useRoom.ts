@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {useParams} from "react-router-dom";
 import {RoomDTO} from "../model/RoomDTO.ts";
 import {QuizGameDTO} from "../model/QuizGameDTO.ts";
@@ -27,6 +27,7 @@ export const useRoom = (username: string) => {
     const [isLoading, setLoading] = useState(true);               // Indique si les données sont en train de se charger
     const [effetGlace, setEffetGlace] = useState(false);
     const [currentParticipantId, setCurrentParticipantId] = useState<string | null>(null);
+    const joinedRef = useRef(false);
 
     // Déclenchée lorsqu'un utilisateur quitte la room ou l'application
     const handleUnload = useCallback(() => {
@@ -41,10 +42,14 @@ export const useRoom = (username: string) => {
 
     // Abonne l'utilisateur à une Room
     const onRoomSubscribe = useCallback(() => {
-        if (id) {
-            roomApi.join(id, username).then(() => setLoading(false)); // Stop le chargement lorsqu'abonné
+        if (!joinedRef.current && id) {
+            joinedRef.current = true;
+            roomApi.join(id, username)
+                .then(() => setLoading(false))
+                .catch(() => setLoading(false));
         }
     }, [id, username]);
+
 
     useEffect(()=> {
         setRevealAnswer(false);

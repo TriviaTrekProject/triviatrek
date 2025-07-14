@@ -11,9 +11,17 @@ const Login = ({setUsername}: GuestRoomProps) => {
     const onSubmit = (e:FormEvent<HTMLFormElement>
     ) => {
         e.preventDefault();
+        const raw = e.currentTarget.username.value.trim();
+        if (raw.length === 0 || raw.length > 20) {
+            alert("Le nom doit faire entre 1 et 20 caractères.");
+            return;
+        }
+        const safeUsername = raw.replace(/[^a-zA-Z0-9_-]/g, "");
+        setUsername(safeUsername);
+
         const roomId = id ?? Math.random().toString(36).substring(2, 12);
-        setUsername(e.currentTarget.username.value);
-        navigate(`/game/${roomId}`, { state: { username: e.currentTarget.username.value } });
+        setUsername(safeUsername);
+        navigate(`/game/${roomId}`, { state: { username: safeUsername } });
 
     }
     return (
