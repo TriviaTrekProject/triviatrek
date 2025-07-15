@@ -12,14 +12,13 @@ import {useCallback, useState} from "react";
 interface QuizGameComponentProps {
     idRoom: string | undefined,
     quizGame: QuizGameDTO | null,
-    revealAnswer: boolean,
     messageSystem?: string,
     username: string,
     currentParticipantId: string | null,
 }
 
 
-const QuizGameHeader = ({idRoom, quizGame, revealAnswer, messageSystem, username, currentParticipantId}: QuizGameComponentProps) => {
+const QuizGameHeader = ({idRoom, quizGame, messageSystem, username, currentParticipantId}: QuizGameComponentProps) => {
 
     const [usedJokerGlace, setUsedJokerGlace] = useState(false);
 
@@ -56,9 +55,9 @@ const QuizGameHeader = ({idRoom, quizGame, revealAnswer, messageSystem, username
 
                 <div
                     className={`font-bold text-3xl text-white font-[Nova_Square] text-shadow-lg`}>{quizGame?.currentQuestion?.question}</div>
-                {revealAnswer && messageSystem && (<div
+                {messageSystem && (<div
                     className={`absolute border border-white/30 rounded-xl bg-white backdrop-blur-sm shadow-lg p-5 text-2xl left-15 top-25 font-bold text-secondary-dark font-[Nova_Square]`}>{messageSystem}</div>)}
-                {!revealAnswer && usedJokerGlace && (<div className={`absolute border border-white/30 rounded-xl bg-white backdrop-blur-sm shadow-lg p-5 text-2xl left-15 top-25 font-bold text-secondary-dark font-[Nova_Square]`}>Vous avez gelé vos adversaires !</div>)}
+                {usedJokerGlace && (<div className={`absolute border border-white/30 rounded-xl bg-white backdrop-blur-sm shadow-lg p-5 text-2xl left-15 top-25 font-bold text-secondary-dark font-[Nova_Square]`}>Vous avez gelé vos adversaires !</div>)}
             </>
         )}
     {idRoom && quizGame && quizGame.finished && (<>
