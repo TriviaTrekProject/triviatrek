@@ -27,7 +27,6 @@ const QuizGameAnswersComponent = ({
                                       currentParticipantId
                                   }: QuizGameComponentProps) => {
     const isMobile = useIsMobile();
-    const [disableAnswer,setDisableAnswer] = useState(false);
     const [revealAnswer,setRevealAnswer] = useState(false);
 
 
@@ -73,7 +72,6 @@ const QuizGameAnswersComponent = ({
                             isCorrect={option === currentQuestion?.correctAnswer}
                             isRevealed={revealAnswer}
                             time={(DELAY_TIME_BY_QUESTION + index * DELAY_TIME_BY_OPTION)}
-                            isDisabled={disableAnswer}
 
                         />
                     </div>

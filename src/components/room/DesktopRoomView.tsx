@@ -13,7 +13,6 @@ interface DesktopRoomViewProps {
   gameId?: string;
   quizGame: QuizGameDTO | null;
   users: ParticipantDTO[];
-  revealAnswer: boolean;
   username: string;
   isChatOpen: boolean;
   toggleChat: () => void;
@@ -28,7 +27,6 @@ const DesktopRoomView = ({
   gameId,
   quizGame,
   users,
-  revealAnswer,
   username,
   isChatOpen,
   toggleChat,
@@ -54,7 +52,7 @@ const DesktopRoomView = ({
       <div className="flex flex-col items-center justify-center gap-1 h-full w-full">
         <div className="flex flex-col items-center justify-center gap-6 w-full">
 
-          <QuizGameHeader currentParticipantId={currentParticipantId} username={username} idRoom={roomId} quizGame={quizGame} revealAnswer={revealAnswer} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}/>
+          <QuizGameHeader currentParticipantId={currentParticipantId} username={username} idRoom={roomId} quizGame={quizGame} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}/>
 
         </div>
 

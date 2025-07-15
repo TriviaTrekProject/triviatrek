@@ -3,7 +3,6 @@ import QuizGameHeader from '../game/QuizGameHeader';
 import QuizGameAnswersComponent from '../game/QuizGameAnswersComponent';
 import StartGameButton from '../game/StartGameButton';
 import ProgressBar from '../common/ProgressBar';
-import { REVEAL_ANSWER_DELAY } from '../../hook/useRoom';
 import {ParticipantDTO, QuizGameDTO} from "../../model/QuizGameDTO.ts";
 import {MessageDTO} from "../../model/MessageDTO.ts";
 import ChatComponent from "./ChatComponent.tsx";
@@ -13,7 +12,6 @@ interface MobileRoomViewProps {
   gameId?: string;
   quizGame: QuizGameDTO | null;
   users: ParticipantDTO[];
-  revealAnswer: boolean;
   username: string;
   onStart?: () => void;
   messages?: MessageDTO[];
@@ -25,7 +23,6 @@ const MobileRoomView = ({
                                                          gameId,
                                                          quizGame,
                                                          users,
-                                                         revealAnswer,
                                                          username,
                                                          onStart,
                                                          messages,
@@ -33,11 +30,8 @@ const MobileRoomView = ({
 }:MobileRoomViewProps) => (
   <div className="flex flex-col items-center justify-center gap-4 h-full w-full">
     <div className="flex flex-col items-center justify-center gap-4 w-full">
-      <QuizGameHeader currentParticipantId={currentParticipantId} username={username} idRoom={roomId} quizGame={quizGame} revealAnswer={revealAnswer} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}
+      <QuizGameHeader currentParticipantId={currentParticipantId} username={username} idRoom={roomId} quizGame={quizGame} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}
       />
-        {revealAnswer
-            ? <ProgressBar duration={REVEAL_ANSWER_DELAY}/>
-            : <div className="w-full h-3"/>}
         {quizGame?.waitingForNext
             ? <ProgressBar duration={10000}/>
             : <div className="w-full h-3"/>}
