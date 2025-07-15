@@ -3,7 +3,6 @@ import QuizGameHeader from '../game/QuizGameHeader';
 import QuizGameAnswersComponent from '../game/QuizGameAnswersComponent';
 import StartGameButton from '../game/StartGameButton';
 import ProgressBar from '../common/ProgressBar';
-import { REVEAL_ANSWER_DELAY } from '../../hook/useRoom';
 import ChatPanel from './ChatPanel';
 import {MessageDTO} from "../../model/MessageDTO.ts";
 import {ParticipantDTO, QuizGameDTO} from "../../model/QuizGameDTO.ts";
@@ -67,7 +66,6 @@ const DesktopRoomView = ({
                 gameId={gameId!}
                 currentQuestion={quizGame.currentQuestion}
                 currentParticipantId={currentParticipantId}
-                isRevealed={revealAnswer}
               />
             )
             : (
@@ -75,9 +73,10 @@ const DesktopRoomView = ({
             )
           }
         </div>
-        {revealAnswer
-            ? <ProgressBar duration={REVEAL_ANSWER_DELAY}/>
+        {quizGame?.waitingForNext
+            ? <ProgressBar duration={10000}/>
             : <div className="w-full h-3"/>}
+
       </div>
     </div>
   </>

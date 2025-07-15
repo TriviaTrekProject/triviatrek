@@ -38,6 +38,10 @@ const MobileRoomView = ({
         {revealAnswer
             ? <ProgressBar duration={REVEAL_ANSWER_DELAY}/>
             : <div className="w-full h-3"/>}
+        {quizGame?.waitingForNext
+            ? <ProgressBar duration={10000}/>
+            : <div className="w-full h-3"/>}
+
 
     </div>
 
@@ -51,7 +55,6 @@ const MobileRoomView = ({
             gameId={gameId!}
             currentQuestion={quizGame.currentQuestion}
             currentParticipantId={currentParticipantId}
-            isRevealed={revealAnswer}
           />
         )
         : (

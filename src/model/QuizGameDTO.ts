@@ -27,6 +27,7 @@ export interface QuizGameDTO {
     currentQuestionIndex: number
     questions: QuestionDTO[]
     messageSystem?: string
+    waitingForNext?: boolean
 }
 
 export interface ScoreDTO {

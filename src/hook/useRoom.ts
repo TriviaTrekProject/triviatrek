@@ -24,7 +24,6 @@ export const useRoom = (username: string) => {
     const [room, setRoom] = useState<RoomDTO | null>(null);        // Stocke les données de la Room
     const [quizGame, setQuizGame] = useState<QuizGameDTO | null>(null); // Stocke les données du quiz en cours
     const [users, setUsers] = useState<ParticipantDTO[]>([]);             // Liste des participants
-    const [revealAnswer, setRevealAnswer] = useState<boolean>(false); // État pour révéler les réponses
     const [hasSubscribedToGameUpdates, setHasSubscribedToGameUpdates] = useState<boolean>(false); // Gestion des abonnements aux mises à jour
     const [isLoading, setLoading] = useState(true);               // Indique si les données sont en train de se charger
     const [effetGlace, setEffetGlace] = useState(false);
@@ -66,10 +65,6 @@ export const useRoom = (username: string) => {
 
 
 
-    useEffect(()=> {
-        setRevealAnswer(false);
-
-    },[quizGame])
 
     // Gère la souscription aux mises à jour du jeu, évite les abonnements multiples
     const subscribeToGameUpdates = useCallback(() => {
@@ -87,6 +82,7 @@ export const useRoom = (username: string) => {
                 if (prev.currentQuestion?.id === game.currentQuestion?.id) {
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     const { currentQuestion, currentQuestionIndex, questions, ...partial } = game;
+
                     return {
                         ...partial,
                         currentQuestion: prev.currentQuestion,
@@ -94,21 +90,13 @@ export const useRoom = (username: string) => {
                         questions: prev.questions,
                     };
                 }
+                return (game);
 
-                // Question différente
-                setRevealAnswer(true);
-                setTimeout(() => {
-                    setRevealAnswer(false);
-                    setQuizGame(game);
-                }, REVEAL_ANSWER_DELAY);
-
-                // on ne change pas l'état maintenant pour attendre le timeout
-                return prev;
             });
         });
 
 
-    }, [id, room?.gameId, hasSubscribedToGameUpdates, username]);
+    }, [id, room?.gameId, hasSubscribedToGameUpdates]);
 
     const subscribeToJokerUpdates = useCallback(() => {
         if (!id || !room?.gameId) return;
@@ -148,5 +136,5 @@ export const useRoom = (username: string) => {
     useEffect(subscribeToJokerUpdates, [subscribeToJokerUpdates]);
 
     // Retourne les données de la Room et du jeu nécessaires aux composants
-    return { room, quizGame, users, revealAnswer, isLoading, effetGlace, currentParticipantId };
+    return { room, quizGame, users, isLoading, effetGlace, currentParticipantId };
 };

@@ -8,14 +8,13 @@ import {
     DELAY_TIME_BY_QUESTION,
 } from "../../hook/useRoom.ts";
 import DelayedButton from "../common/button/DelayedButton.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 interface QuizGameComponentProps {
     idRoom: string | undefined;
     currentQuestion: QuestionDTO;
     currentParticipantId: string|null;
     gameId: string;
-    isRevealed: boolean;
 }
 
 const MotionDelayedButton = motion.create(DelayedButton)
@@ -25,17 +24,23 @@ const QuizGameAnswersComponent = ({
                                       idRoom,
                                       currentQuestion,
                                       gameId,
-                                      currentParticipantId,
-                                      isRevealed
+                                      currentParticipantId
                                   }: QuizGameComponentProps) => {
     const isMobile = useIsMobile();
     const [disableAnswer,setDisableAnswer] = useState(false);
+    const [revealAnswer,setRevealAnswer] = useState(false);
+
+
+
+    useEffect(() => {
+        setRevealAnswer(false);
+    },[currentQuestion])
 
     const onAnswer = async (answer: string) => {
         if (!gameId || !currentParticipantId) return;
-        setDisableAnswer(true);
-        await gameApi.submitAnswer(gameId, { participantId: currentParticipantId, answer });
-        setDisableAnswer(false);
+        gameApi.submitAnswer(gameId, { participantId: currentParticipantId, answer });
+        setRevealAnswer(true);
+
     };
 
     // Helper function to render options
@@ -66,7 +71,7 @@ const QuizGameAnswersComponent = ({
                             onClick={async () => onAnswer(option)}
                             label={option}
                             isCorrect={option === currentQuestion?.correctAnswer}
-                            isRevealed={isRevealed}
+                            isRevealed={revealAnswer}
                             time={(DELAY_TIME_BY_QUESTION + index * DELAY_TIME_BY_OPTION)}
                             isDisabled={disableAnswer}
 
