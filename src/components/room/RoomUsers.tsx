@@ -38,9 +38,9 @@ const RoomUsers = ({users, scores, currentParticipantId}: {users:ParticipantDTO[
 
     
     return(
-        <div className={`bg-transparent flex flex-col ${isMobile ? 'px-6' : 'p-2'}`}>
+        <div className={`bg-transparent flex flex-col gap-2 ${isMobile ? 'px-6' : 'p-2'}`}>
             <div className={"font-bold text-white p-2 bg-transparent border-solid border-b-4 mb-2 border-white"}>Utilisateurs</div>
-            <div className="flex flex-col text-white gap-1">
+            <div className="flex flex-row gap-4 flex-wrap text-white gap-1">
                 {users.map((usr, index) =>
                 {
                     const userScore = scores.find(s => s.player === usr.username)?.score ?? 0;

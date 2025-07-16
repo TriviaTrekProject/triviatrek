@@ -1,7 +1,6 @@
-import IceIcon from "../common/Icons/IceIcon.tsx";
-import {useState} from "react";
+import {ReactNode, useState} from "react";
 
-const JokerContainer = ({handleSendJoker}: {handleSendJoker : () => void}) => {
+const JokerContainer = ({handleSendJoker, children}: {handleSendJoker : () => void, children : ReactNode}) => {
 
     const [isDisabled, setIsDisabled] = useState(false);
     return(
@@ -10,7 +9,7 @@ const JokerContainer = ({handleSendJoker}: {handleSendJoker : () => void}) => {
             handleSendJoker();
             setIsDisabled(true)
         }}>
-            <IceIcon/>
+            {children}
             <div className={"font-bold font-[Nova_Square]"}>
                 Bloc de glace
             </div>
