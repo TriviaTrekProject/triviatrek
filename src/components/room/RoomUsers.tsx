@@ -34,7 +34,7 @@ const RoomUsers = ({users, scores, currentParticipantId}: {users:ParticipantDTO[
 
             });
         }
-    }, [scores]); // déclenchement à chaque mise à jour de scores
+    }, [prevScores, scores]); // déclenchement à chaque mise à jour de scores
 
     
     return(
