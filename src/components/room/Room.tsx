@@ -19,7 +19,6 @@ const Room: React.FC<RoomProps> = ({ username }) => {
     const [usedJokerGlace, setUsedJokerGlace] = useState(false);
 
     const handleSendJoker = useCallback((gameId:string, participantId:string|null, username: string) => {
-        console.log(gameId, participantId, username);
         if(!gameId || !participantId) return;
         const request: PlayerJokerRequest = {
             username: username,
