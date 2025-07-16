@@ -40,14 +40,14 @@ const RoomUsers = ({users, scores, currentParticipantId}: {users:ParticipantDTO[
     return(
         <div className={`bg-transparent flex flex-col gap-2 ${isMobile ? 'px-6' : 'p-2'}`}>
             <div className={"font-bold text-white p-2 bg-transparent border-solid border-b-4 mb-2 border-white"}>Utilisateurs</div>
-            <div className="flex flex-row gap-4 flex-wrap text-white gap-1">
+            <div className={`${isMobile ? 'flex-row flex-wrap' : 'flex-col'} flex gap-4 text-white gap-1 ${isMobile ? "basis-(calc(1/2-var(--spacing)*4)" : ""}`}>
                 {users.map((usr, index) =>
                 {
                     const userScore = scores.find(s => s.player === usr.username)?.score ?? 0;
                     const userNotes = notifications.filter(n => n.player === usr.username);
 
                     return (<div
-                key={index} className={"py-1 font-bold flex flex-row justify-start items-center gap-2"}>
+                key={index} className={`py-1 font-bold flex flex-row justify-start items-center gap-2`}>
                 <div className={"flex shrink-0"}>
                     <PlayerIcon className={"h-8 w-8"} />
                 </div>
