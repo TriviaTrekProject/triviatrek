@@ -46,11 +46,11 @@ const QuizGameAnswersComponent = ({
     const renderOptions = (layout: "mobile" | "desktop") => {
         const wrapperClass =
             layout === "mobile"
-                ? "flex h-auto w-full justify-center items-center gap-4 flex-auto flex-column flex-wrap"
+                ? "flex h-auto w-full justify-center items-center gap-4 flex-auto flex-row flex-wrap"
                 : "flex h-auto justify-center items-center gap-8 flex-auto flex-row flex-wrap w-full";
 
         const optionClass =
-            layout === "mobile" ? "flex basis-full" : "flex basis-[calc(50%-1.5rem)]";
+            layout === "mobile" ? "basis-full text-xs p-1 tracking-normal" : "basis-[calc(50%-1.5rem)]";
 
         return (
             <div className={wrapperClass}>
