@@ -126,7 +126,7 @@ const MobileRoomView = ({
 
     </div>
 
-    <div className="rounded-2xl w-full flex flex-col px-2 bg-transparent justify-center items-center">
+    <div className="rounded-2xl w-full flex flex-col px-2 gap-6 bg-transparent justify-center items-center">
 
         {quizGame?.waitingForNext
             ? <ProgressBar duration={10000}/>

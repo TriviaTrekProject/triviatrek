@@ -1,6 +1,7 @@
 import {RefObject, useEffect, useState} from "react";
 import {DELAY_TIME_DISABLED} from "../../../hook/useRoom.ts";
 import FlatButton from "./FlatButton.tsx";
+import useIsMobile from "../../../hook/useIsMobile.ts";
 
 interface DelayedButtonProps {
     onClick: (() => Promise<void>);
@@ -10,9 +11,10 @@ interface DelayedButtonProps {
     time: number;
     ref:RefObject<HTMLDivElement>;
     isDisabled?: boolean;
+    className?: string;
 }
 
-const DelayedButton = ({ onClick, label, isCorrect, isRevealed, time, ref, isDisabled }: DelayedButtonProps) => {
+const DelayedButton = ({ onClick, label, isCorrect, isRevealed, time, ref, isDisabled, className }: DelayedButtonProps) => {
     const [hidden, setHidden] = useState(true);
     const [disabled, setDisabled] = useState(true);
     useEffect(() => {
@@ -26,12 +28,13 @@ const DelayedButton = ({ onClick, label, isCorrect, isRevealed, time, ref, isDis
         : isCorrect
             ? "bg-green-400 pointer-events-none"
             : "bg-red-400 pointer-events-none";
+    const isMobile = useIsMobile();
 
     return (
 
         <FlatButton
             ref={ref}
-            className={`${hidden ? 'invisible' : ''} ${buttonClass}`}
+            className={`${hidden ? 'invisible' : ''} ${buttonClass} ${isMobile ? "text-xl p-2" : ""} ${className ?? ""}`}
             text={label}
             onClick={onClick}
             disabled={disabled || isDisabled}
