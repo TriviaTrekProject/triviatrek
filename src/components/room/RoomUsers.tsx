@@ -60,7 +60,7 @@ const RoomUsers = ({users, scores, currentParticipantId}: {users:ParticipantDTO[
                                 key={n.id}
                                 initial={{ opacity: 1, x: 50, y: 0 }}
                                 animate={{ opacity: 0, x: 50, y: -20 }}
-                                transition={{ duration: 1 }}
+                                transition={{ duration: 2 }}
                                 className="text-green-400 font-bold absolute right-0"
                             >
                                 +{n.diff}
