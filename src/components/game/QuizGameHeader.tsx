@@ -3,11 +3,9 @@ import QuizIcon from "../common/Icons/QuizIcon.tsx";
 import EasyIcon from "../common/Icons/EasyIcon.tsx";
 import MediumIcon from "../common/Icons/MediumIcon.tsx";
 import HardIcon from "../common/Icons/HardIcon.tsx";
-import { gameApi } from "../../api/gameApi.ts";
-import {JokerType, PlayerJokerRequest} from "../../model/Request/PlayerJokerRequest.ts";
 import JokerContainer from "./JokerContainer.tsx";
-import {useCallback, useState} from "react";
 import useIsMobile from "../../hook/useIsMobile.ts";
+import IceIcon from "../common/Icons/IceIcon.tsx";
 
 
 interface QuizGameComponentProps {
@@ -16,43 +14,37 @@ interface QuizGameComponentProps {
     messageSystem?: string,
     username: string,
     currentParticipantId: string | null,
+    handleSendJoker: () => void,
+    usedJokerGlace: boolean,
 }
 
 
-const QuizGameHeader = ({idRoom, quizGame, messageSystem, username, currentParticipantId}: QuizGameComponentProps) => {
+const QuizGameHeader = ({idRoom, quizGame, messageSystem, handleSendJoker, usedJokerGlace}: QuizGameComponentProps) => {
 
-    const [usedJokerGlace, setUsedJokerGlace] = useState(false);
     const isMobile = useIsMobile()
-    const handleSendJoker = useCallback((gameId:string, participantId:string|null, username: string) => {
-        console.log(gameId, participantId, username);
-        if(!gameId || !participantId) return;
-        const request: PlayerJokerRequest = {
-            username: username,
-            jokerType: JokerType.PRIORITE_REPONSE,
-            participantId: participantId
-        }
-        gameApi.submitJoker(gameId, request);
-        setUsedJokerGlace(true);
-        setTimeout(()=> {
-            setUsedJokerGlace(false);
-        }, 8000)
-    },[]);
+
 
     return(
 <>
         {idRoom && quizGame && !quizGame.finished && (<>
 
-                <JokerContainer handleSendJoker={() => handleSendJoker(quizGame?.gameId, currentParticipantId, username)}/>
+
+                {!isMobile && (
+                    <div className={`flex flex-auto flex-row flex-wrap gap-2`}>
+                    <JokerContainer handleSendJoker={handleSendJoker}>
+                        <IceIcon />
+                    </JokerContainer>
+                    </div>)}
+
+                <div className={`flex flex-row justify-center items-center gap-4 bg-primary/50 backdrop-blur-sm border border-white/20 rounded-2xl ${isMobile ? "p-3" : "p-4"}`}>
+                    <div className={`font-bold ${isMobile ? "text-sm" : "text-xl"} text-white italic text-shadow-lg`}>{quizGame?.currentQuestion?.category}</div>
+                    {quizGame?.currentQuestion?.difficulty === "easy" && <EasyIcon className={`${isMobile ? "w-[75px] h-[14px]" : ""}`}  />}
+                    {quizGame?.currentQuestion?.difficulty === "medium" && <MediumIcon  />}
+                    {quizGame?.currentQuestion?.difficulty === "hard" && <HardIcon />}
+                </div>
 
                 <div
                     className="flex flex-row justif-center items-center gap-2 font-bold text-4xl sm:text-5xl md:text-6xl lg:text-[64px] leading-tight font-[Nova_Square]"><QuizIcon className={`${isMobile ? "w-[40px] h-[40px]" : "w-[60px] h-[60px]"}`} /><span className={`px-4 bg-clip-text  text-white text-shadow-lg ${isMobile ? "text-2xl" : "text-5xl"}`}>Question {quizGame.questions.findIndex( question => question.id === quizGame?.currentQuestion?.id)+1 }</span></div>
-                <div className={"flex flex-row justify-center items-center gap-4 bg-primary/50 backdrop-blur-sm p-4 border border-white/20 rounded-2xl"}>
-                    <div className={`font-bold ${isMobile ? "text-xl" : "text-2xl"} text-white italic text-shadow-lg`}>{quizGame?.currentQuestion?.category}</div>
-                {quizGame?.currentQuestion?.difficulty === "easy" && <EasyIcon  />}
-                {quizGame?.currentQuestion?.difficulty === "medium" && <MediumIcon  />}
-                {quizGame?.currentQuestion?.difficulty === "hard" && <HardIcon />}
-
-                </div>
 
                 <div
                     className={`font-bold ${isMobile ? "text-2xl" : "text-3xl"}  text-white font-[Nova_Square] text-shadow-lg`}>{quizGame?.currentQuestion?.question}</div>

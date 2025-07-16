@@ -2,6 +2,7 @@ import ChatComponent from './ChatComponent';
 import ChatIcon from '../common/Icons/ChatIcon';
 import ArrowRightIcon from '../common/Icons/ArrowRightIcon';
 import {MessageDTO} from "../../model/MessageDTO.ts";
+import useIsMobile from "../../hook/useIsMobile.ts";
 
 interface ChatPanelProps {
   roomId?: string;
@@ -17,13 +18,31 @@ const ChatPanel = ({
   username,
   isOpen,
   toggleOpen
-}:ChatPanelProps) => (
+}:ChatPanelProps) => {
+
+    const isMobile = useIsMobile();
+
+    const positionClasses = isMobile
+        ? "top-4 h-10 right-2"
+        : "top-1/3 h-12";
+
+    const sizeAndShape = isOpen
+        ? (isMobile ? "w-full" : "w-80 rounded-t-2xl")
+        : (isMobile ? "w-20 rounded-2xl"   : "w-45 rounded-2xl");
+
+    const commonClasses = [
+        "fixed right-0 z-50",
+        "bg-secondary-dark text-white hover:bg-secondary-darker",
+        "overflow-hidden flex grow-1 justify-center items-center",
+        "transition-[width] duration-300"
+    ].join(" ");
+
+
+    return (
   <>
     {/* Bouton pour ouvrir/fermer le chat */}
     <div
-      className={`fixed top-1/3 right-0 z-50 h-12 bg-secondary-dark text-white hover:bg-secondary-darker overflow-hidden flex grow-1
-        ${isOpen ? 'w-80 rounded-t-2xl' : 'w-45 rounded-2xl'}
-        transition-[width] duration-300 flex justify-center items-center`}
+      className={`${positionClasses} ${sizeAndShape} ${commonClasses}`}
     >
       <button
         className="w-full h-full flex justify-center items-center"
@@ -31,14 +50,14 @@ const ChatPanel = ({
       >
         {isOpen
           ? <div className={"flex flex-row gap-2"}><ArrowRightIcon className="w-6 h-auto" />Fermer</div>
-          : <div className={"flex flex-row gap-2"}><ChatIcon className="w-6 h-auto" />Messages</div>}
+          : <div className={"flex flex-row gap-2"}><ChatIcon className="w-6 h-auto" />{!isMobile && "Messages"}</div>}
       </button>
     </div>
 
     {/* Panneau latéral Chat */}
     <div
       className={
-        `fixed top-[calc(33%+48px)] right-0 z-40 h-auto scroll shadow-lg bg-white
+        `fixed ${isMobile ? "top-[calc(var(--spacing)*4+var(--spacing)*10)]" : "top-[calc(33%+var(--spacing)*12)]"} right-0 z-40 h-auto scroll shadow-lg bg-white
          transform transition-transform duration-300 ease-in-out
          ${isOpen ? 'translate-x-0 rounded-b-2xl' : 'translate-x-full'}
          w-full sm:w-80 pt-6`
@@ -51,6 +70,6 @@ const ChatPanel = ({
       />
     </div>
   </>
-);
+);}
 
 export default ChatPanel;
