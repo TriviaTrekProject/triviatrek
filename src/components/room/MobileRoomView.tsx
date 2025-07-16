@@ -32,17 +32,18 @@ const MobileRoomView = ({
     <div className="flex flex-col items-center justify-center gap-4 w-full">
       <QuizGameHeader currentParticipantId={currentParticipantId} username={username} idRoom={roomId} quizGame={quizGame} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}
       />
-        {quizGame?.waitingForNext
-            ? <ProgressBar duration={10000}/>
-            : <div className="w-full h-3"/>}
-
 
     </div>
 
-    <div className="rounded-2xl w-full flex flex-col p-4 gap-4 bg-transparent">
+    <div className="rounded-2xl w-full flex flex-col px-2 bg-transparent justify-center items-center">
       <RoomUsers currentParticipantId={currentParticipantId} username={username} users={users} scores={quizGame?.scores ?? []}/>
 
-      {quizGame?.currentQuestion
+        {quizGame?.waitingForNext
+            ? <ProgressBar duration={10000}/>
+            : <div className="w-full my-2 h-3"/>}
+
+
+        {quizGame?.currentQuestion
         ? (
           <QuizGameAnswersComponent
             idRoom={roomId!}
