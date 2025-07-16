@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
 
 interface ProgressBarProps {
     /** Durée totale du timer (en millisecondes) */
     duration: number;
     /** Clé à changer pour redémarrer la barre (ex. id de question) */
-    restartKey?: any;
+    restartKey?: string | number;
     /** Callback exécuté quand le timer arrive à zéro */
     onFinish?: () => void;
     /** Classes Tailwind/CSS pour personnaliser l’aspect */
@@ -15,7 +15,7 @@ interface ProgressBarProps {
 
 /**
  * ProgressBar – composant générique affichant une barre qui passe de 100 % à 0 %
- * en `duration` millisecondes.
+ * en `duration` millisecondes, animé par Framer Motion.
  */
 const ProgressBar = ({
                          duration,
@@ -23,40 +23,18 @@ const ProgressBar = ({
                          onFinish,
                          heightClass = "h-3",
                          trackClassName = "bg-secondary",
-                         barClassName   = "bg-secondary-dark",
+                         barClassName   = "bg-secondary-dark"
                      }: ProgressBarProps) => {
-    const [percent, setPercent] = useState(100);
-    const animFrameRef = useRef<number | null>(null);
-
-    useEffect(() => {
-        const start = performance.now();
-
-        const tick = (now: number) => {
-            const elapsed = now - start;
-            const newPercent = Math.max(0, 100 - (elapsed / duration) * 100);
-            setPercent(newPercent);
-
-            if (elapsed < duration) {
-                animFrameRef.current = requestAnimationFrame(tick);
-            } else {
-                onFinish?.();
-            }
-        };
-
-        animFrameRef.current = requestAnimationFrame(tick);
-
-        return () => {
-            if (animFrameRef.current !== null) cancelAnimationFrame(animFrameRef.current);
-        };
-    }, [duration, restartKey, onFinish]);
-
     return (
         <div className={`w-full ${heightClass} ${trackClassName} rounded overflow-hidden mx-2`}>
-            <div
-                className={`${barClassName} h-full transition-[width] duration-50 animate-pulse
-                    
-`}
-                style={{ width: `${percent}%` }}
+            <motion.div
+                // Le key force le remontage du composant à chaque changement de restartKey
+                key={restartKey ?? "static"}
+                className={`${barClassName} h-full`}
+                initial={{ width: "100%" }}
+                animate={{ width: "0%" }}
+                transition={{ duration: duration / 1000, ease: "linear" }}
+                onAnimationComplete={() => onFinish?.()}
             />
         </div>
     );
