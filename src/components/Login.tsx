@@ -26,7 +26,7 @@ const Login = ({setUsername}: GuestRoomProps) => {
     }
     return (
 
-        <div className="flex items-center gap-8 justify-center h-full flex-1/2 self-center w-full">
+        <div className="flex items-center gap-8 p-2 justify-center h-full flex-1/2 self-center w-full">
             <form onSubmit={onSubmit} className="bg-white p-6 rounded w-80 flex flex-col justify-center items-center">
                 <div className={"w-[10rem] h-[10rem] flex"}>
                     <img src={"/LogoTriviatrek.png"} alt={"logo"}/>

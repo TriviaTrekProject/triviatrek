@@ -32,8 +32,8 @@ const ParallaxBackground: React.FC<ParallaxBackgroundProps> = ({
     };
 
     return (
-        <div className="fixed w-full h-full overflow-hidden -z-1">
-            <MotionSkyBg className="absolute h-full w-auto" />
+        <div className="fixed w-full h-full overflow-hidden -z-1 justify-center items-center flex top-0">
+            <MotionSkyBg className="absolute h-dvh w-auto" />
 
             <MotionRockBg
                 {...(!disableAnimation && {
@@ -45,7 +45,7 @@ const ParallaxBackground: React.FC<ParallaxBackgroundProps> = ({
                         transform: "translateZ(0)",
                     },
                 })}
-                className="absolute h-full w-auto -left-20 transform-gpu [transform-box:fill-box]"
+                className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
             />
 
             <MotionSeaBg
@@ -58,7 +58,7 @@ const ParallaxBackground: React.FC<ParallaxBackgroundProps> = ({
                         transform: "translateZ(0)",
                     },
                 })}
-                className="absolute h-full w-auto -left-20 transform-gpu [transform-box:fill-box]"
+                className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
             />
 
             <MotionBird1Bg
@@ -71,7 +71,7 @@ const ParallaxBackground: React.FC<ParallaxBackgroundProps> = ({
                         transform: "translateZ(0)",
                     },
                 })}
-                className="absolute h-full w-auto [transform-box:fill-box] origin-[500px_280px] transform scale-x-[-1] transform-gpu"
+                className="absolute h-dvh w-auto [transform-box:fill-box] origin-[500px_280px] transform scale-x-[-1] transform-gpu"
             />
 
             <MotionBird2Bg
@@ -84,7 +84,7 @@ const ParallaxBackground: React.FC<ParallaxBackgroundProps> = ({
                         transform: "translateZ(0)",
                     },
                 })}
-                className="absolute h-full w-auto transform-gpu [transform-box:fill-box]"
+                className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
             />
 
             <MotionShipBg
@@ -97,7 +97,7 @@ const ParallaxBackground: React.FC<ParallaxBackgroundProps> = ({
                         transform: "translateZ(0)",
                     },
                 })}
-                className="absolute h-full w-auto transform-gpu [transform-box:fill-box] origin-[50%_50%]"
+                className={`absolute h-dvh w-auto transform-gpu [transform-box:fill-box] origin-[50%_50%]}`}
             />
 
             <MotionShoreBg className="absolute h-full w-auto" />

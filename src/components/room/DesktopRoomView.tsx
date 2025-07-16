@@ -36,7 +36,7 @@ const DesktopRoomView = ({
                            currentParticipantId
 }:DesktopRoomViewProps) => (
   <>
-    <div className="w-full h-full absolute -z-1 bg-black opacity-40 pointer-events-none" />
+    <div className="w-full h-full absolute -z-1 bg-black opacity-40 pointer-events-none top-0" />
     {effetGlace && (<ParallaxBackgroundIce/>)
     }
     <ChatPanel
