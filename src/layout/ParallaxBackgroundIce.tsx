@@ -4,6 +4,7 @@ import Hill2Bg from "../components/common/background/Hill2Bg.tsx";
 import SnowBg from "../components/common/background/SnowBg.tsx";
 import React from "react";
 import IceMountainBg from "../components/common/background/IceMountainBg.tsx";
+import useIsMobile from "../hook/useIsMobile.ts";
 
 const MotionHill1Bg = motion.create(Hill1Bg);
 const MotionHill2Bg = motion.create(Hill2Bg);
@@ -13,9 +14,10 @@ const MotionIceMoutainBg= motion.create(IceMountainBg);
 
 const ParallaxBackgroundIce = () => {
 
+    const isMobile = useIsMobile();
 
     return(
-        <div className={"top-0 w-full h-full absolute z-40 pointer-events-auto w-auto left-0 overflow-hidden flex"}>
+        <div className={"top-0 w-full h-full absolute z-40 pointer-events-auto w-auto overflow-hidden flex"}>
 
             <div className={"bg-radial-[at_50%_50%] from-transparent to-sky-200 to-95% w-full h-full absolute z-50 pointer-events-auto "}/>
 
@@ -28,7 +30,7 @@ const ParallaxBackgroundIce = () => {
                                                     damping: 15,      // amortissement
                                                     bounce: 0.5       // rebond (0 = sans rebond, 1 = très rebondissant)
                                                 }}
-                                                className={"absolute top-0 w-full h-auto"}/>
+                                                className={`absolute ${isMobile ? "w-auto h-dvh" : "h-auto w-dvw" }`}/>
 
             <MotionHill1Bg
                 initial={{ x:1400 }}
@@ -38,7 +40,7 @@ const ParallaxBackgroundIce = () => {
                     delay:1
 
                 }}
-                className="absolute right-0 -bottom-70 w-auto h-full"/>
+                className="absolute right-0 -bottom-70 w-auto h-dvg"/>
 
 
 
@@ -50,7 +52,7 @@ const ParallaxBackgroundIce = () => {
                     delay:1
                 }}
 
-                className="absolute -left-20 -bottom-85 w-auto h-full"/>
+                className="absolute -left-20 -bottom-85 w-auto h-dvh"/>
 
             <MotionSnowBg
                 initial={{ y: -1000, opacity: 0.3 }}
@@ -60,7 +62,7 @@ const ParallaxBackgroundIce = () => {
                     duration: 8
                 }}
 
-                className="absolute -left-20 top-0 w-auto h-full "/>
+                className="absolute -left-20 top-0 w-auto h-dvh"/>
 
 
 

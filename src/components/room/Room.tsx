@@ -58,6 +58,7 @@ const Room: React.FC<RoomProps> = ({ username }) => {
                         toggleChat={() => setChatOpen(open => !open)}
                         handleSendJoker={() => handleSendJoker(quizGame?.gameId ?? '', currentParticipantId, username)}
                         usedJokerGlace={usedJokerGlace}
+                        effetGlace={effetGlace}
                     />
                 )
                 : (

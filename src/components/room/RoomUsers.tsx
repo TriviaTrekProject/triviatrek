@@ -36,6 +36,42 @@ const RoomUsers = ({users, scores, currentParticipantId}: {users:ParticipantDTO[
         }
     }, [prevScores, scores]); // déclenchement à chaque mise à jour de scores
 
+    const currentUser = users.find(user => currentParticipantId === user.participantId);
+    const position = currentUser
+        ? [...scores]
+        .sort((a, b) => b.score - a.score)
+        .findIndex(s => s.player === currentUser.username) + 1
+        : null;
+
+    if(isMobile) return (
+
+        <div className={`bg-transparent flex flex-col gap-2 px-6`}>
+            <div className={`flex-row flex gap-4 items-center text-white gap-1 basis-(calc(1/2-var(--spacing)*4)`}>
+                <div className={"flex shrink-0"}>
+                    <PlayerIcon className={"h-8 w-8 rounded-full"} />
+                    <div className={`flex justify-center items-center bold text-xl ${position === 1 ? 'bg-secondary-darker' : 'bg-primary'} w-8 h-8 rounded-full p-1 text-white`}>{position}</div>
+                </div>
+                <div className={`flex flex-col items-start relative font-bold text-sm`}>
+                    <div>{currentUser?.username}</div>
+                    <span>{scores.find(s => s.player === currentUser?.username)?.score ?? 0} pts</span>
+                    <AnimatePresence>
+                        {notifications.filter(n => n.player === currentUser?.username).map(n => (
+                            <motion.span
+                                key={n.id}
+                                initial={{ opacity: 1, x: 50, y: 0 }}
+                                animate={{ opacity: 0, x: 50, y: -20 }}
+                                transition={{ duration: 2 }}
+                                className="text-green-400 font-bold absolute right-0"
+                            >
+                                +{n.diff}
+                            </motion.span>
+                        ))}
+                    </AnimatePresence>
+
+                </div>
+            </div>
+        </div>
+    )
     
     return(
         <div className={`bg-transparent flex flex-col gap-2 ${isMobile ? 'px-6' : 'p-2'}`}>

@@ -5,12 +5,8 @@ import StartGameButton from '../game/StartGameButton';
 import ProgressBar from '../common/ProgressBar';
 import {ParticipantDTO, QuizGameDTO} from "../../model/QuizGameDTO.ts";
 import {MessageDTO} from "../../model/MessageDTO.ts";
-import ChatPanel from "./ChatPanel.tsx";
-import {RefObject, useEffect, useRef, useState} from "react";
-import IceIcon from "../common/Icons/IceIcon.tsx";
-import { motion } from 'motion/react';
-import JokerContainer from "../game/JokerContainer.tsx";
-import JokerIcon from "../common/Icons/JokerIcon.tsx";
+import {useEffect, useRef, useState} from "react";
+import ParallaxBackgroundIce from "../../layout/ParallaxBackgroundIce.tsx";
 
 interface MobileRoomViewProps {
   roomId?: string;
@@ -25,48 +21,11 @@ interface MobileRoomViewProps {
     toggleChat: () => void;
     handleSendJoker: () => void;
     usedJokerGlace: boolean;
+    effetGlace:boolean;
 
 }
 
 
-
-interface JokerPanelProps {
-    onClick: () => void;
-    drawerOpen: boolean;
-    handleSendJoker: () => void;
-    buttonRef: RefObject<HTMLButtonElement|null>;
-    drawerRef: RefObject<HTMLDivElement|null>;
-}
-
-function JokerPanel({onClick, drawerOpen, handleSendJoker, buttonRef, drawerRef}: JokerPanelProps) {
-    return <>
-        {/* Bouton pour ouvrir/fermer le volet */}
-        <button ref={buttonRef}
-            className="fixed top-4 left-4 z-40 p-2 bg-transparent text-white"
-            onClick={onClick}
-        >
-            <JokerIcon className="w-12 h-12"/>
-        </button>
-
-        {/* Volet dépliant */}
-        <motion.div
-            ref={drawerRef}
-            initial={{x: "-100%"}}
-            animate={{x: drawerOpen ? 0 : "-100%"}}
-            transition={{type: "spring", stiffness: 250, damping: 20}}
-            className="fixed top-0 left-0 h-full w-auto p-4 z-50 overflow-auto"
-        >
-            <div className="flex flex-row flex-wrap gap-2">
-                <JokerContainer
-                    handleSendJoker={handleSendJoker}
-                >
-                    <IceIcon/>
-                </JokerContainer>
-                {/* ... autres boutons ou contenus du volet */}
-            </div>
-        </motion.div>
-    </>;
-}
 const MobileRoomView = ({
                                                          roomId,
                                                          gameId,
@@ -75,8 +34,7 @@ const MobileRoomView = ({
                                                          username,
                                                          onStart,
                                                          messages,
-                            isChatOpen,
-                            toggleChat,
+                            effetGlace,
                             currentParticipantId,
                             handleSendJoker,
     usedJokerGlace
@@ -110,14 +68,10 @@ const MobileRoomView = ({
 
     return (
   <div className="flex flex-col items-center justify-center gap-4 h-full w-full">
+      <div className="w-full h-full absolute -z-1 bg-black opacity-40 pointer-events-none top-0" />
+      {effetGlace && (<ParallaxBackgroundIce/>)}
 
-      <ChatPanel
-          roomId={roomId}
-          messages={messages}
-          username={username}
-          isOpen={isChatOpen}
-          toggleOpen={toggleChat}
-      />
+
       <div className="flex flex-col items-center justify-center gap-4 w-full">
         <RoomUsers currentParticipantId={currentParticipantId} username={username} users={users} scores={quizGame?.scores ?? []}/>
 
@@ -135,8 +89,6 @@ const MobileRoomView = ({
 
         {quizGame?.currentQuestion
         ? (<>
-                    <JokerPanel buttonRef={buttonRef} drawerRef={drawerRef} onClick={() => setDrawerOpen(o => !o)} drawerOpen={drawerOpen}
-                                handleSendJoker={handleSendJoker}/>
                     <QuizGameAnswersComponent
                         idRoom={roomId!}
                         gameId={gameId!}
