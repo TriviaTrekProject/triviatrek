@@ -46,7 +46,7 @@ const RoomUsers = ({users, scores, currentParticipantId}: {users:ParticipantDTO[
     if(isMobile) return (
 
         <div className={`bg-transparent flex flex-col gap-2 px-6`}>
-            <div className={`flex-row flex gap-4 items-center text-white gap-1 basis-(calc(1/2-var(--spacing)*4)`}>
+            <div className={`flex-row flex items-center text-white gap-2 basis-(calc(1/2-var(--spacing)*4)`}>
                 <div className={"flex shrink-0"}>
                     <PlayerIcon className={"h-8 w-8 rounded-full"} />
                     <div className={`flex justify-center items-center bold text-xl ${position === 1 ? 'bg-secondary-darker' : 'bg-primary'} w-8 h-8 rounded-full p-1 text-white`}>{position}</div>
@@ -76,7 +76,7 @@ const RoomUsers = ({users, scores, currentParticipantId}: {users:ParticipantDTO[
     return(
         <div className={`bg-transparent flex flex-col gap-2 ${isMobile ? 'px-6' : 'p-2'}`}>
             <div className={"font-bold text-white p-2 bg-transparent border-solid border-b-4 mb-2 border-white"}>Utilisateurs</div>
-            <div className={`${isMobile ? 'flex-row flex-wrap' : 'flex-col'} flex gap-4 text-white gap-1 ${isMobile ? "basis-(calc(1/2-var(--spacing)*4)" : ""}`}>
+            <div className={`${isMobile ? 'flex-row flex-wrap' : 'flex-col'} flex gap-4 text-white ${isMobile ? "basis-(calc(1/2-var(--spacing)*4)" : ""}`}>
                 {users.map((usr, index) =>
                 {
                     const userScore = scores.find(s => s.player === usr.username)?.score ?? 0;
