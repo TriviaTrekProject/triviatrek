@@ -1,7 +1,7 @@
 import {ReactNode, useState} from "react";
 import useIsMobile from "../../hook/useIsMobile.ts";
 
-const JokerContainer = ({handleSendJoker, children}: {handleSendJoker : () => void, children : ReactNode}) => {
+const JokerContainer = ({handleSendJoker, children, label}: {handleSendJoker : () => void, children : ReactNode, label?:string}) => {
 
     const [isDisabled, setIsDisabled] = useState(false);
     const isMobile = useIsMobile();
@@ -12,9 +12,9 @@ const JokerContainer = ({handleSendJoker, children}: {handleSendJoker : () => vo
             setIsDisabled(true)
         }}>
             {children}
-            <div className={`font-bold font-[Nova_Square] ${isMobile ? "text-xs" : ""}`}>
-                Bloc de glace
-            </div>
+            {label &&  <div className={`font-bold font-[Nova_Square] ${isMobile ? "text-xs" : ""}`}>
+                {label}
+            </div>}
         </button>
     </div>)
 

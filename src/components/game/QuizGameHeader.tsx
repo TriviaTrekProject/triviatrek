@@ -18,6 +18,9 @@ import LitteratureIcon from "../common/Icons/category/LitteratureIcon.tsx";
 import LogiqueIcon from "../common/Icons/category/LogiqueIcon.tsx";
 import SportIcon from "../common/Icons/category/SportIcon.tsx";
 import ProgressBar from "../common/ProgressBar.tsx";
+import {useState} from "react";
+import {AnimatePresence, motion} from "motion/react";
+import JokerIcon from "../common/Icons/JokerIcon.tsx";
 
 
 interface QuizGameComponentProps {
@@ -34,6 +37,7 @@ interface QuizGameComponentProps {
 const QuizGameHeader = ({idRoom, quizGame, messageSystem, handleSendJoker, usedJokerGlace}: QuizGameComponentProps) => {
 
     const isMobile = useIsMobile()
+    const [isJokerDrawerOpen, setIsJokerDrawerOpen] = useState(false);
 
 
     const getCategoryIcon = (category: string) => {
@@ -60,18 +64,61 @@ const QuizGameHeader = ({idRoom, quizGame, messageSystem, handleSendJoker, usedJ
         <>
             {idRoom && quizGame && !quizGame.finished && (<>
 
+                    {/* Bouton d’ouverture du drawer */}
+                    <motion.button
+                        type="button"
+                        className="fixed top-4 left-4 z-35 p-2 bg-white/20 backdrop-blur-sm rounded-full"
+                        onClick={() => setIsJokerDrawerOpen(true)}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                    >
+                        <JokerIcon className="w-8 h-8 caret-amber-50" />
+                    </motion.button>
 
-                        <div className={`w-full flex basis-1/3 flex-row gap-4 grow-0`}>
-                            <JokerContainer handleSendJoker={handleSendJoker}>
-                                <IceIcon />
-                            </JokerContainer>
-                            <JokerContainer handleSendJoker={handleSendJoker}>
-                                <IceIcon />
-                            </JokerContainer>
-                            <JokerContainer handleSendJoker={handleSendJoker}>
-                                <IceIcon />
-                            </JokerContainer>
-                        </div>
+                    {/* Drawer des jokers avec animation */}
+                    <AnimatePresence>
+                        {isJokerDrawerOpen && (
+                            <motion.div
+                                className="fixed inset-0 z-40 flex"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                                onClick={() => setIsJokerDrawerOpen(false)}
+                            >
+                                <motion.div
+                                    className="w-64 bg-white shadow-lg p-4"
+                                    initial={{ x: -300 }}
+                                    animate={{ x: 0 }}
+                                    exit={{ x: -300 }}
+                                    transition={{ type: "tween", duration: 0.3 }}
+                                    onClick={e => e.stopPropagation()}
+                                >
+                                    <h2 className="mb-4 font-bold">Jokers</h2>
+                                    <div className="flex flex-col gap-4">
+                                        <JokerContainer handleSendJoker={handleSendJoker}>
+                                            <IceIcon className="h-6 w-auto" />
+                                        </JokerContainer>
+                                        <JokerContainer handleSendJoker={handleSendJoker}>
+                                            <IceIcon className="h-6 w-auto" />
+                                        </JokerContainer>
+                                        <JokerContainer handleSendJoker={handleSendJoker}>
+                                            <IceIcon className="h-6 w-auto" />
+                                        </JokerContainer>
+                                    </div>
+                                </motion.div>
+                                <motion.div
+                                    className="flex-1"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 0.5 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+
 
                     <div className={`flex flex-row justify-between items-center w-full gap-2 bg-primary/50 backdrop-blur-sm border border-white/20 rounded-2xl px-3 py-2`}>
                         {quizGame?.currentQuestion?.categoryId && <div className="font-bold text-sm text-white italic text-shadow-lg">{getCategoryIcon(quizGame.currentQuestion.categoryId)}</div>}
@@ -81,7 +128,7 @@ const QuizGameHeader = ({idRoom, quizGame, messageSystem, handleSendJoker, usedJ
                                 ? <ProgressBar trackClassName={"flex"} vertical duration={10000}/>
                                 : <div className="h-full my-2 w-4"/>}
 
-                            <span className={`px-4 bg-clip-text  text-white text-shadow-lg ${isMobile ? "text-2xl" : "text-5xl"}`}>
+                            <span className={`px-4 bg-clip-text  text-white text-shadow-lg text-xl`}>
                             Question {quizGame.questions.findIndex( question => question.id === quizGame?.currentQuestion?.id)+1 }
                         </span></div>
                         {quizGame?.currentQuestion?.difficulty === "easy" && <EasyIcon className="w-12 h-auto flex justify-center items-center"/>}
@@ -93,7 +140,7 @@ const QuizGameHeader = ({idRoom, quizGame, messageSystem, handleSendJoker, usedJ
 
 
                     <div
-                        className={`font-bold text-2xl text-white font-[Nova_Square] text-shadow-lg`}>{quizGame?.currentQuestion?.question}</div>
+                        className={`font-bold text-white font-[Nova_Square] text-shadow-lg text-xl`}>{quizGame?.currentQuestion?.question}</div>
                     {messageSystem && (<div
                         className={`absolute border border-white/30 rounded-xl bg-white backdrop-blur-sm shadow-lg p-5 text-2xl left-15 top-25 font-bold text-secondary-dark font-[Nova_Square]`}>{messageSystem}</div>)}
                     {usedJokerGlace && (<div className={`absolute border border-white/30 rounded-xl bg-white backdrop-blur-sm shadow-lg p-5 text-2xl left-15 top-25 font-bold text-secondary-dark font-[Nova_Square]`}>Vous avez gelé vos adversaires !</div>)}
@@ -122,18 +169,17 @@ const QuizGameHeader = ({idRoom, quizGame, messageSystem, handleSendJoker, usedJ
         {idRoom && quizGame && !quizGame.finished && (<>
 
 
-                {!isMobile && (
                     <div className={`flex flex-auto flex-row flex-wrap gap-2`}>
-                    <JokerContainer handleSendJoker={handleSendJoker}>
+                    <JokerContainer label={"Bloc de glace"} handleSendJoker={handleSendJoker}>
                         <IceIcon />
                     </JokerContainer>
-                    </div>)}
+                    </div>
 
                 <div className={`flex flex-row justify-center items-center gap-4 bg-primary/50 backdrop-blur-sm border border-white/20 rounded-2xl ${isMobile ? "p-3" : "p-4"}`}>
                     <div className={`font-bold ${isMobile ? "text-sm" : "text-xl"} text-white italic text-shadow-lg`}>{quizGame?.currentQuestion?.category}</div>
-                    {quizGame?.currentQuestion?.difficulty === "easy" && <EasyIcon className={`${isMobile ? "w-[75px] h-[14px]" : ""}`}  />}
-                    {quizGame?.currentQuestion?.difficulty === "medium" && <MediumIcon  />}
-                    {quizGame?.currentQuestion?.difficulty === "hard" && <HardIcon />}
+                    {quizGame?.currentQuestion?.difficulty === "easy" && <EasyIcon className="w-16 h-auto flex justify-center items-center"  />}
+                    {quizGame?.currentQuestion?.difficulty === "medium" && <MediumIcon className="w-16 h-auto flex justify-center items-center"  />}
+                    {quizGame?.currentQuestion?.difficulty === "hard" && <HardIcon className="w-16 h-auto flex justify-center items-center" />}
                 </div>
 
                 <div

@@ -66,13 +66,16 @@ const MobileRoomView = ({
 
 
     return (
-  <div className="flex flex-col items-center justify-center gap-4 h-full w-full">
+        <>
+        <div className={"absolute top-6 right-4 flex self-end items-center"}>
+            <RoomUsers currentParticipantId={currentParticipantId} username={username} users={users} scores={quizGame?.scores ?? []}/>
+        </div>
+
+    <div className="flex flex-col items-center h-full w-full flex-start justify-center gap-8 pt-12">
       <div className="w-full h-dvh absolute -z-1 bg-black opacity-40 pointer-events-none top-0" />
       {effetGlace && (<ParallaxBackgroundIce/>)}
 
-
-      <div className="flex flex-col items-center justify-center gap-4 w-full">
-        <RoomUsers currentParticipantId={currentParticipantId} username={username} users={users} scores={quizGame?.scores ?? []}/>
+      <div className="flex flex-col items-center justify-center gap-8 w-full">
 
         <QuizGameHeader handleSendJoker={handleSendJoker} usedJokerGlace={usedJokerGlace} currentParticipantId={currentParticipantId} username={username} idRoom={roomId} quizGame={quizGame} messageSystem={messages?.find((message:MessageDTO) => message.sender === `GAME_SYSTEM_${quizGame?.currentQuestionIndex}`)?.content}
       />
@@ -97,6 +100,7 @@ const MobileRoomView = ({
       }
     </div>
   </div>
+        </>
 )};
 
 export default MobileRoomView;
