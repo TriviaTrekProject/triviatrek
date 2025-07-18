@@ -3,6 +3,7 @@ export interface QuestionDTO {
     question: string
     difficulty: string
     category: string
+    categoryId: string
     correctAnswer: string
     incorrectAnswers: string[]
     options: string[]
