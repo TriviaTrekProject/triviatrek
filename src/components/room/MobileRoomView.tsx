@@ -2,7 +2,6 @@ import RoomUsers from './RoomUsers';
 import QuizGameHeader from '../game/QuizGameHeader';
 import QuizGameAnswersComponent from '../game/QuizGameAnswersComponent';
 import StartGameButton from '../game/StartGameButton';
-import ProgressBar from '../common/ProgressBar';
 import {ParticipantDTO, QuizGameDTO} from "../../model/QuizGameDTO.ts";
 import {MessageDTO} from "../../model/MessageDTO.ts";
 import {useEffect, useRef, useState} from "react";
@@ -68,7 +67,7 @@ const MobileRoomView = ({
 
     return (
   <div className="flex flex-col items-center justify-center gap-4 h-full w-full">
-      <div className="w-full h-full absolute -z-1 bg-black opacity-40 pointer-events-none top-0" />
+      <div className="w-full h-dvh absolute -z-1 bg-black opacity-40 pointer-events-none top-0" />
       {effetGlace && (<ParallaxBackgroundIce/>)}
 
 
@@ -81,10 +80,6 @@ const MobileRoomView = ({
     </div>
 
     <div className="rounded-2xl w-full flex flex-col px-2 gap-6 bg-transparent justify-center items-center">
-
-        {quizGame?.waitingForNext
-            ? <ProgressBar duration={10000}/>
-            : <div className="w-full my-2 h-3"/>}
 
 
         {quizGame?.currentQuestion

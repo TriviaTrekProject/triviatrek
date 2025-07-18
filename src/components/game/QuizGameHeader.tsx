@@ -17,6 +17,7 @@ import GeographieIcon from "../common/Icons/category/GeographieIcon.tsx";
 import LitteratureIcon from "../common/Icons/category/LitteratureIcon.tsx";
 import LogiqueIcon from "../common/Icons/category/LogiqueIcon.tsx";
 import SportIcon from "../common/Icons/category/SportIcon.tsx";
+import ProgressBar from "../common/ProgressBar.tsx";
 
 
 interface QuizGameComponentProps {
@@ -60,7 +61,7 @@ const QuizGameHeader = ({idRoom, quizGame, messageSystem, handleSendJoker, usedJ
             {idRoom && quizGame && !quizGame.finished && (<>
 
 
-                        <div className={`w-full flex basis-1/3 flex-row gap-2 grow-0`}>
+                        <div className={`w-full flex basis-1/3 flex-row gap-4 grow-0`}>
                             <JokerContainer handleSendJoker={handleSendJoker}>
                                 <IceIcon />
                             </JokerContainer>
@@ -72,16 +73,20 @@ const QuizGameHeader = ({idRoom, quizGame, messageSystem, handleSendJoker, usedJ
                             </JokerContainer>
                         </div>
 
-                    <div className={`flex flex-row justify-center items-center gap-4 bg-primary/50 backdrop-blur-sm border border-white/20 rounded-2xl p-3`}>
+                    <div className={`flex flex-row justify-between items-center w-full gap-2 bg-primary/50 backdrop-blur-sm border border-white/20 rounded-2xl px-3 py-2`}>
                         {quizGame?.currentQuestion?.categoryId && <div className="font-bold text-sm text-white italic text-shadow-lg">{getCategoryIcon(quizGame.currentQuestion.categoryId)}</div>}
                         <div
                             className="flex flex-row justif-center items-center gap-2 font-bold text-4xl sm:text-5xl md:text-6xl lg:text-[64px] leading-tight font-[Nova_Square]">
-                        <span className={`px-4 bg-clip-text  text-white text-shadow-lg ${isMobile ? "text-2xl" : "text-5xl"}`}>
+                            {!quizGame?.waitingForNext
+                                ? <ProgressBar trackClassName={"flex"} vertical duration={10000}/>
+                                : <div className="h-full my-2 w-4"/>}
+
+                            <span className={`px-4 bg-clip-text  text-white text-shadow-lg ${isMobile ? "text-2xl" : "text-5xl"}`}>
                             Question {quizGame.questions.findIndex( question => question.id === quizGame?.currentQuestion?.id)+1 }
                         </span></div>
-                        {quizGame?.currentQuestion?.difficulty === "easy" && <EasyIcon className="w-12 h-auto"/>}
-                        {quizGame?.currentQuestion?.difficulty === "medium" && <MediumIcon className="w-12 h-auto" />}
-                        {quizGame?.currentQuestion?.difficulty === "hard" && <HardIcon className="w-12 h-auto" />}
+                        {quizGame?.currentQuestion?.difficulty === "easy" && <EasyIcon className="w-12 h-auto flex justify-center items-center"/>}
+                        {quizGame?.currentQuestion?.difficulty === "medium" && <MediumIcon className="w-12 h-auto flex justify-center items-center" />}
+                        {quizGame?.currentQuestion?.difficulty === "hard" && <HardIcon className="w-12 h-auto flex justify-center items-center" />}
 
                     </div>
 

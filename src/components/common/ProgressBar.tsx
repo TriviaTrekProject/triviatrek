@@ -7,15 +7,19 @@ interface ProgressBarProps {
     restartKey?: string | number;
     /** Callback exécuté quand le timer arrive à zéro */
     onFinish?: () => void;
-    /** Classes Tailwind/CSS pour personnaliser l’aspect */
-    heightClass?: string;        // ex. "h-2"
-    trackClassName?: string;     // ex. "bg-gray-300"
-    barClassName?: string;       // ex. "bg-primary"
+    /** Classe Tailwind pour l’épaisseur (hauteur en horizontal, largeur en vertical) */
+    heightClass?: string;    // ex. "h-2"
+    /** Classes Tailwind/CSS pour personnaliser l’aspect du track */
+    trackClassName?: string; // ex. "bg-gray-300"
+    /** Classes Tailwind/CSS pour personnaliser l’aspect de la barre */
+    barClassName?: string;   // ex. "bg-primary"
+    /** Si true, la barre devient verticale */
+    vertical?: boolean;
 }
 
 /**
  * ProgressBar – composant générique affichant une barre qui passe de 100 % à 0 %
- * en `duration` millisecondes, animé par Framer Motion.
+ * en `duration` millisecondes, animé par Motion.
  */
 const ProgressBar = ({
                          duration,
@@ -23,16 +27,33 @@ const ProgressBar = ({
                          onFinish,
                          heightClass = "h-3",
                          trackClassName = "bg-secondary",
-                         barClassName   = "bg-secondary-dark"
+                         barClassName   = "bg-secondary-dark",
+                         vertical = false
                      }: ProgressBarProps) => {
+    // Pour l’orientation verticale, on échange hauteur <-> largeur
+    const containerClasses = vertical
+        ? `h-full ${heightClass.replace(/^h-/, "w-")} ${trackClassName} rounded overflow-hidden my-2`
+        : `w-full ${heightClass} ${trackClassName} rounded overflow-hidden mx-2`;
+
+    const barInitial = vertical
+        ? { height: "100%" }
+        : { width: "100%" };
+
+    const barAnimate = vertical
+        ? { height: "0%" }
+        : { width: "0%" };
+
+    const barClasses = vertical
+        ? `w-full ${barClassName}`
+        : `h-full ${barClassName}`;
+
     return (
-        <div className={`w-full ${heightClass} ${trackClassName} rounded overflow-hidden mx-2`}>
+        <div className={containerClasses}>
             <motion.div
-                // Le key force le remontage du composant à chaque changement de restartKey
                 key={restartKey ?? "static"}
-                className={`${barClassName} h-full`}
-                initial={{ width: "100%" }}
-                animate={{ width: "0%" }}
+                className={barClasses}
+                initial={barInitial}
+                animate={barAnimate}
                 transition={{ duration: duration / 1000, ease: "linear" }}
                 onAnimationComplete={() => onFinish?.()}
             />

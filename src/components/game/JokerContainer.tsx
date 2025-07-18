@@ -12,7 +12,7 @@ const JokerContainer = ({handleSendJoker, children}: {handleSendJoker : () => vo
             setIsDisabled(true)
         }}>
             {children}
-            <div className={`font-bold font-[Nova_Square] ${isMobile ? "text-sm" : ""}`}>
+            <div className={`font-bold font-[Nova_Square] ${isMobile ? "text-xs" : ""}`}>
                 Bloc de glace
             </div>
         </button>
