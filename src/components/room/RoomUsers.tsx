@@ -48,7 +48,7 @@ const RoomUsers = ({users, scores, currentParticipantId}: {users:ParticipantDTO[
         <div className={`bg-transparent flex flex-col gap-2 px-6`}>
             <div className={`flex-row flex items-center text-white gap-2 basis-(calc(1/2-var(--spacing)*4)`}>
                 <div className={"flex gap-1 shrink-0"}>
-                    <div className={`flex justify-center items-center bold text-xl ${position === 1 ? 'bg-secondary-darker' : 'bg-primary'} w-8 h-8 rounded-full p-1 text-white`}>{(!scores || scores.length ===0) ? '-' : position}</div>
+                    <div className={`flex justify-center items-center bold text-xl bg-secondary-darker w-8 h-8 rounded-full p-1 text-white`}>{(!scores || scores.length ===0) ? '-' : position}</div>
                     <PlayerIcon className={"h-8 w-8 rounded-full"} />
                     <div className={`flex flex-col items-start relative font-bold text-sm`}>
                         <div>{currentUser?.username}</div>

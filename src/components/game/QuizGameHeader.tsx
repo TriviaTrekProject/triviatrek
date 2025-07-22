@@ -17,10 +17,11 @@ import GeographieIcon from "../common/Icons/category/GeographieIcon.tsx";
 import LitteratureIcon from "../common/Icons/category/LitteratureIcon.tsx";
 import LogiqueIcon from "../common/Icons/category/LogiqueIcon.tsx";
 import SportIcon from "../common/Icons/category/SportIcon.tsx";
-import ProgressBar from "../common/ProgressBar.tsx";
 import {useState} from "react";
 import {AnimatePresence, motion} from "motion/react";
 import JokerIcon from "../common/Icons/JokerIcon.tsx";
+import ProgressPie from "../common/ProgressPie.tsx";
+import PirateBg from "../common/background/PirateBg.tsx";
 
 
 interface QuizGameComponentProps {
@@ -38,6 +39,8 @@ const QuizGameHeader = ({idRoom, quizGame, messageSystem, handleSendJoker, usedJ
 
     const isMobile = useIsMobile()
     const [isJokerDrawerOpen, setIsJokerDrawerOpen] = useState(false);
+
+    const MotionPirateBg = motion.create(PirateBg);
 
 
     const getCategoryIcon = (category: string) => {
@@ -72,39 +75,39 @@ const QuizGameHeader = ({idRoom, quizGame, messageSystem, handleSendJoker, usedJ
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                     >
-                        <JokerIcon className="w-8 h-8 caret-amber-50" />
+                        <JokerIcon className="w-8 h-8 fill-secondary-darker" />
                     </motion.button>
 
                     {/* Drawer des jokers avec animation */}
                     <AnimatePresence>
                         {isJokerDrawerOpen && (
                             <motion.div
-                                className="fixed inset-0 z-40 flex"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.2 }}
+                                className="fixed inset-0 z-40 flex bg-black/30"
                                 onClick={() => setIsJokerDrawerOpen(false)}
                             >
+
                                 <motion.div
-                                    className="w-64 bg-white shadow-lg p-4"
-                                    initial={{ x: -300 }}
+                                    className="flex relative justify-center items-center h-50 w-full rounded-r-2xl border-solid overflow-hidden border-white/30 rounded-xl backdrop-blur-sm shadow-lg"
+                                    initial={{ x: -400 }}
                                     animate={{ x: 0 }}
-                                    exit={{ x: -300 }}
+                                    exit={{ x: -400 }}
                                     transition={{ type: "tween", duration: 0.3 }}
                                     onClick={e => e.stopPropagation()}
                                 >
-                                    <h2 className="mb-4 font-bold">Jokers</h2>
-                                    <div className="flex flex-col gap-4">
-                                        <JokerContainer handleSendJoker={handleSendJoker}>
-                                            <IceIcon className="h-6 w-auto" />
+                                    <MotionPirateBg className={"absolute h-full w-auto overflow-hidden"} />
+
+                                    <div className="flex flex-row gap-4 h-full justify-center items-center">
+
+                                        <JokerContainer className={"flex h-full basis-1/3 justify-center items-center bg-secondary-dark backdrop-blur-lg aspect-square shadow-lg shadow-amber-700/50 border-white/30 !p-2 "} label={"Bloc de glace"} handleSendJoker={handleSendJoker}>
+                                            <IceIcon />
                                         </JokerContainer>
-                                        <JokerContainer handleSendJoker={handleSendJoker}>
-                                            <IceIcon className="h-6 w-auto" />
+                                        <JokerContainer className={"flex h-full basis-1/3 justify-center items-center bg-secondary-dark backdrop-blur-lg aspect-square shadow-lg shadow-amber-700/50 !p-2"} label={"Bloc de glace"} handleSendJoker={handleSendJoker}>
+                                            <IceIcon />
                                         </JokerContainer>
-                                        <JokerContainer handleSendJoker={handleSendJoker}>
-                                            <IceIcon className="h-6 w-auto" />
+                                        <JokerContainer className={"flex h-full basis-1/3 justify-center items-center bg-secondary-dark backdrop-blur-lg aspect-square shadow-lg shadow-amber-700/50 !p-2"} label={"Bloc de glace"} handleSendJoker={handleSendJoker}>
+                                            <IceIcon />
                                         </JokerContainer>
+
                                     </div>
                                 </motion.div>
                                 <motion.div
@@ -124,13 +127,15 @@ const QuizGameHeader = ({idRoom, quizGame, messageSystem, handleSendJoker, usedJ
                         {quizGame?.currentQuestion?.categoryId && <div className="font-bold text-sm text-white italic text-shadow-lg">{getCategoryIcon(quizGame.currentQuestion.categoryId)}</div>}
                         <div
                             className="flex flex-row justif-center items-center gap-2 font-bold text-4xl sm:text-5xl md:text-6xl lg:text-[64px] leading-tight font-[Nova_Square]">
-                            {!quizGame?.waitingForNext
-                                ? <ProgressBar trackClassName={"flex"} vertical duration={10000}/>
-                                : <div className="h-full my-2 w-4"/>}
 
-                            <span className={`px-4 bg-clip-text  text-white text-shadow-lg text-xl`}>
-                            Question {quizGame.questions.findIndex( question => question.id === quizGame?.currentQuestion?.id)+1 }
-                        </span></div>
+                            <div className={`px-4 bg-clip-text  text-white text-shadow-lg text-xl flex flex-row justify-center items-center gap-3`}>
+                                {quizGame?.waitingForNext
+                                    ? <ProgressPie size={24} strokeWidth={4} duration={10000} trackColor="rgba(255,255,255,0.3)" progressColor={`var(--color-green-400)`}/>
+                                    : <div className="h-full mx-1 w-4"/>}
+
+                                <span>
+                            Question {quizGame.questions.findIndex( question => question.id === quizGame?.currentQuestion?.id)+1 }</span>
+                        </div></div>
                         {quizGame?.currentQuestion?.difficulty === "easy" && <EasyIcon className="w-12 h-auto flex justify-center items-center"/>}
                         {quizGame?.currentQuestion?.difficulty === "medium" && <MediumIcon className="w-12 h-auto flex justify-center items-center" />}
                         {quizGame?.currentQuestion?.difficulty === "hard" && <HardIcon className="w-12 h-auto flex justify-center items-center" />}
@@ -142,8 +147,8 @@ const QuizGameHeader = ({idRoom, quizGame, messageSystem, handleSendJoker, usedJ
                     <div
                         className={`font-bold text-white font-[Nova_Square] text-shadow-lg text-xl`}>{quizGame?.currentQuestion?.question}</div>
                     {messageSystem && (<div
-                        className={`absolute border border-white/30 rounded-xl bg-white backdrop-blur-sm shadow-lg p-5 text-2xl left-15 top-25 font-bold text-secondary-dark font-[Nova_Square]`}>{messageSystem}</div>)}
-                    {usedJokerGlace && (<div className={`absolute border border-white/30 rounded-xl bg-white backdrop-blur-sm shadow-lg p-5 text-2xl left-15 top-25 font-bold text-secondary-dark font-[Nova_Square]`}>Vous avez gelé vos adversaires !</div>)}
+                        className={`absolute border border-white/30 rounded-xl bg-white backdrop-blur-sm shadow-lg p-5 text-2xl left-1/2 top-25 font-bold text-secondary-dark font-[Nova_Square]`}>{messageSystem}</div>)}
+                    {usedJokerGlace && (<div className={`absolute border border-white/30 rounded-xl bg-white backdrop-blur-sm shadow-lg p-5 text-2xl m-auto top-8 z-50 font-bold text-secondary-dark font-[Nova_Square]`}>Vous avez gelé vos adversaires !</div>)}
                 </>
             )}
             {idRoom && quizGame && quizGame.finished && (<>
