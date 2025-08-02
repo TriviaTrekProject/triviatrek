@@ -5,39 +5,29 @@ import StartGameButton from '../game/StartGameButton';
 import ProgressBar from '../common/ProgressBar';
 import ChatPanel from './ChatPanel';
 import {MessageDTO} from "../../model/MessageDTO.ts";
-import {ParticipantDTO, QuizGameDTO} from "../../model/QuizGameDTO.ts";
 import ParallaxBackgroundIce from "../../layout/ParallaxBackgroundIce.tsx";
+import {RoomViewProps} from "../../types/roomTypes/RoomViewPropsInterface.ts";
+import React from "react";
 
-interface DesktopRoomViewProps {
-  roomId?: string;
-  gameId?: string;
-  quizGame: QuizGameDTO | null;
-  users: ParticipantDTO[];
-  username: string;
-  isChatOpen: boolean;
-  toggleChat: () => void;
-  onStart?: () => void;
-  messages?: MessageDTO[];
-  effetGlace?: boolean;
-  currentParticipantId: string | null;
-  handleSendJoker: () => void;
-  usedJokerGlace: boolean;
-}
 
-const DesktopRoomView = ({
-  roomId,
-  gameId,
-  quizGame,
-  users,
-  username,
-  isChatOpen,
-  toggleChat,
-  messages,
-    onStart,
-    effetGlace,
-                           handleSendJoker,
-                           currentParticipantId,  usedJokerGlace
-}:DesktopRoomViewProps) => (
+const DesktopRoomView: React.FC<RoomViewProps> = ({
+                                                    roomId,
+                                                    gameId,
+                                                    quizGame,
+                                                    users,
+                                                    username,
+                                                    isChatOpen,
+                                                    toggleChat,
+                                                    onStart,
+                                                    messages,
+                                                    effetGlace,
+                                                    currentParticipantId,
+                                                    handleSendJoker,
+                                                    usedJokerGlace
+                                                  }) => {
+  // Implémentation de la vue desktop...
+  return (
+
   <>
     <div className="w-full h-full absolute -z-1 bg-black opacity-40 pointer-events-none top-0" />
     {effetGlace && (<ParallaxBackgroundIce/>)
@@ -81,6 +71,8 @@ const DesktopRoomView = ({
       </div>
     </div>
   </>
-);
+  );
+};
+
 
 export default DesktopRoomView;
