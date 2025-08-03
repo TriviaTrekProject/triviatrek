@@ -12,7 +12,6 @@ interface ChatPanelProps {
   toggleOpen: () => void;
 }
 
-// Panel
 const ChatPanel = ({
   roomId,
   messages,
