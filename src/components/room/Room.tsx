@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import Spinner from '../spinner/spinner.tsx';
 import useIsMobile from '../../hook/useIsMobile.ts';
@@ -13,7 +13,7 @@ interface RoomProps {
 }
 
 // Constantes
-const JOKER_EFFECT_DURATION = 8000;
+const JOKER_SUCCESS_MESSAGE_DURATION = 3000; // 3 secondes pour le message de succès
 
 const Room: React.FC<RoomProps> = ({ username }) => {
     // Hooks
@@ -23,13 +23,23 @@ const Room: React.FC<RoomProps> = ({ username }) => {
     // État local
     const [isChatOpen, setChatOpen] = useState(false);
     const [usedJokerGlace, setUsedJokerGlace] = useState(false);
+    const [showJokerSuccessMessage, setShowJokerSuccessMessage] = useState(false);
+
+    // Réinitialiser les jokers utilisés quand une nouvelle partie commence
+    useEffect(() => {
+        if (quizGame?.gameId) {
+            // Si c'est une nouvelle partie (nouveau gameId), réinitialiser les jokers
+            setUsedJokerGlace(false);
+            setShowJokerSuccessMessage(false);
+        }
+    }, [quizGame?.gameId]);
 
     // Handlers
     const handleSendJoker = useCallback(() => {
         const gameId = quizGame?.gameId;
         
-        if (!gameId || !currentParticipantId || !username) {
-            console.warn('Cannot send joker: missing required data');
+        if (!gameId || !currentParticipantId || !username || usedJokerGlace) {
+            console.warn('Cannot send joker: missing required data or joker already used');
             return;
         }
 
@@ -41,11 +51,14 @@ const Room: React.FC<RoomProps> = ({ username }) => {
 
         gameApi.submitJoker(gameId, request);
         setUsedJokerGlace(true);
+        setShowJokerSuccessMessage(true);
         
+        // Masquer le message de succès après 3 secondes
         setTimeout(() => {
-            setUsedJokerGlace(false);
-        }, JOKER_EFFECT_DURATION);
-    }, [quizGame?.gameId, currentParticipantId, username]);
+            setShowJokerSuccessMessage(false);
+        }, JOKER_SUCCESS_MESSAGE_DURATION);
+        
+    }, [quizGame?.gameId, currentParticipantId, username, usedJokerGlace]);
 
     const handleStartGame = useCallback(() => {
         if (!room?.roomId || !room.gameId || !currentParticipantId) {
@@ -71,6 +84,7 @@ const Room: React.FC<RoomProps> = ({ username }) => {
         currentParticipantId,
         handleSendJoker,
         usedJokerGlace,
+        showJokerSuccessMessage, // Nouveau prop
         effetGlace,
         onStart: handleStartGame,
     };

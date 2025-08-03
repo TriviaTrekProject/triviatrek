@@ -27,7 +27,7 @@ const ChatPanel = ({
         : "top-1/3 h-12";
 
     const sizeAndShape = isOpen
-        ? (isMobile ? "w-full" : "w-80 rounded-t-2xl")
+        ? "w-80 rounded-t-2xl"
         : (isMobile ? "w-20 rounded-2xl"   : "w-45 rounded-2xl");
 
     const commonClasses = [
@@ -60,7 +60,7 @@ const ChatPanel = ({
         `fixed ${isMobile ? "top-[calc(var(--spacing)*4+var(--spacing)*10)]" : "top-[calc(33%+var(--spacing)*12)]"} right-0 z-40 h-auto scroll shadow-lg bg-white
          transform transition-transform duration-300 ease-in-out
          ${isOpen ? 'translate-x-0 rounded-b-2xl' : 'translate-x-full'}
-         w-full sm:w-80 pt-6`
+         sm:w-80 pt-6`
       }
     >
       <ChatComponent

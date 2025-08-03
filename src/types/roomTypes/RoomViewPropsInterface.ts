@@ -12,6 +12,7 @@ export interface BaseRoomViewProps {
     currentParticipantId: string | null;
     handleSendJoker: () => void;
     usedJokerGlace: boolean;
+    showJokerSuccessMessage?: boolean;
     effetGlace: boolean;
     onStart?: () => void;
 }
