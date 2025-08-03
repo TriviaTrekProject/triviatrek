@@ -11,6 +11,9 @@
     "host": "vite --host"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-form": "^0.1.7",
+    "@radix-ui/react-toast": "^1.2.14",
     "@react-router/dev": "^7.5.3",
     "@stomp/stompjs": "^7.1.1",
     "@tailwindcss/vite": "^4.1.11",

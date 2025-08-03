@@ -18,9 +18,9 @@ const MobileRoomView: React.FC<RoomViewProps> = ({
     effetGlace,
     currentParticipantId,
     handleSendJoker,
-    usedJokerGlace
+    usedJokerGlace,
+    showJokerSuccessMessage
 }) => {
-    // État local pour le drawer (si nécessaire)
     const [drawerOpen, setDrawerOpen] = useState(false);
     const drawerRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
@@ -64,7 +64,7 @@ const MobileRoomView: React.FC<RoomViewProps> = ({
                 />
             </div>
 
-            <div className="flex flex-col items-center h-full w-full flex-start justify-center gap-8 pt-12">
+            <div className="flex flex-col items-center h-full w-full flex-start justify-center gap-8 pt-14">
                 <div className="w-full h-dvh absolute -z-1 bg-black opacity-40 pointer-events-none top-0" />
                 
                 {effetGlace && <ParallaxBackgroundIce />}
@@ -72,7 +72,8 @@ const MobileRoomView: React.FC<RoomViewProps> = ({
                 <div className="flex flex-col items-center justify-center gap-8 w-full">
                     <QuizGameHeader 
                         handleSendJoker={handleSendJoker} 
-                        usedJokerGlace={usedJokerGlace} 
+                        usedJokerGlace={usedJokerGlace}
+                        showJokerSuccessMessage={showJokerSuccessMessage} // Nouveau prop transmis
                         currentParticipantId={currentParticipantId} 
                         username={username} 
                         idRoom={roomId} 
