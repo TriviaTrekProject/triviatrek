@@ -70,7 +70,7 @@ export default defineConfig({
       }
     },
     target: 'es2020', // Optimise pour les navigateurs modernes
-    minify: 'terser',
+    minify: 'esbuild',
     terserOptions: {
       compress: {
         drop_console: true, // Supprime les console.log en prod
