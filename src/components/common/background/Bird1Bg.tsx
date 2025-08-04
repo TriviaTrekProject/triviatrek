@@ -5,7 +5,6 @@ const Bird1Bg = ({ref, className}: {ref:RefObject<SVGSVGElement>, className: str
     return (
         <svg
             style={{
-                transform: "rotate(180deg)",
                 transformBox: "fill-box",
                 transformOrigin: "522px,267px",
             }}

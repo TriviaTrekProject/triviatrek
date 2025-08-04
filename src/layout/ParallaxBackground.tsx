@@ -1,108 +1,175 @@
-import React from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { motion } from "motion/react";
+import { usePreloadBackground } from "../hook/usePreloadBackground";
+
+// Composants essentiels (chargés immédiatement)
 import SkyBg from "../components/common/background/SkyBg";
 import ShoreBg from "../components/common/background/ShoreBg";
-import RockBg from "../components/common/background/RockBg";
-import SeaBg from "../components/common/background/SeaBg";
-import ShipBg from "../components/common/background/ShipBg";
-import Bird1Bg from "../components/common/background/Bird1Bg";
-import Bird2Bg from "../components/common/background/Bird2Bg";
 
-const MotionSkyBg    = motion.create(SkyBg);
-const MotionShoreBg  = motion.create(ShoreBg);
-const MotionSeaBg    = motion.create(SeaBg);
-const MotionRockBg   = motion.create(RockBg);
-const MotionShipBg   = motion.create(ShipBg);
-const MotionBird1Bg  = motion.create(Bird1Bg);
-const MotionBird2Bg  = motion.create(Bird2Bg);
+// Composants secondaires (lazy loaded)
+const SeaBg = React.lazy(() => import("../components/common/background/SeaBg"));
+const RockBg = React.lazy(() => import("../components/common/background/RockBg"));
+const ShipBg = React.lazy(() => import("../components/common/background/ShipBg"));
+const Bird1Bg = React.lazy(() => import("../components/common/background/Bird1Bg"));
+const Bird2Bg = React.lazy(() => import("../components/common/background/Bird2Bg"));
 
-interface ParallaxBackgroundProps {
+const MotionSkyBg = motion.create(SkyBg);
+const MotionShoreBg = motion.create(ShoreBg);
+
+interface OptimizedParallaxBackgroundProps {
     disableAnimation?: boolean;
+    quality?: 'low' | 'medium' | 'high';
 }
 
-const ParallaxBackground: React.FC<ParallaxBackgroundProps> = ({
-                                                                   disableAnimation = false,
-                                                               }) => {
+const OptimizedParallaxBackground: React.FC<OptimizedParallaxBackgroundProps> = ({
+    disableAnimation = false,
+    quality = 'high'
+}) => {
+    const [loadLevel, setLoadLevel] = useState(1);
+    const { isPreloaded, progress } = usePreloadBackground();
+
+    // Chargement progressif
+    useEffect(() => {
+        const timers = [
+            setTimeout(() => setLoadLevel(2), 100),  // Mer et rochers
+            setTimeout(() => setLoadLevel(3), 300),  // Bateau
+            setTimeout(() => setLoadLevel(4), 500),  // Oiseaux
+        ];
+
+        return () => timers.forEach(clearTimeout);
+    }, []);
+
+    const shouldAnimate = !disableAnimation && quality !== 'low';
+    
     const commonTransition = {
-        duration: 7,
+        duration: quality === 'low' ? 10 : 7,
         ease: "easeInOut" as const,
         repeat: Infinity,
         repeatType: "reverse" as const,
-        repeatDelay: 1.5,
+        repeatDelay: quality === 'low' ? 3 : 1.5,
     };
 
     return (
         <div className="fixed w-full h-full overflow-hidden -z-1 justify-center items-center flex top-0">
+            {/* Niveau 1: Arrière-plan essentiel (rendu immédiat) */}
             <MotionSkyBg className="absolute h-dvh w-auto" />
+            {/* Niveau 2: Éléments principaux */}
+            {loadLevel >= 2 && (
+                <Suspense fallback={null}>
 
-            <MotionRockBg
-                {...(!disableAnimation && {
-                    initial: { x: 0 },
-                    animate: { x: 75 },
-                    transition: commonTransition,
-                    style: {
-                        willChange: "transform",
-                        transform: "translateZ(0)",
-                    },
-                })}
-                className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
-            />
-
-            <MotionSeaBg
-                {...(!disableAnimation && {
-                    initial: { x: 0 },
-                    animate: { x: 75 },
-                    transition: commonTransition,
-                    style: {
-                        willChange: "transform",
-                        transform: "translateZ(0)",
-                    },
-                })}
-                className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
-            />
-
-            <MotionBird1Bg
-                {...(!disableAnimation && {
-                    initial: { x: 50 },
-                    animate: { x: -150 },
-                    transition: { ...commonTransition, delay: 0.5 },
-                    style: {
-                        willChange: "transform",
-                        transform: "translateZ(0)",
-                    },
-                })}
-                className="absolute h-dvh w-auto [transform-box:fill-box] origin-[500px_280px] transform scale-x-[-1] transform-gpu"
-            />
-
-            <MotionBird2Bg
-                {...(!disableAnimation && {
-                    initial: { x: -100 },
-                    animate: { x: -150 },
-                    transition: { ...commonTransition, delay: 0.5 },
-                    style: {
-                        willChange: "transform",
-                        transform: "translateZ(0)",
-                    },
-                })}
-                className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
-            />
-
-            <MotionShipBg
-                {...(!disableAnimation && {
-                    initial: { x: -100 },
-                    animate: { x: -275 },
-                    transition: commonTransition,
-                    style: {
-                        willChange: "transform",
-                        transform: "translateZ(0)",
-                    },
-                })}
-                className={`absolute h-dvh w-auto transform-gpu [transform-box:fill-box] origin-[50%_50%]}`}
-            />
-
+                    <LazyMotionComponent
+                        component={RockBg}
+                        shouldAnimate={shouldAnimate}
+                        transition={commonTransition}
+                        animationProps={{
+                            initial: { x: 0 },
+                            animate: { x: 75 },
+                        }}
+                        className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
+                    />
+                    <LazyMotionComponent
+                        component={SeaBg}
+                        shouldAnimate={shouldAnimate}
+                        transition={commonTransition}
+                        animationProps={{
+                            initial: { x: 0 },
+                            animate: { x: 75 },
+                        }}
+                        className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
+                    />
+                </Suspense>
+            )}
             <MotionShoreBg className="absolute h-full w-auto" />
+
+
+
+            {/* Niveau 3: Éléments moyens */}
+            {loadLevel >= 3 && quality !== 'low' && (
+                <Suspense fallback={null}>
+                    <LazyMotionComponent
+                        component={ShipBg}
+                        shouldAnimate={shouldAnimate}
+                        transition={commonTransition}
+                        animationProps={{
+                            initial: { x: -100 },
+                            animate: { x: -275 },
+                        }}
+                        className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box] origin-[50%_50%]"
+                    />
+                </Suspense>
+            )}
+
+            {/* Niveau 4: Détails (oiseaux) */}
+            {loadLevel >= 4 && quality === 'high' && (
+                <Suspense fallback={null}>
+                    <LazyMotionComponent
+                        component={Bird1Bg}
+                        shouldAnimate={shouldAnimate}
+                        transition={{ ...commonTransition, delay: 0.5 }}
+                        animationProps={{
+                            initial: { x: 50 },
+                            animate: { x: -150 },
+                        }}
+                        className="absolute h-dvh w-auto [transform-box:fill-box] origin-[500px_280px] transform scale-x-[-1] transform-gpu"
+                    />
+                    
+                    <LazyMotionComponent
+                        component={Bird2Bg}
+                        shouldAnimate={shouldAnimate}
+                        transition={{ ...commonTransition, delay: 0.5 }}
+                        animationProps={{
+                            initial: { x: -100 },
+                            animate: { x: -150 },
+                        }}
+                        className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
+                    />
+                </Suspense>
+            )}
+
+            {/* Indicateur de chargement */}
+            {!isPreloaded && progress > 0 && (
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
+                    <div className="bg-black/20 backdrop-blur-sm rounded-full px-4 py-2">
+                        <div className="flex items-center gap-2 text-white/70 text-xs">
+                            <div className="w-3 h-3 border border-white/40 rounded-full overflow-hidden">
+                                <div 
+                                    className="h-full bg-white/60 transition-all duration-300"
+                                    style={{ width: `${progress}%` }}
+                                />
+                            </div>
+                            Chargement {Math.round(progress)}%
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
 
-export default React.memo(ParallaxBackground);
+// Composant helper pour Motion + Lazy
+const LazyMotionComponent: React.FC<{
+    component: React.ComponentType<any>;
+    shouldAnimate: boolean;
+    transition: any;
+    animationProps: any;
+    className: string;
+}> = ({ component: Component, shouldAnimate, transition, animationProps, className }) => {
+    if (!shouldAnimate) {
+        return <Component className={className} />;
+    }
+
+    const MotionComponent = motion.create(Component);
+    return (
+        <MotionComponent
+            {...animationProps}
+            transition={transition}
+            className={className}
+            style={{
+                willChange: "transform",
+                transform: "translateZ(0)",
+            }}
+        />
+    );
+};
+
+export default OptimizedParallaxBackground;
