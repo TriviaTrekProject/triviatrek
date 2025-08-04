@@ -1,14 +1,17 @@
 import { Outlet } from "react-router-dom";
-import ParallaxBackground from "../layout/ParallaxBackground.tsx";
-import useIsMobile from "../hook/useIsMobile.ts";
+import OptimizedParallaxBackground from "../layout/ParallaxBackground.tsx";
+import {usePerformanceMode} from "../hook/usePerformanceMode.ts";
 
 export default function BaseLayout({disableParallax}:{disableParallax?:boolean}) {
+    const { quality, isMobile } = usePerformanceMode();
 
-    const isMobile = useIsMobile()
     return (<div className={ "flex flex-col w-screen p-4 min-h-screen justify-center items-center"}>
 
         <div className={`flex h-full z-50 justify-center items-center w-full ${isMobile ? "p-2" : "p-12"}`}>
-            <ParallaxBackground disableAnimation={disableParallax} />
+            <OptimizedParallaxBackground
+                disableAnimation={disableParallax || (isMobile && quality === 'low')}
+                quality={quality}
+            />
 
             {/* ici header / nav */}
             <Outlet />
