@@ -55,7 +55,7 @@ const Login = ({ setUsername }: GuestRoomProps) => {
                 <Form.Root onSubmit={onSubmit} className="bg-white p-6 rounded-lg w-80 max-w-full mx-4 flex flex-col justify-center items-center shadow-lg">
                     <div className="w-40 h-40 flex mb-4">
                         <img 
-                            src="/LogoTriviatrek.png" 
+                            src="/LogoTriviatrek.webp"
                             alt="Logo Triviatrek" 
                             className="w-full h-full object-contain"
                         />
