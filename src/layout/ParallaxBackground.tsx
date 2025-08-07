@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Suspense } from "react";
-import { motion } from "motion/react";
+import React, { Suspense, ElementType } from "react";
+import { motion, Transition, MotionProps } from "motion/react";
 import { usePreloadBackground } from "../hook/usePreloadBackground";
 
 // Composants essentiels (chargés immédiatement)
@@ -25,106 +25,91 @@ const OptimizedParallaxBackground: React.FC<OptimizedParallaxBackgroundProps> = 
     disableAnimation = false,
     quality = 'high'
 }) => {
-    const [loadLevel, setLoadLevel] = useState(1);
     const { isPreloaded, progress } = usePreloadBackground();
-
-    // Chargement progressif
-    useEffect(() => {
-        const timers = [
-            setTimeout(() => setLoadLevel(2), 100),  // Mer et rochers
-            setTimeout(() => setLoadLevel(3), 300),  // Bateau
-            setTimeout(() => setLoadLevel(4), 500),  // Oiseaux
-        ];
-
-        return () => timers.forEach(clearTimeout);
-    }, []);
 
     const shouldAnimate = !disableAnimation && quality !== 'low';
     
-    const commonTransition = {
+    const commonTransition: Transition = {
         duration: quality === 'low' ? 10 : 7,
-        ease: "easeInOut" as const,
+        ease: "easeInOut",
         repeat: Infinity,
-        repeatType: "reverse" as const,
+        repeatType: "reverse",
         repeatDelay: quality === 'low' ? 3 : 1.5,
     };
 
     return (
         <div className="fixed w-full h-full overflow-hidden -z-1 justify-center items-center flex top-0">
-            {/* Niveau 1: Arrière-plan essentiel (rendu immédiat) */}
+            {/* Arrière-plan essentiel (rendu immédiat) */}
             <MotionSkyBg className="absolute h-dvh w-auto" />
-            {/* Niveau 2: Éléments principaux */}
-            {loadLevel >= 2 && (
-                <Suspense fallback={null}>
+            
+            <Suspense fallback={null}>
+                {/* Niveau 1: Éléments principaux */}
+                <LazyMotionComponent
+                    component={RockBg}
+                    shouldAnimate={shouldAnimate}
+                    transition={commonTransition}
+                    animationProps={{
+                        initial: { x: 0 },
+                        animate: { x: 75 },
+                    }}
+                    className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
+                />
+                <LazyMotionComponent
+                    component={SeaBg}
+                    shouldAnimate={shouldAnimate}
+                    transition={commonTransition}
+                    animationProps={{
+                        initial: { x: 0 },
+                        animate: { x: 75 },
+                    }}
+                    className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
+                />
 
-                    <LazyMotionComponent
-                        component={RockBg}
-                        shouldAnimate={shouldAnimate}
-                        transition={commonTransition}
-                        animationProps={{
-                            initial: { x: 0 },
-                            animate: { x: 75 },
-                        }}
-                        className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
-                    />
-                    <LazyMotionComponent
-                        component={SeaBg}
-                        shouldAnimate={shouldAnimate}
-                        transition={commonTransition}
-                        animationProps={{
-                            initial: { x: 0 },
-                            animate: { x: 75 },
-                        }}
-                        className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
-                    />
-                </Suspense>
-            )}
+                {/* Niveau 2: Éléments moyens (chargés après le niveau 1) */}
+                {quality !== 'low' && (
+                    <Suspense fallback={null}>
+                        <LazyMotionComponent
+                            component={ShipBg}
+                            shouldAnimate={shouldAnimate}
+                            transition={commonTransition}
+                            animationProps={{
+                                initial: { x: -100 },
+                                animate: { x: -275 },
+                            }}
+                            className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box] origin-[50%_50%]"
+                        />
+
+                        {/* Niveau 3: Détails (oiseaux, chargés après le niveau 2) */}
+                        {quality === 'high' && (
+                            <Suspense fallback={null}>
+                                <LazyMotionComponent
+                                    component={Bird1Bg}
+                                    shouldAnimate={shouldAnimate}
+                                    transition={{ ...commonTransition, delay: 0.5 }}
+                                    animationProps={{
+                                        initial: { x: 50 },
+                                        animate: { x: -150 },
+                                    }}
+                                    className="absolute h-dvh w-auto [transform-box:fill-box] origin-[500px_280px] transform scale-x-[-1] transform-gpu"
+                                />
+                                
+                                <LazyMotionComponent
+                                    component={Bird2Bg}
+                                    shouldAnimate={shouldAnimate}
+                                    transition={{ ...commonTransition, delay: 0.5 }}
+                                    animationProps={{
+                                        initial: { x: -100 },
+                                        animate: { x: -150 },
+                                    }}
+                                    className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
+                                />
+                            </Suspense>
+                        )}
+                    </Suspense>
+                )}
+            </Suspense>
+
             <MotionShoreBg className="absolute h-full w-auto" />
-
-
-
-            {/* Niveau 3: Éléments moyens */}
-            {loadLevel >= 3 && quality !== 'low' && (
-                <Suspense fallback={null}>
-                    <LazyMotionComponent
-                        component={ShipBg}
-                        shouldAnimate={shouldAnimate}
-                        transition={commonTransition}
-                        animationProps={{
-                            initial: { x: -100 },
-                            animate: { x: -275 },
-                        }}
-                        className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box] origin-[50%_50%]"
-                    />
-                </Suspense>
-            )}
-
-            {/* Niveau 4: Détails (oiseaux) */}
-            {loadLevel >= 4 && quality === 'high' && (
-                <Suspense fallback={null}>
-                    <LazyMotionComponent
-                        component={Bird1Bg}
-                        shouldAnimate={shouldAnimate}
-                        transition={{ ...commonTransition, delay: 0.5 }}
-                        animationProps={{
-                            initial: { x: 50 },
-                            animate: { x: -150 },
-                        }}
-                        className="absolute h-dvh w-auto [transform-box:fill-box] origin-[500px_280px] transform scale-x-[-1] transform-gpu"
-                    />
-                    
-                    <LazyMotionComponent
-                        component={Bird2Bg}
-                        shouldAnimate={shouldAnimate}
-                        transition={{ ...commonTransition, delay: 0.5 }}
-                        animationProps={{
-                            initial: { x: -100 },
-                            animate: { x: -150 },
-                        }}
-                        className="absolute h-dvh w-auto transform-gpu [transform-box:fill-box]"
-                    />
-                </Suspense>
-            )}
 
             {/* Indicateur de chargement */}
             {!isPreloaded && progress > 0 && (
@@ -146,14 +131,16 @@ const OptimizedParallaxBackground: React.FC<OptimizedParallaxBackgroundProps> = 
     );
 };
 
-// Composant helper pour Motion + Lazy
-const LazyMotionComponent: React.FC<{
-    component: React.ComponentType<any>;
+// Composant helper pour Motion + Lazy avec des types améliorés
+interface LazyMotionComponentProps {
+    component: ElementType;
     shouldAnimate: boolean;
-    transition: any;
-    animationProps: any;
+    transition: Transition;
+    animationProps: Pick<MotionProps, 'initial' | 'animate'>;
     className: string;
-}> = ({ component: Component, shouldAnimate, transition, animationProps, className }) => {
+}
+
+const LazyMotionComponent: React.FC<LazyMotionComponentProps> = ({ component: Component, shouldAnimate, transition, animationProps, className }) => {
     if (!shouldAnimate) {
         return <Component className={className} />;
     }
