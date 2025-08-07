@@ -64,7 +64,7 @@ const MobileRoomView: React.FC<RoomViewProps> = ({
                 />
             </div>
 
-            <div className="flex flex-col items-center h-full w-full flex-start justify-center gap-8 pt-14">
+            <div className="flex flex-col items-center h-dvh w-full flex-start justify-center gap-8 pt-14">
                 <div className="w-full h-dvh absolute -z-1 bg-black opacity-40 pointer-events-none top-0" />
                 
                 {effetGlace && <ParallaxBackgroundIce />}

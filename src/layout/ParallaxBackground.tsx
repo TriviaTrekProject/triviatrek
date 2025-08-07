@@ -38,7 +38,7 @@ const OptimizedParallaxBackground: React.FC<OptimizedParallaxBackgroundProps> = 
     };
 
     return (
-        <div className="fixed w-full h-full overflow-hidden -z-1 justify-center items-center flex top-0">
+        <div className="fixed w-full h-dvh overflow-hidden -z-1 justify-center items-center flex top-0">
             {/* Arrière-plan essentiel (rendu immédiat) */}
             <MotionSkyBg className="absolute h-dvh w-auto" />
             
