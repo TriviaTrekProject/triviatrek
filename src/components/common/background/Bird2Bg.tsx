@@ -10,7 +10,7 @@ const Bird2Bg = ({ref, className}: {ref:RefObject<SVGSVGElement>, className: str
                 </clipPath>
             </defs>
             <style>{`.bird2{.a{fill:#9993bd}}`}</style>
-            <g clip-path="url(#bird2-cp1)">
+            <g clipPath="url(#bird2-cp1)">
                 <path className="a" d="m1492.7 345.5l14.4 16.1h5.2l10.2-10.9-10.5 6.3z"/>
                 <path className="a" d="m1381 354.6l7 8h3.2l12.6-11.2-16.7 8.1z"/>
                 <path className="a" d="m1470.3 323.3l12.3 6.4 5.3-14.2-8.8 11.2z"/>

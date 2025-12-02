@@ -13,22 +13,22 @@ const ShoreBg = ({ref, className}: {ref:RefObject<SVGSVGElement>, className: str
                 <linearGradient id="shore-P" gradientUnits="userSpaceOnUse"/>
                 <radialGradient id="shore-g1" cx="0" cy="0" r="1" href="#shore-P"
                                 gradientTransform="matrix(859.87,0,0,859.87,1213.257,942.416)">
-                    <stop stop-color="#7d6aab"/>
-                    <stop offset="1" stop-color="#644a82"/>
+                    <stop stopColor="#7d6aab"/>
+                    <stop offset="1" stopColor="#644a82"/>
                 </radialGradient>
                 <linearGradient id="shore-g2" x2="1" href="#shore-P" gradientTransform="matrix(2428.357,0,0,54.873,-2.474,914.979)">
-                    <stop stop-color="#d4dfff"/>
-                    <stop offset="1" stop-color="#c4c0ed"/>
+                    <stop stopColor="#d4dfff"/>
+                    <stop offset="1" stopColor="#c4c0ed"/>
                 </linearGradient>
                 <linearGradient id="shore-g3" x2="1" href="#shore-P"
                                 gradientTransform="matrix(0,-73.674,2431.727,0,1212.27,935.891)">
-                    <stop offset=".01" stop-color="#ff4a00"/>
+                    <stop offset=".01" stopColor="#ff4a00"/>
                     <stop offset="1"/>
                 </linearGradient>
                 <style type="text/css">{`.shore{.a{fill:url(#shore-g1)}.b{mix-blend-mode:multiply;fill:url(#shore-g2)}.c{opacity:.6;mix-blend-mode:screen;fill:url(#shore-g3)}.d{fill:#c25f85}.e{mix-blend-mode:multiply;fill:#c9a9c5}.f{fill:#f193b7}.g{fill:#f1b6b2}}`}</style>
 
             </defs>
-            <g clip-path="url(#shore-cp1)">
+            <g clipPath="url(#shore-cp1)">
                 <path className="a"
                       d="m2429 927.9l-3.1 42h-2425.9l-1.9-42.5-0.6-12.4c62.5 3.3 113.6 6 160.6 8.5 115.2 5.9 206.2 9.7 382.3 13.3 93.6 2 185.5 1.4 274.3-0.3q0 0 0 0c190.2-3.5 365.8-12.3 511-13.1 102.8-0.6 193.8 3.2 289.9 5.7 103 2.6 211.9 3.7 347.5-3.8 123.6-6.9 233.3-6.8 315.2-4.7 90.7 2.3 147.3 7 150.5 7.3q0.2 0 0.2 0z"/>
                 <path className="b"

@@ -11,19 +11,19 @@ const ShipBg = ({ref, className}: {ref:RefObject<SVGSVGElement>, className: stri
                 </clipPath>
                 <linearGradient id="ship-P" gradientUnits="userSpaceOnUse"/>
                 <linearGradient id="ship-g1" x2="1" href="#ship-P" gradientTransform="matrix(93.431,0,0,111.584,1480.63,831.312)">
-                    <stop stop-color="#784871"/>
-                    <stop offset="1" stop-color="#592547"/>
+                    <stop stopColor="#784871"/>
+                    <stop offset="1" stopColor="#592547"/>
                 </linearGradient>
                 <linearGradient id="ship-g2" x2="1" href="#ship-P"
                                 gradientTransform="matrix(-482.675,0,0,-99.917,2003.243,731.395)">
-                    <stop stop-color="#6e3d66"/>
-                    <stop offset="1" stop-color="#592547"/>
+                    <stop stopColor="#6e3d66"/>
+                    <stop offset="1" stopColor="#592547"/>
                 </linearGradient>
             </defs>
             <style type="text/css">{`.ship{.a{mix-blend-mode:multiply;fill:#784871}.b{fill:url(#ship-g1)}.c{fill:url(#ship-g2)}.d{fill:#784871}.e{opacity:.6;fill:#1a284d}.f{opacity:.6;fill:#4e0f2a}.g{fill:#965a8e}.h{fill:#fff}}`}</style>
 
-            <g clip-path="url(#ship-cp1)">
-                <path fill-rule="evenodd" className="a"
+            <g clipPath="url(#ship-cp1)">
+                <path fillRule="evenodd" className="a"
                       d="m1484.3 904.9c14-36.1 37.3-68.6 73.1-96.6h21l397.2 10.7 11.2 23.1 0.9 1.9 6.9 14.2 0.5 1.1 9.7 20.1-74.1 14.8c0 0-151.6-26-254.4-26-88.3 0-138.5 3.4-151 4.4l-13 36-28 0.4v-4.1zm20.8-1.5h-0.8l-0.3 0.1 2.8-0.3z"/>
                 <path className="b"
                       d="m1482.7 719c14 41.9 37.3 79.8 73.1 112.3h21l-56.2-75-9.9-35-7.2-0.6h-0.8l-7.6-0.7-1.3-0.1z"/>
