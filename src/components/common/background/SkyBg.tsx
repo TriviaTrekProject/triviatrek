@@ -14,18 +14,18 @@ const SkyBg = ({ref, className}: {ref:RefObject<SVGSVGElement>, className: strin
                 <linearGradient id="sky-P" gradientUnits="userSpaceOnUse"/>
                 <linearGradient id="sky-g1" x2="1" href="#sky-P"
                                 gradientTransform="matrix(0,-980.579,2425.882,0,1014.758,978.626)">
-                    <stop stop-color="#a39ac0"/>
-                    <stop offset=".63" stop-color="#f1b6b2"/>
-                    <stop offset=".84" stop-color="#fef3dd"/>
-                    <stop offset="1" stop-color="#e3e3ed"/>
+                    <stop stopColor="#a39ac0"/>
+                    <stop offset=".63" stopColor="#f1b6b2"/>
+                    <stop offset=".84" stopColor="#fef3dd"/>
+                    <stop offset="1" stopColor="#e3e3ed"/>
                 </linearGradient>
                 <linearGradient id="sky-g2" x2="1" href="#sky-P" gradientTransform="matrix(1,0,0,1.054,1752.753,329.656)">
-                    <stop stop-color="#fefefe"/>
-                    <stop offset="1" stop-color="#fefefe"/>
+                    <stop stopColor="#fefefe"/>
+                    <stop offset="1" stopColor="#fefefe"/>
                 </linearGradient>
             </defs>
             <style type="text/css">{`.sky{.a{fill:url(#sky-g1)}.b{fill:#fefefe}.c{opacity:.3;mix-blend-mode:lighten;fill:#fff}.d{opacity:.5;mix-blend-mode:lighten;fill:#ded1ff}.e{opacity:.3;mix-blend-mode:lighten;fill:#a3e7ff}.f{fill:url(#sky-g2)}}`}</style>
-            <g clip-path="url(#sky-cp1)">
+            <g clipPath="url(#sky-cp1)">
                 <path className="a" d="m2425.9 978.6h-2425.9v-980.6h2425.9z"/>
                 <path className="b"
                       d="m2137.4-129.8c0 1.5-1.2 2.7-2.7 2.7-1.5 0-2.7-1.2-2.7-2.7 0-1.5 1.2-2.7 2.7-2.7 1.5 0 2.7 1.2 2.7 2.7z"/>
