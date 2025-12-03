@@ -11,6 +11,12 @@ interface GameState {
   hasSubscribedToJokerUpdates: boolean;
   isLoading: boolean;
   error: string | null;
+  usedJokers: {
+    [jokerType: string]: boolean;
+  };
+  jokerMessages: {
+    [jokerType: string]: boolean;
+  };
 }
 
 const initialState: GameState = {
@@ -20,6 +26,8 @@ const initialState: GameState = {
   hasSubscribedToJokerUpdates: false,
   isLoading: false,
   error: null,
+  usedJokers: {},
+  jokerMessages: {},
 };
 
 // Async thunks pour les appels API
@@ -101,6 +109,20 @@ const gameSlice = createSlice({
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
     },
+    setJokerUsed: (state, action: PayloadAction<{ jokerType: string; used: boolean }>) => {
+      const { jokerType, used } = action.payload;
+      state.usedJokers[jokerType] = used;
+    },
+    setJokerMessage: (state, action: PayloadAction<{ jokerType: string; show: boolean }>) => {
+      const { jokerType, show } = action.payload;
+      state.jokerMessages[jokerType] = show;
+    },
+
+    resetJokersForNewGame: (state) => {
+      state.usedJokers = {};
+      state.jokerMessages = {};
+    },
+
   },
   
   extraReducers: (builder) => {
@@ -139,7 +161,10 @@ export const {
   setGameSubscriptionStatus,
   setJokerSubscriptionStatus,
   clearGame, 
-  setError 
+  setError,
+  resetJokersForNewGame,
+  setJokerMessage,
+  setJokerUsed
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

@@ -1,14 +1,16 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import Spinner from '../spinner/spinner.tsx';
 import useIsMobile from '../../hook/useIsMobile.ts';
-import { useRoom } from '../../hook/useRoom.ts';
-import { useGameState } from '../../hook/useGameState.ts';
-import { useUxInteraction } from '../../hook/useUxInteraction.ts';
+import { useRoomAndGame } from '../../hook/useRoomAndGame.ts';
 import MobileRoomView from './MobileRoomView.tsx';
 import DesktopRoomView from './DesktopRoomView.tsx';
 import { gameApi } from '../../api/gameApi.ts';
 import { JokerType, PlayerJokerRequest } from "../../model/Request/PlayerJokerRequest.ts";
+import {useUxInteraction} from "../../hook/useUxInteraction.ts";
+import {useAppDispatch, useAppSelector} from "../../store/hooks/typedReduxHooks.ts";
+import {JOKER_GLACE_TYPE} from "../../types/consts.ts";
+import {resetJokersForNewGame, setJokerMessage, setJokerUsed} from "../../slices/GameSlice.ts";
 
 interface RoomProps {
     username: string;
@@ -19,34 +21,33 @@ const JOKER_SUCCESS_MESSAGE_DURATION = 3000;
 const Room: React.FC<RoomProps> = ({ username }) => {
     const isMobile = useIsMobile();
     const { isChatOpen, toggleChat } = useUxInteraction();
-    
-    const { room, users, currentParticipantId, isLoading: roomLoading } = useRoom(username);
-    
-    const { quizGame, effetGlace } = useGameState(
-        room?.roomId,
-        room?.gameId,
+    const dispatch = useAppDispatch();
+
+
+    const {
+        room,
+        users,
         currentParticipantId,
-        username,
-        room?.activeGame || false
-    );
+        isLoading,
+        quizGame,
+        effetGlace,
+    } = useRoomAndGame(username);
 
-    // État local (peut-être migré plus tard)
-    const [usedJokerGlace, setUsedJokerGlace] = useState(false);
-    const [showJokerSuccessMessage, setShowJokerSuccessMessage] = useState(false);
-
+    const { usedJokers, jokerMessages } = useAppSelector((state) => state.game);
+    const usedJokerGlace = usedJokers[JOKER_GLACE_TYPE] || false;
+    const showJokerSuccessMessage = jokerMessages[JOKER_GLACE_TYPE] || false;
 
     // Réinitialiser les jokers utilisés quand une nouvelle partie commence
     useEffect(() => {
         if (quizGame?.gameId) {
-            setUsedJokerGlace(false);
-            setShowJokerSuccessMessage(false);
+            dispatch(resetJokersForNewGame());
         }
-    }, [quizGame?.gameId]);
+    }, [quizGame?.gameId, dispatch]);
 
     // Handlers
     const handleSendJoker = useCallback(() => {
         const gameId = quizGame?.gameId;
-        
+
         if (!gameId || !currentParticipantId || !username || usedJokerGlace) {
             console.warn('Cannot send joker: missing required data or joker already used');
             return;
@@ -57,23 +58,27 @@ const Room: React.FC<RoomProps> = ({ username }) => {
             jokerType: JokerType.PRIORITE_REPONSE,
             participantId: currentParticipantId
         };
+        // Mettre à jour l'état Redux immédiatement
+        dispatch(setJokerUsed({ jokerType: JOKER_GLACE_TYPE, used: true }));
+        dispatch(setJokerMessage({ jokerType: JOKER_GLACE_TYPE, show: true }));
 
+        // Envoyer la requête au serveur
         gameApi.submitJoker(gameId, request);
-        setUsedJokerGlace(true);
-        setShowJokerSuccessMessage(true);
-        
+
+        // Masquer le message de succès après le délai
         setTimeout(() => {
-            setShowJokerSuccessMessage(false);
+            dispatch(setJokerMessage({ jokerType: JOKER_GLACE_TYPE, show: false }));
         }, JOKER_SUCCESS_MESSAGE_DURATION);
-        
-    }, [quizGame?.gameId, currentParticipantId, username, usedJokerGlace]);
+
+    }, [quizGame?.gameId, currentParticipantId, username, usedJokerGlace, dispatch]);
+
 
     const handleStartGame = useCallback(() => {
         if (!room?.roomId || !room.gameId || !currentParticipantId) {
             console.warn('Cannot start game: missing required data');
             return;
         }
-        
+
         gameApi.startQuizGame(room.gameId, room.roomId, currentParticipantId);
     }, [room?.roomId, room?.gameId, currentParticipantId]);
 
@@ -81,7 +86,7 @@ const Room: React.FC<RoomProps> = ({ username }) => {
     const commonViewProps = {
         roomId: room?.roomId,
         gameId: room?.gameId,
-        quizGame, // ✅ Maintenant depuis Redux !
+        quizGame,
         users,
         username,
         messages: room?.messages,
@@ -89,7 +94,7 @@ const Room: React.FC<RoomProps> = ({ username }) => {
         handleSendJoker,
         usedJokerGlace,
         showJokerSuccessMessage,
-        effetGlace, // ✅ Maintenant depuis Redux !
+        effetGlace,
         onStart: handleStartGame,
     };
 
@@ -99,7 +104,7 @@ const Room: React.FC<RoomProps> = ({ username }) => {
     };
 
     // Render guards
-    if (roomLoading) {
+    if (isLoading) {
         return <Spinner />;
     }
 
