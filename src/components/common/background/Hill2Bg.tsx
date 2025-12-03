@@ -30,7 +30,7 @@ const Hill2Bg = ({ref, className}: {ref:RefObject<SVGSVGElement>, className: str
         .hill2-b { mix-blend-mode: soft-light; fill: #fff; }
         .hill2-c { opacity: .5; mix-blend-mode: multiply; fill: #acd3f7; }
       `}</style>
-            <g clip-path="url(#hill2Clip)">
+            <g clipPath="url(#hill2Clip)">
                 <path
                     className="hill2-a"
                     d="m0 977.6v-622.2c0 0 617 30.3 2434 508.2l4.9 118.9z"

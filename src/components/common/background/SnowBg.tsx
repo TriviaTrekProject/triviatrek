@@ -42,7 +42,7 @@ const SnowBg = ({ref, className}: {ref:RefObject<SVGSVGElement>, className: stri
                 </radialGradient>
             </defs>
             <style>{`.snow-a{fill:#fff}.snow-b{fill:#c9bfff}.snow-c{opacity:.5;mix-blend-mode:screen;fill:url(#snow-g1)}.snow-d{opacity:.5;mix-blend-mode:screen;fill:url(#snow-g2)}.snow-e{opacity:.5;mix-blend-mode:screen;fill:url(#snow-g3)}.snow-f{opacity:.5;mix-blend-mode:screen;fill:url(#snow-g4)}.snow-g{opacity:.2;mix-blend-mode:screen;fill:url(#snow-g5)}.snow-h{opacity:.2;mix-blend-mode:screen;fill:url(#snow-g6)}`}</style>
-            <g clip-path="url(#snow-cp1)">
+            <g clipPath="url(#snow-cp1)">
                 <path className="snow-a"
                       d="m1030.2 357.8c-1.9 1.6-3.5 3.6-4.9 5.7-0.5 0.8-1 1.6-1 2.6 0 2.3 2.6 3.6 4.8 4.2 2.2 0.5 4.6 0.8 6.5-0.2 2.2-1 3.4-3.4 3.4-5.8-0.1-2.3-1.3-4.5-3.1-6.1-1.7-1.5-4.7-2.2-6.1-0.4z"/>
                 <path className="snow-a"

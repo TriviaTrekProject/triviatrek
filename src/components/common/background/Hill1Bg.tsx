@@ -10,7 +10,7 @@ const Hill1Bg = ({ref, className}: {ref:RefObject<SVGSVGElement>, className: str
                 </clipPath>
             </defs>
             <style type="text/css">{`.hill1-a{fill:#f3f6f8}.hill1-b{opacity:.8;mix-blend-mode:multiply;fill:#ebfbff}`}</style>
-            <g clip-path="url(#hill1-cp1)">
+            <g clipPath="url(#hill1-cp1)">
                 <path className="hill1-a"
                       d="m2468.9 658.8c0 0-216.4-223.1-650.5-223.4-482.6-0.4-1810.9 294.8-1810.9 294.8l-7.3 264.4 2468.7-9.7z"/>
                 <path className="hill1-b"
