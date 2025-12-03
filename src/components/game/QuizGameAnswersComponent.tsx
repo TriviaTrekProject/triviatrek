@@ -3,12 +3,9 @@ import { gameApi } from "../../api/gameApi.ts";
 import useIsMobile from "../../hook/useIsMobile.ts";
 import { motion } from "motion/react"
 
-import {
-    DELAY_TIME_BY_OPTION,
-    DELAY_TIME_BY_QUESTION,
-} from "../../hook/useRoom.ts";
 import DelayedButton from "../common/button/DelayedButton.tsx";
 import {useEffect, useState} from "react";
+import {DELAY_TIME_BY_OPTION, DELAY_TIME_BY_QUESTION} from "../../types/consts.ts";
 
 interface QuizGameComponentProps {
     idRoom: string | undefined;

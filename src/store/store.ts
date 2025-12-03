@@ -2,16 +2,19 @@ import { configureStore } from '@reduxjs/toolkit';
 import { errorHandlingMiddleware } from '../middleware/ErrorHandlingMiddleware';
 import { loadingStatusMiddleware } from '../middleware/LoadingStatusMiddleware';
 import { cleanupMiddleware } from '../middleware/CleanupActionMiddleware';
-import uiReducer from '../slices/UISlice';
+import uiReducer from '../slices/UxInteractionSlice.ts';
+import roomReducer from '../slices/RoomSlice';
+import gameReducer from '../slices/GameSlice';
 
 export const store = configureStore({
   reducer: {
     ui: uiReducer,
+    room: roomReducer,
+    game: gameReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        // Ignorer ces types d'actions pour les fonctions callback
         ignoredActions: ['room/setSocketCallback', 'game/setSocketCallback'],
         ignoredPaths: ['room.socketCallbacks', 'game.socketCallbacks']
       }

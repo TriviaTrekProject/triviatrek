@@ -13,7 +13,7 @@ const initialState: UIState = {
   error: null,
 };
 
-const uiSlice = createSlice({
+const uxInteractionSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
@@ -32,5 +32,5 @@ const uiSlice = createSlice({
   },
 });
 
-export const { setLoading, setChatOpen, setError, clearError } = uiSlice.actions;
-export default uiSlice.reducer;
+export const { setLoading, setChatOpen, setError, clearError } = uxInteractionSlice.actions;
+export default uxInteractionSlice.reducer;

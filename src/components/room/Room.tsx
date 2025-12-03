@@ -3,6 +3,8 @@ import { Navigate } from 'react-router-dom';
 import Spinner from '../spinner/spinner.tsx';
 import useIsMobile from '../../hook/useIsMobile.ts';
 import { useRoom } from '../../hook/useRoom.ts';
+import { useGameState } from '../../hook/useGameState.ts';
+import { useUxInteraction } from '../../hook/useUxInteraction.ts';
 import MobileRoomView from './MobileRoomView.tsx';
 import DesktopRoomView from './DesktopRoomView.tsx';
 import { gameApi } from '../../api/gameApi.ts';
@@ -12,23 +14,30 @@ interface RoomProps {
     username: string;
 }
 
-// Constantes
-const JOKER_SUCCESS_MESSAGE_DURATION = 3000; // 3 secondes pour le message de succès
+const JOKER_SUCCESS_MESSAGE_DURATION = 3000;
 
 const Room: React.FC<RoomProps> = ({ username }) => {
-    // Hooks
-    const { room, quizGame, users, isLoading, effetGlace, currentParticipantId } = useRoom(username);
     const isMobile = useIsMobile();
+    const { isChatOpen, toggleChat } = useUxInteraction();
     
-    // État local
-    const [isChatOpen, setChatOpen] = useState(false);
+    const { room, users, currentParticipantId, isLoading: roomLoading } = useRoom(username);
+    
+    const { quizGame, effetGlace } = useGameState(
+        room?.roomId,
+        room?.gameId,
+        currentParticipantId,
+        username,
+        room?.activeGame || false
+    );
+
+    // État local (peut-être migré plus tard)
     const [usedJokerGlace, setUsedJokerGlace] = useState(false);
     const [showJokerSuccessMessage, setShowJokerSuccessMessage] = useState(false);
+
 
     // Réinitialiser les jokers utilisés quand une nouvelle partie commence
     useEffect(() => {
         if (quizGame?.gameId) {
-            // Si c'est une nouvelle partie (nouveau gameId), réinitialiser les jokers
             setUsedJokerGlace(false);
             setShowJokerSuccessMessage(false);
         }
@@ -53,7 +62,6 @@ const Room: React.FC<RoomProps> = ({ username }) => {
         setUsedJokerGlace(true);
         setShowJokerSuccessMessage(true);
         
-        // Masquer le message de succès après 3 secondes
         setTimeout(() => {
             setShowJokerSuccessMessage(false);
         }, JOKER_SUCCESS_MESSAGE_DURATION);
@@ -69,23 +77,19 @@ const Room: React.FC<RoomProps> = ({ username }) => {
         gameApi.startQuizGame(room.gameId, room.roomId, currentParticipantId);
     }, [room?.roomId, room?.gameId, currentParticipantId]);
 
-    const toggleChat = useCallback(() => {
-        setChatOpen(prev => !prev);
-    }, []);
-
     // Props communes pour les vues
     const commonViewProps = {
         roomId: room?.roomId,
         gameId: room?.gameId,
-        quizGame,
+        quizGame, // ✅ Maintenant depuis Redux !
         users,
         username,
         messages: room?.messages,
         currentParticipantId,
         handleSendJoker,
         usedJokerGlace,
-        showJokerSuccessMessage, // Nouveau prop
-        effetGlace,
+        showJokerSuccessMessage,
+        effetGlace, // ✅ Maintenant depuis Redux !
         onStart: handleStartGame,
     };
 
@@ -95,7 +99,7 @@ const Room: React.FC<RoomProps> = ({ username }) => {
     };
 
     // Render guards
-    if (isLoading) {
+    if (roomLoading) {
         return <Spinner />;
     }
 
@@ -103,7 +107,6 @@ const Room: React.FC<RoomProps> = ({ username }) => {
         return <Navigate to={`/guest/${room?.roomId}`} replace />;
     }
 
-    // Render principal
     return (
         <>
             {isMobile ? (

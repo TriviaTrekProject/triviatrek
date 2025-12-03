@@ -1,4 +1,5 @@
 import { useParams, Navigate } from "react-router-dom";
+import { useEffect } from "react";
 import Room from "./room/Room.tsx";
 
 interface GuestRoomProps {
@@ -7,13 +8,21 @@ interface GuestRoomProps {
 }
 
 export default function JoinRoom({ username, setDisableParallax }: GuestRoomProps) {
-    const { id } = useParams();        // on récupère l’id depuis l’URL
+    const { id } = useParams();
+    
+    useEffect(() => {
+        setDisableParallax(true);
+        
+        return () => {
+            setDisableParallax(false);
+        };
+    }, [setDisableParallax]);
+
     if (!username) {
-        // on redirige dynamiquement vers /guest/ID
+        // Redirection dynamique vers /guest/ID
         return <Navigate to={`/guest/${id ?? ""}`} replace />;
     }
-    // sinon on rend bien le chat
 
-    setDisableParallax(true);
+    // Rendre le composant Room
     return <Room username={username!} />;
 }

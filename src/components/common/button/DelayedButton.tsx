@@ -1,7 +1,7 @@
 import {RefObject, useEffect, useState} from "react";
-import {DELAY_TIME_DISABLED} from "../../../hook/useRoom.ts";
 import FlatButton from "./FlatButton.tsx";
 import useIsMobile from "../../../hook/useIsMobile.ts";
+import {DELAY_TIME_DISABLED} from "../../../types/consts.ts";
 
 interface DelayedButtonProps {
     onClick: (() => Promise<void>);
