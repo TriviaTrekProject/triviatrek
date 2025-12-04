@@ -11,25 +11,25 @@ const RockBg = ({ref, className}: {ref:RefObject<SVGSVGElement>, className: stri
                 <linearGradient id="rock-P" gradientUnits="userSpaceOnUse"/>
                 <linearGradient id="rock-g1" x2="1" href="#rock-P"
                                 gradientTransform="matrix(1322.106,0,0,574.296,678.58,423.738)">
-                    <stop stop-color="#8aa2bd"/>
-                    <stop offset="1" stop-color="#8281bd"/>
+                    <stop stopColor="#8aa2bd"/>
+                    <stop offset="1" stopColor="#8281bd"/>
                 </linearGradient>
                 <linearGradient id="rock-g2" x2="1" href="#rock-P" gradientTransform="matrix(1175.778,0,0,755.945,.108,244.514)">
-                    <stop stop-color="#8aa2bd"/>
-                    <stop offset="1" stop-color="#8281bd"/>
+                    <stop stopColor="#8aa2bd"/>
+                    <stop offset="1" stopColor="#8281bd"/>
                 </linearGradient>
                 <linearGradient id="rock-g3" x2="1" href="#rock-P"
                                 gradientTransform="matrix(1761.858,0,0,657.028,664.025,348.283)">
-                    <stop stop-color="#8aa2bd"/>
-                    <stop offset="1" stop-color="#8281bd"/>
+                    <stop stopColor="#8aa2bd"/>
+                    <stop offset="1" stopColor="#8281bd"/>
                 </linearGradient>
                 <linearGradient id="rock-g4" x2="1" href="#rock-P" gradientTransform="matrix(1,0,0,.112,-388.268,452.291)">
-                    <stop stop-color="#6c9494"/>
-                    <stop offset="1" stop-color="#6c9494"/>
+                    <stop stopColor="#6c9494"/>
+                    <stop offset="1" stopColor="#6c9494"/>
                 </linearGradient>
                 <style type="text/css">{`.rock{.a{fill:url(#rock-g1)}.b{fill:url(#rock-g2)}.c{mix-blend-mode:soft-light;fill:#9992c4}.d{fill:url(#rock-g3)}.e{opacity:.8;mix-blend-mode:screen;fill:url(#rock-g12)}}`}</style>
             </defs>
-            <g clip-path="url(#rock-cp1)">
+            <g clipPath="url(#rock-cp1)">
                 <path className="a"
                       d="m1984.7 585.5l-111.8 11.4 4.2-17.8-9.9-15.9 10.8-54.8-129.1-78.1-34.6-6.6-25.5 114.7 15.6 60.4-33.4 20.4 6.7 10.8-586.6 9.9-69.1-38.5-20 15.6-33.9 27.2-289.5 353.8 1322.1-9.7z"/>
                 <path className="b"
@@ -58,7 +58,7 @@ const RockBg = ({ref, className}: {ref:RefObject<SVGSVGElement>, className: stri
                       d="m2398 435.7l-115.8 62 57.9-27.3-37.1 40.4-111.3 57 5.4 11.1 49.3-32.3 154.4-50.6z"/>
                 <path className="c"
                       d="m2425.9 516.7l-198.3 105.9 105.3-39.7 46 39.7-235.7 14.5-63.9-25.1v17l60.4 16.2 286.2-21.7z"/>
-                <path fill-rule="evenodd" className="e"
+                <path fillRule="evenodd" className="e"
                       d="m-388.9 451.4c96.4-10.5 201.4-20 313.7-28.3 364.6-27.2 807.1-42.4 1284.4-41.1 508.8 1.5 978.6 21.5 1356.9 54.2 86 7.4 167.4 15.5 243.3 24.2 90.8 10.3 173.9 21.5 248.3 33.4 261.8 41.9 415.9 92.6 416.8 146.8 0.7 55.2-157.6 105.8-427 146.6-80.3 7.3-171.4 13.8-270.8 19.5-63.9 11.1-127.7 23.5-204.6 33.2 85.8-7 166.9-14.6 242.6-22.8 84.6-9.3 162.5-19.2 232.8-29.9-80.3 7.3-171.4 13.8-270.8 19.5-63.9 11.1-127.7 23.5-204.6 33.2-377.4 30.5-846.7 48-1355.5 46.5-477.3-1.3-920.3-19-1285.6-48.2-112.7-9-218-19.1-314.6-30.1-84.9-9.7-163-20.1-233.6-31.2-270.6-42.3-430.6-93.8-431.4-149-0.8-54.3 152-104.1 412.4-144.4 74.1-11.5 156.9-22.2 247.3-32.1z"/>
             </g>
         </svg>

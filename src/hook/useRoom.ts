@@ -1,139 +1,76 @@
-import {useCallback, useEffect, useRef, useState} from "react";
-import {useParams} from "react-router-dom";
-import {RoomDTO} from "../model/RoomDTO.ts";
-import {ParticipantDTO, QuizGameDTO} from "../model/QuizGameDTO.ts";
-import {roomApi} from "../api/roomApi.ts";
-import {gameApi} from "../api/gameApi.ts";
-import {socketService} from "../ws/socketService.ts";
-import useSocket from "../hook/useSocket.ts";
-import useHandleUnmount from "../hook/useHandleUnmount.ts";
-import {JokerDTO} from "../model/JokerDTO.ts";
-import {JokerType} from "../model/Request/PlayerJokerRequest.ts";
-import { v4 as uuidv4 } from "uuid";
+import { useCallback, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../store/hooks/typedReduxHooks';
+import { setLoading } from '../slices/UxInteractionSlice.ts';
+import useSocket from './useSocket';
+import useHandleUnmount from './useHandleUnmount';
+import { RoomDTO } from '../model/RoomDTO';
+import { v4 as uuidv4 } from 'uuid';
+import {clearRoom, joinRoom, leaveRoom, setTempId, updateRoom} from "../slices/RoomSlice.ts";
 
-
-// Constante pour le délai de révélation des réponses
-export const DELAY_TIME_BY_OPTION = 1000;
-export const DELAY_TIME_BY_QUESTION = 3000;
-export const DELAY_TIME_DISABLED = 4 * DELAY_TIME_BY_OPTION + DELAY_TIME_BY_QUESTION;
-
-// Hook personnalisé pour gérer l'état et les comportements liés à la Room
 export const useRoom = (username: string) => {
-    const { id } = useParams();
-    const [room, setRoom] = useState<RoomDTO | null>(null);        // Stocke les données de la Room
-    const [quizGame, setQuizGame] = useState<QuizGameDTO | null>(null); // Stocke les données du quiz en cours
-    const [users, setUsers] = useState<ParticipantDTO[]>([]);             // Liste des participants
-    const [hasSubscribedToGameUpdates, setHasSubscribedToGameUpdates] = useState<boolean>(false); // Gestion des abonnements aux mises à jour
-    const [isLoading, setLoading] = useState(true);               // Indique si les données sont en train de se charger
-    const [effetGlace, setEffetGlace] = useState(false);
-    const [currentParticipantId, setCurrentParticipantId] = useState<string | null>(null);
-    const joinedRef = useRef(false);
+  const { id } = useParams();
+  const dispatch = useAppDispatch();
 
-    // 1) Génération d'un identifiant temporaire côté client
-    const tempIdRef = useRef<string>(uuidv4());
+  // Sélecteurs Redux
+  const { room, users, currentParticipantId, hasJoined, isLoading, error } = useAppSelector((state) => state.room);
+  const joinedRef = useRef(false);
 
-    // Déclenchée lorsqu'un utilisateur quitte la room ou l'application
-    const handleUnload = useCallback(() => {
-        if (id) roomApi.leave(id, username); // Appel l'API pour quitter la room
-    }, [id, username]);
+  // Générer un ID temporaire au montage du composant
+  useEffect(() => {
+    const tempId = uuidv4();
+    dispatch(setTempId(tempId));
+  }, [dispatch]);
 
-    // 2) Callback WebSocket : on repère le participant via tempId
-    const onRoomMessage = useCallback((roomDTO: RoomDTO) => {
-        setRoom(roomDTO);
-        setUsers(roomDTO.participants);
+  // Callback WebSocket pour les mises à jour de room
+  const onRoomMessage = useCallback((roomDTO: RoomDTO) => {
+    dispatch(updateRoom(roomDTO));
+  }, [dispatch]);
 
-        if (currentParticipantId === null) {
-            const me = roomDTO.participants.find(
-                // on suppose que le back renvoie aussi tempId dans chaque ParticipantDTO
-                (p: ParticipantDTO) => p.tempId === tempIdRef.current
-            );
-            if (me) setCurrentParticipantId(me.participantId);
-        }
-    }, [currentParticipantId]);
+  // Callback de souscription WebSocket
+  const onRoomSubscribe = useCallback(() => {
+    if (!joinedRef.current && id && username) {
+      joinedRef.current = true;
+      dispatch(setLoading(true));
 
-    // 3) Envoi de join avec tempId
-    const onRoomSubscribe = useCallback(() => {
-        if (!joinedRef.current && id) {
-            joinedRef.current = true;
-            roomApi
-                .join(id, username!, tempIdRef.current)
-                .catch(() => {/* gérer l’erreur */})
-                .finally(() => setLoading(false));
-        }
-    }, [id, username]);
+      // Générer un nouvel ID temporaire pour cette session
+      const tempId = uuidv4();
+      dispatch(setTempId(tempId));
 
-
-
-
-    // Gère la souscription aux mises à jour du jeu, évite les abonnements multiples
-    const subscribeToGameUpdates = useCallback(() => {
-        if (!id || !room?.gameId || hasSubscribedToGameUpdates) return;
-
-        socketService.subscribe(`/game/${room.gameId}`, (game: QuizGameDTO) => {
-
-            setQuizGame(prev => {
-
-                if (!prev) {
-                    setHasSubscribedToGameUpdates(true);
-                    return game;
-                }
-
-                if (prev.currentQuestion?.id === game.currentQuestion?.id) {
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    const { currentQuestion, currentQuestionIndex, questions, ...partial } = game;
-
-                    return {
-                        ...partial,
-                        currentQuestion: prev.currentQuestion,
-                        currentQuestionIndex: prev.currentQuestionIndex,
-                        questions: prev.questions,
-                    };
-                }
-                return (game);
-
-            });
+      // Rejoindre la room via Redux thunk
+      dispatch(joinRoom({ roomId: id, username, tempId }))
+        .finally(() => {
+          dispatch(setLoading(false));
         });
+    }
+  }, [id, username, dispatch]);
 
+  // Gérer la déconnexion
+  const handleUnload = useCallback(() => {
+    if (id && username) {
+      dispatch(leaveRoom({ roomId: id, username }));
+    }
+  }, [id, username, dispatch]);
 
-    }, [id, room?.gameId, hasSubscribedToGameUpdates]);
+  // Nettoyer l'état au démontage
+  useEffect(() => {
+    return () => {
+      dispatch(clearRoom());
+    };
+  }, [dispatch]);
 
-    const subscribeToJokerUpdates = useCallback(() => {
-        if (!id || !room?.gameId) return;
-        socketService.subscribe(`/game/joker/${room.gameId}`, (joker: JokerDTO) => {
-            if (joker.jokerType === JokerType.PRIORITE_REPONSE && joker.username !== username)
-            {
-                setEffetGlace(true)   ;
-                setTimeout(()=> {
-                    setEffetGlace(false);
-                },8000);
+  // Connexion WebSocket
+  useSocket(`/chatroom/${id}`, onRoomMessage, onRoomSubscribe);
 
-            }
+  // Gérer la déconnexion proprement
+  useHandleUnmount(handleUnload);
 
-        });
-    },[id, room?.gameId, username]);
-    
-    // Rejoindre la partie active s'il y en a une
-    const handleJoinActiveGame = useCallback(() => {
-        if (id && room?.activeGame && !quizGame && currentParticipantId) {
-            gameApi.joinGame(room.gameId, currentParticipantId);
-        }
-    }, [id, room?.activeGame, room?.gameId, quizGame, currentParticipantId]);
-
-    // Connexion au WebSocket de la Room
-    useSocket(`/chatroom/${id}`, onRoomMessage, onRoomSubscribe);
-
-    // Assure la déconnexion lorsque l'utilisateur quitte la Room
-    useHandleUnmount(handleUnload);
-
-    // Souscrite automatiquement aux mises à jour du jeu actif
-    useEffect(subscribeToGameUpdates, [subscribeToGameUpdates]);
-
-    // Ajoute l'utilisateur à une partie active existante
-    useEffect(handleJoinActiveGame, [handleJoinActiveGame]);
-
-    // Souscrit automatiquement aux mises à jour dûes aux jokers
-    useEffect(subscribeToJokerUpdates, [subscribeToJokerUpdates]);
-
-    // Retourne les données de la Room et du jeu nécessaires aux composants
-    return { room, quizGame, users, isLoading, effetGlace, currentParticipantId };
+  return {
+    room,
+    users,
+    currentParticipantId,
+    isLoading,
+    error,
+    hasJoined,
+  };
 };

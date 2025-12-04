@@ -11,6 +11,10 @@ const useSocket = (
     isSubscribed.current = false;
 
     useEffect(() => {
+        console.log('Appel useSocket');
+    }, [])
+
+    useEffect(() => {
         if(isSubscribed.current) return;
         // 1. Connection
         if(!socketService.isConnected) {
