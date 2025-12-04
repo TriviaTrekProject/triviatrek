@@ -1,6 +1,6 @@
-import { Middleware, MiddlewareAPI } from '@reduxjs/toolkit';
+import { Middleware } from '@reduxjs/toolkit';
 
-export const errorHandlingMiddleware: Middleware = (store: MiddlewareAPI) => (next) => (action: any) => {
+export const errorHandlingMiddleware: Middleware = () => (next) => (action: any) => {
   try {
     // Vérifier si c'est une action rejected d'un thunk
     if (action.type.endsWith('/rejected')) {
