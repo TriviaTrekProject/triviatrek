@@ -1,6 +1,6 @@
-import { Middleware, MiddlewareAPI } from '@reduxjs/toolkit';
+import { Middleware } from '@reduxjs/toolkit';
 
-export const loadingStatusMiddleware: Middleware = (store: MiddlewareAPI) => (next) => (action: any) => {
+export const loadingStatusMiddleware: Middleware = () => (next) => (action: any) => {
   // Log les états de chargement pour le debugging
   if (action.type.endsWith('/pending')) {
     console.debug(`Loading started: ${action.type}`);

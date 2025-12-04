@@ -1,6 +1,6 @@
-import { Middleware, MiddlewareAPI } from '@reduxjs/toolkit';
+import { Middleware } from '@reduxjs/toolkit';
 
-export const cleanupMiddleware: Middleware = (store: MiddlewareAPI) => (next) => (action: any) => {
+export const cleanupMiddleware: Middleware = () => (next) => (action: any) => {
   const result = next(action);
 
   // Nettoyer les ressources lors de certaines actions

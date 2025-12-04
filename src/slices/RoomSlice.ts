@@ -79,7 +79,7 @@ const roomSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(joinRoom.fulfilled, (state, action) => {
+      .addCase(joinRoom.fulfilled, (state) => {
         state.isLoading = false;
         state.hasJoined = true;
         // tempId est déjà défini, pas besoin de le redéfinir
