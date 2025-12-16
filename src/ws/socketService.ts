@@ -1,6 +1,6 @@
 import { Client, StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import {baseURLWS} from "../config/AxiosHelps.ts";
+import {baseURLWS} from "../config/config.ts";
 
 
 class SocketService {
