@@ -15,7 +15,7 @@ Sentry.init({
     ],
     environment: import.meta.env.VITE_APP_ENV || 'development',
     tracesSampleRate: 1.0, //  Capture 100% of the transactions
-    tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
+    tracePropagationTargets: ["localhost", /^https:\/\/triviatrek.onrender\.com\//],
     // Session Replay
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
