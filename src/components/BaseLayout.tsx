@@ -13,9 +13,7 @@ export default function BaseLayout({disableParallax}:{disableParallax?:boolean})
                 quality={quality}
             />
 
-            {/* ici header / nav */}
             <Outlet />
-            {/* ici footer */}
         </div>
         </div>
     );
