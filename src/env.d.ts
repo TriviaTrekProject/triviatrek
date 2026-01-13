@@ -1,6 +1,8 @@
 /// <référence types="vite/client" />
 
 interface ImportMetaEnv {
+    readonly VITE_APP_ENV: string
+    readonly VITE_SENTRY_DSN: string | undefined
     readonly VITE_URL_BACK : string
     readonly VITE_URL_WS : string
 }
