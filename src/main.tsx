@@ -11,7 +11,8 @@ Sentry.init({
     sendDefaultPii: true,
     integrations: [
         Sentry.browserTracingIntegration(),
-        Sentry.replayIntegration()
+        Sentry.replayIntegration(),
+        Sentry.consoleLoggingIntegration({ levels: ["log", "warn", "error"] }),
     ],
     environment: import.meta.env.VITE_APP_ENV || 'development',
     tracesSampleRate: 1.0, //  Capture 100% of the transactions
@@ -19,7 +20,7 @@ Sentry.init({
     // Session Replay
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
-    enableLogs: true
+    enableLogs: true,
 });
 
 const container = document.getElementById("root");
